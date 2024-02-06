@@ -1,3 +1,23 @@
 ﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  timerclass.cpp
+  textureshaderclass.cpp
+  textureclass.cpp
+  systemclass.cpp
+  shadermanagerclass.cpp
+  positionclass.cpp
+  modelclass.cpp
+  main.cpp
+  lightshaderclass.cpp
+  lightclass.cpp
   inputclass.cpp
-  Engine.vcxproj -> C:\Users\u2266405\OneDrive - University of Huddersfield\Pictures\Uni\2-Year 2\5- RealTimeGraphics\Week1-Geometry&Pipeline\WorldBuilder\Debug\Engine.exe
+  graphicsclass.cpp
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(50,10): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(106,13): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
+  DDSTextureLoader.cpp
+  d3dclass.cpp
+  cameraclass.cpp
+  bumpmodelclass.cpp
+  bumpmapshaderclass.cpp
+  Generating Code...
+bumpmapshaderclass.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe
