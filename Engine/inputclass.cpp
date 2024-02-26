@@ -323,7 +323,7 @@ bool InputClass::IsRightPressed()
 }
 
 
-bool InputClass::IsUpPressed()
+bool InputClass::IsWPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
 	if (m_keyboardState[DIK_W] &0x80)
@@ -335,7 +335,7 @@ bool InputClass::IsUpPressed()
 }
 
 
-bool InputClass::IsDownPressed()
+bool InputClass::IsSPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
 	if (m_keyboardState[DIK_S] & 0x80)
@@ -346,11 +346,10 @@ bool InputClass::IsDownPressed()
 	return false;
 }
 
-
 bool InputClass::IsAPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
-	if (m_keyboardState[DIK_PGUP] & 0x80)
+	if (m_keyboardState[DIK_A] & 0x80)
 	{
 		return true;
 	}
@@ -359,10 +358,10 @@ bool InputClass::IsAPressed()
 }
 
 
-bool InputClass::IsZPressed()
+bool InputClass::IsDPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
-	if (m_keyboardState[DIK_PGDN] & 0x80)
+	if (m_keyboardState[DIK_D] & 0x80)
 	{
 		return true;
 	}
@@ -374,7 +373,7 @@ bool InputClass::IsZPressed()
 bool InputClass::IsPgUpPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
-	if (m_keyboardState[DIK_UP] & 0x80)
+	if (m_keyboardState[DIK_PGUP] & 0x80)
 	{
 		return true;
 	}
@@ -384,6 +383,52 @@ bool InputClass::IsPgUpPressed()
 
 
 bool InputClass::IsPgDownPressed()
+{
+	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
+	if (m_keyboardState[DIK_PGDN] & 0x80)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool InputClass::IsEPressed()
+{
+	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
+	if (m_keyboardState[DIK_E] & 0x80)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool InputClass::IsQPressed()
+{
+	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
+	if (m_keyboardState[DIK_Q] & 0x80)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+bool InputClass::IsUpPressed()
+{
+	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
+	if (m_keyboardState[DIK_UP] & 0x80)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+bool InputClass::IsDownPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
 	if (m_keyboardState[DIK_DOWN] & 0x80)

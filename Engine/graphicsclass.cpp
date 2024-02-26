@@ -99,7 +99,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Set the initial position and rotation of the viewer.
-	m_Position->SetPosition(0.0f, 0.0f, -10.0f);
+	m_Position->SetPosition(0.0f, 20.0f, -40.0f);
 	m_Position->SetRotation(0.0f, 0.0f, 0.0f);
 
 	// Create the camera object.
@@ -134,7 +134,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the model object.
-	result = m_Model1->Initialize(m_D3D->GetDevice(), "../Engine/data/Sphere.txt", L"../Engine/data/earth.dds");
+	result = m_Model1->Initialize(m_D3D->GetDevice(), "../Engine/data/Room.txt", L"../Engine/data/Wall1-UVW.dds");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the first model object.", L"Error", MB_OK);
@@ -149,7 +149,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the second model object.
-	result = m_Model2->Initialize(m_D3D->GetDevice(), "../Engine/data/Sphere.txt", L"../Engine/data/sun.dds");
+	result = m_Model2->Initialize(m_D3D->GetDevice(), "../Engine/data/Chair.txt", L"../Engine/data/Wood.dds");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the second model object.", L"Error", MB_OK);
@@ -164,7 +164,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the bump model object.
-	result = m_Model3->Initialize(m_D3D->GetDevice(), "../Engine/data/Sphere.txt", L"../Engine/data/moon.dds", 
+	result = m_Model3->Initialize(m_D3D->GetDevice(), "../Engine/data/Table.txt", L"../Engine/data/Wood.dds", 
 								  L"../Engine/data/normal.dds");
 	if(!result)
 	{
@@ -180,7 +180,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the 4th model object.
-	result = m_Model4->Initialize(m_D3D->GetDevice(), "../Engine/data/iceland.txt", L"../Engine/data/stars.dds");
+	result = m_Model4->Initialize(m_D3D->GetDevice(), "../Engine/data/Iceland.txt", L"../Engine/data/Dessert2.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the 4th model object.", L"Error", MB_OK);
@@ -330,25 +330,36 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 	keyDown = m_Input->IsRightPressed();
 	m_Position->TurnRight(keyDown);
 
-	keyDown = m_Input->IsUpPressed();
+	keyDown = m_Input->IsWPressed();
 	m_Position->MoveForward(keyDown);
 
-	keyDown = m_Input->IsDownPressed();
+	keyDown = m_Input->IsSPressed();
 	m_Position->MoveBackward(keyDown);
 
 	keyDown = m_Input->IsAPressed();
+	m_Position->MoveLeft(keyDown);
+
+	keyDown = m_Input->IsDPressed();
+	m_Position->MoveRight(keyDown);
+
+	keyDown = m_Input->IsPgUpPressed();
 	m_Position->MoveUpward(keyDown);
 
-	keyDown = m_Input->IsZPressed();
+	keyDown = m_Input->IsPgDownPressed();
 	m_Position->MoveDownward(keyDown);
 
-	//*Xu. 03/12/2019
-	keyDown = m_Input->IsPgUpPressed();
+	keyDown = m_Input->IsEPressed();
+	m_Position->MoveUpward(keyDown);
+
+	keyDown = m_Input->IsQPressed();
+	m_Position->MoveDownward(keyDown);
+
+	keyDown = m_Input->IsUpPressed();
 	m_Position->LookUpward(keyDown);
 
-	keyDown = m_Input->IsPgDownPressed();
+	keyDown = m_Input->IsDownPressed();
 	m_Position->LookDownward(keyDown);
-	//*/
+
 	// HandleMouse Rotations
 	m_Position->MouseRotate(m_Input->GetMouseXDelta(), m_Input->GetMouseYDelta());
 
@@ -386,107 +397,49 @@ bool GraphicsClass::Render()
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
-	/*
-	// Setup the rotation and translation of the first model.
-	worldMatrix = XMMatrixRotationY(rotation);
-	scalerMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);  //setting the scaling value
-	translateMatrix = XMMatrixTranslation(-7.5f, 0.0f, 0.0f);  //setting the translation value
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);  //applying the translation value
-	worldMatrix = XMMatrixMultiply(worldMatrix, scalerMatrix);  //applying the scaling value
-	*/
-
-	//Setup the rotation and translation of the first model.
-	//set up scaling factors
-	XMMATRIX scaleEarth;
-	scaleEarth = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-
-	worldMatrix = XMMatrixMultiply(worldMatrix, scaleEarth);
-
-	//self-spinning
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 7.5f));
-
-	//set up positioning factors
-	translateMatrix = XMMatrixTranslation(-7.5f, 0.0f, 0.0f);
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
-	//set up rotation factors
-	XMVECTOR MyAxis;
-	MyAxis = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationAxis(MyAxis, rotation));
 
 	// Render the first model using the texture shader.
 	m_Model1->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderTextureShader(m_D3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
-												  m_Model1->GetTexture());
+	result = m_ShaderManager->RenderTextureShader(m_D3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model1->GetTexture());
 	if(!result)
 	{
 		return false;
 	}
 
-	// Setup the rotation and translation of the second model.
-	m_D3D->GetWorldMatrix(worldMatrix);
-	worldMatrix = XMMatrixRotationY(rotation);
-	scalerMatrix = XMMatrixScaling(1.5f, 1.5f, 1.5f);  //setting the scaling value
-	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);  //setting the translation value
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);  //applying the translation value
-	worldMatrix = XMMatrixMultiply(worldMatrix, scalerMatrix);  //applying the scaling value
+	// Setup the rotation and translation of the 2nd model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+	translateMatrix = XMMatrixTranslation(10.0f, 2.5f, 0.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the second model using the light shader.
 	m_Model2->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
-									   m_Model2->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), 
-									   m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model2->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 	if(!result)
 	{
 		return false;
 	}
 
-	// Setup the rotation and translation of the third model.
-	m_D3D->GetWorldMatrix(worldMatrix);
-
-	/*
-	worldMatrix = XMMatrixRotationY(rotation);
-	scalerMatrix = XMMatrixScaling(0.5f, 0.5f, 0.5f);  //setting the scaling value
-	translateMatrix = XMMatrixTranslation(-11.0f, 0.0f, 0.0f);  //setting the translation value
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);  //applying the translation value
-	worldMatrix = XMMatrixMultiply(worldMatrix, scalerMatrix);  //applying the scaling value
-	*/
-
-	XMMATRIX scaleMoon;
-	scaleMoon = XMMatrixScaling(0.5f, 0.5f, 0.5f);
-
-	worldMatrix = XMMatrixMultiply(worldMatrix, scaleMoon);
-
-	//self-spinning
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 2.0f));
-
-	//set up positioning factors. Orbit from center of earth
-	translateMatrix = XMMatrixTranslation(2.0f, 0.0f, 0.0f);
+	// Setup the rotation and translation of the 3rd model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+	translateMatrix = XMMatrixTranslation(-10.0f, 2.5f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-	//set up rotation factors
-	XMVECTOR MyAxis1;
-	MyAxis1 = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationAxis(MyAxis1, rotation * 2.5f));
-
-
-	//set up positioning factors. Orbit from center of Sun
-	translateMatrix = XMMatrixTranslation(-7.5f, 0.0f, 0.0f);
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-	//set up rotation factors
-	XMVECTOR MyAxis2;
-	MyAxis2 = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationAxis(MyAxis2, rotation));
 
 	// Render the third model using the bump map shader.
 	m_Model3->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderBumpMapShader(m_D3D->GetDeviceContext(), m_Model3->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
-												  m_Model3->GetColorTexture(), m_Model3->GetNormalMapTexture(), m_Light->GetDirection(), 
-												  m_Light->GetDiffuseColor());
+	result = m_ShaderManager->RenderBumpMapShader(m_D3D->GetDeviceContext(), m_Model3->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model3->GetColorTexture(), m_Model3->GetNormalMapTexture(), m_Light->GetDirection(),
+		m_Light->GetDiffuseColor());
 	if(!result)
 	{
 		return false;

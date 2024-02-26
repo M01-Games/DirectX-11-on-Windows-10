@@ -31,13 +31,15 @@ public:
 
 	void MoveForward(bool);
 	void MoveBackward(bool);
+	void MoveLeft(bool);
+	void MoveRight(bool);
 	void MoveUpward(bool);
 	void MoveDownward(bool);
 	void TurnLeft(bool);
 	void TurnRight(bool);
 	void LookUpward(bool);
 	void LookDownward(bool);
-	//Xu. 03/12/2019
+
 	void MouseRotate(int, int);
 
 private:
@@ -47,6 +49,7 @@ private:
 	float m_frameTime;
 
 	float m_forwardSpeed, m_backwardSpeed;
+	float m_leftwardSpeed, m_rightwardSpeed;
 	float m_upwardSpeed, m_downwardSpeed;
 	float m_leftTurnSpeed, m_rightTurnSpeed;
 	float m_lookUpSpeed, m_lookDownSpeed;
