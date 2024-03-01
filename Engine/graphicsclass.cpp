@@ -134,7 +134,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the model object.
-	result = m_Model1->Initialize(m_D3D->GetDevice(), "../Engine/data/Room.txt", L"../Engine/data/Wall1-UVW.dds");
+	result = m_Model1->Initialize(m_D3D->GetDevice(), "../Engine/data/House.txt", L"../Engine/data/House-Textured.dds");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the first model object.", L"Error", MB_OK);
@@ -149,7 +149,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the second model object.
-	result = m_Model2->Initialize(m_D3D->GetDevice(), "../Engine/data/Chair.txt", L"../Engine/data/Wood.dds");
+	result = m_Model2->Initialize(m_D3D->GetDevice(), "../Engine/data/Zombie.txt", L"../Engine/data/Zombie-Textured.dds");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the second model object.", L"Error", MB_OK);
@@ -164,7 +164,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the bump model object.
-	result = m_Model3->Initialize(m_D3D->GetDevice(), "../Engine/data/Table.txt", L"../Engine/data/Wood.dds", 
+	result = m_Model3->Initialize(m_D3D->GetDevice(), "../Engine/data/Lamp.txt", L"../Engine/data/Lamp-Textured.dds", 
 								  L"../Engine/data/normal.dds");
 	if(!result)
 	{
@@ -180,7 +180,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the 4th model object.
-	result = m_Model4->Initialize(m_D3D->GetDevice(), "../Engine/data/Iceland.txt", L"../Engine/data/Dessert2.dds");
+	result = m_Model4->Initialize(m_D3D->GetDevice(), "../Engine/data/terrain.txt", L"../Engine/data/Dessert2.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the 4th model object.", L"Error", MB_OK);
@@ -399,15 +399,16 @@ bool GraphicsClass::Render()
 
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	worldMatrix = XMMatrixScaling(2.5f, 2.5f, 2.5f);
+	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 100.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 
 	// Render the first model using the texture shader.
 	m_Model1->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderTextureShader(m_D3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model1->GetTexture());
+	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model1->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 	if(!result)
 	{
 		return false;
@@ -415,8 +416,8 @@ bool GraphicsClass::Render()
 
 	// Setup the rotation and translation of the 2nd model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-	translateMatrix = XMMatrixTranslation(10.0f, 2.5f, 0.0f);
+	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
+	translateMatrix = XMMatrixTranslation(10.0f, 0.0f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the second model using the light shader.
@@ -431,8 +432,8 @@ bool GraphicsClass::Render()
 
 	// Setup the rotation and translation of the 3rd model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-	translateMatrix = XMMatrixTranslation(-10.0f, 2.5f, 0.0f);
+	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
+	translateMatrix = XMMatrixTranslation(-10.0f, 0.0f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the third model using the bump map shader.
@@ -447,8 +448,8 @@ bool GraphicsClass::Render()
 
 	// Setup the rotation and translation of the 4th model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(10.0f, 3.0f, 10.0f);
-	translateMatrix = XMMatrixTranslation(0.0f, -50.0f, 200.0f);
+	worldMatrix = XMMatrixScaling(20.0f, 20.0f, 20.0f);
+	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.

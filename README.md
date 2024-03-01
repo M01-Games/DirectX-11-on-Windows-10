@@ -8,5 +8,9 @@ This project has taken inspiration from https://www.rastertek.com/tutdx11win10.h
 1. Camera input remapping - for more like FPS cameras
 2. Camera left and right movement
 3. Added an interior scene with the walls UV wrapped and textured with .DDS images
-4. Added some Props - were converted from .OBJ to .Txt
-5. 
+4. Added some Props - Were converted from .OBJ to .Txt to see how the scene felt
+5. Removed the interior scene and started on an environment scene
+6. Added Terrain and Trees - Had to increase the view distance for the camera
+7. Added a textured house and street lamp - To start filling the scene
+8. Added a zombie - Hopefully I can make this move around the scene
+9. ...
