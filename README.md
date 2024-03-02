@@ -4,6 +4,15 @@ by hard coding all the features and watching the scene come to life in an appica
 
 This project has taken inspiration from https://www.rastertek.com/tutdx11win10.html
 
+## Plans ##
+1. To add the ability to switch camera positions
+2. To add the ability to switch lights on and off
+3. To add the ability to toggle movement in objects
+4. To build a town for the environment
+5. To add distinct lighting to the town
+6. To add distinct texture and lighting effects
+7. ...
+
 ## Changes ##
 1. Camera input remapping - for more like FPS cameras
 2. Camera left and right movement
