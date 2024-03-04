@@ -11,7 +11,10 @@ This project has taken inspiration from https://www.rastertek.com/tutdx11win10.h
 4. To build a town for the environment
 5. To add distinct lighting to the town
 6. To add distinct texture and lighting effects
-7. ...
+7. To add shadows to my environment
+8. To add reflections to certain objects within the environment
+9. To add UI information about the scene / application
+10. To add the ability to toggle wireframe view on and off
 
 ## Changes ##
 1. Camera input remapping - for more like FPS cameras
@@ -22,4 +25,5 @@ This project has taken inspiration from https://www.rastertek.com/tutdx11win10.h
 6. Added Terrain and Trees - Had to increase the view distance for the camera
 7. Added a textured house and street lamp - To start filling the scene
 8. Added a zombie - Hopefully I can make this move around the scene
-9. ...
+9. Unlocked the camera - creating a free movement camera with no restrictions 
+10. ...

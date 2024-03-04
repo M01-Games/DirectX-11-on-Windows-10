@@ -108,9 +108,6 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	{
 		return false;
 	}
-
-	// Set the initial position of the camera.
-	//m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 	
 	// Create the light object.
 	m_Light = new LightClass;
