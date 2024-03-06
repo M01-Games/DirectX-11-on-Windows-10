@@ -50,10 +50,40 @@
   <ItemGroup>
     <None Include="bumpmap.ps" />
     <None Include="bumpmap.vs" />
+    <None Include="depth.ps" />
+    <None Include="depth.vs" />
+    <None Include="fire.ps" />
+    <None Include="fire.vs" />
+    <None Include="font.ps" />
+    <None Include="font.vs" />
+    <None Include="glass.ps" />
+    <None Include="glass.vs" />
     <None Include="light.ps" />
     <None Include="light.vs" />
+    <None Include="lightmap.ps" />
+    <None Include="lightmap.vs" />
+    <None Include="multitexture.ps" />
+    <None Include="multitexture.vs" />
+    <None Include="particle.ps" />
+    <None Include="particle.vs" />
+    <None Include="pointLight.ps" />
+    <None Include="pointLight.vs" />
+    <None Include="reflection.ps" />
+    <None Include="reflection.vs" />
+    <None Include="shadow.ps" />
+    <None Include="shadow.vs" />
+    <None Include="skydome.ps" />
+    <None Include="skydome.vs" />
+    <None Include="skyplane.ps" />
+    <None Include="skyplane.vs" />
+    <None Include="specmap.ps" />
+    <None Include="specmap.vs" />
+    <None Include="terrain.ps" />
+    <None Include="terrain.vs" />
     <None Include="texture.ps" />
     <None Include="texture.vs" />
+    <None Include="water.ps" />
+    <None Include="water.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B582C848-8474-42F1-91EE-C5B948FE3486}</ProjectGuid>

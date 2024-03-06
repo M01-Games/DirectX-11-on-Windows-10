@@ -15,6 +15,7 @@ This project has taken inspiration from https://www.rastertek.com/tutdx11win10.h
 8. To add reflections to certain objects within the environment
 9. To add UI information about the scene / application
 10. To add the ability to toggle wireframe view on and off
+11. To add the ability to create a terrain from a height map
 
 ## Changes ##
 1. Camera input remapping - for more like FPS cameras
@@ -26,4 +27,5 @@ This project has taken inspiration from https://www.rastertek.com/tutdx11win10.h
 7. Added a textured house and street lamp - To start filling the scene
 8. Added a zombie - Hopefully I can make this move around the scene
 9. Unlocked the camera - creating a free movement camera with no restrictions 
-10. ...
+10. Added all the shaders from the tutorials
+11. ...

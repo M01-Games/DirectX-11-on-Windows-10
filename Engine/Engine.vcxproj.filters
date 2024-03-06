@@ -136,5 +136,95 @@
     <None Include="texture.vs">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="depth.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="fire.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="font.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="glass.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="lightmap.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="multitexture.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="particle.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="pointLight.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="reflection.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shadow.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="skydome.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="skyplane.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="specmap.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="terrain.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="water.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="depth.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="fire.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="font.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="glass.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="lightmap.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="multitexture.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="particle.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="pointLight.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="reflection.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shadow.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="skydome.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="skyplane.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="specmap.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="terrain.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="water.vs">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

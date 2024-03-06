@@ -177,7 +177,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the 4th model object.
-	result = m_Model4->Initialize(m_D3D->GetDevice(), "../Engine/data/terrain.txt", L"../Engine/data/Dessert2.dds");
+	result = m_Model4->Initialize(m_D3D->GetDevice(), "../Engine/data/terrain.txt", L"../Engine/data/Terrain-Textured2.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the 4th model object.", L"Error", MB_OK);
