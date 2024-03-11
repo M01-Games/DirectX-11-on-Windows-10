@@ -33,13 +33,6 @@ void LightClass::SetDiffuseColor(float red, float green, float blue, float alpha
 }
 
 
-void LightClass::SetDirection(float x, float y, float z)
-{
-	m_direction = XMFLOAT3(x, y, z);
-	return;
-}
-
-
 void LightClass::SetSpecularColor(float red, float green, float blue, float alpha)
 {
 	m_specularColor = XMFLOAT4(red, green, blue, alpha);
@@ -50,6 +43,22 @@ void LightClass::SetSpecularColor(float red, float green, float blue, float alph
 void LightClass::SetSpecularPower(float power)
 {
 	m_specularPower = power;
+	return;
+}
+
+
+void LightClass::SetPosition(float x, float y, float z)
+{
+	m_position = XMFLOAT3(x, y, z);
+	return;
+}
+
+
+void LightClass::SetLookAt(float x, float y, float z)
+{
+	m_lookAt.x = x;
+	m_lookAt.y = y;
+	m_lookAt.z = z;
 	return;
 }
 
@@ -66,11 +75,6 @@ XMFLOAT4 LightClass::GetDiffuseColor()
 }
 
 
-XMFLOAT3 LightClass::GetDirection()
-{
-	return m_direction;
-}
-
 
 XMFLOAT4 LightClass::GetSpecularColor()
 {
@@ -81,4 +85,62 @@ XMFLOAT4 LightClass::GetSpecularColor()
 float LightClass::GetSpecularPower()
 {
 	return m_specularPower;
+}
+
+
+XMFLOAT3 LightClass::GetPosition()
+{
+	return m_position;
+}
+
+XMFLOAT3 LightClass::GetLookAt()
+{
+	return m_lookAt;
+}
+
+
+void LightClass::GenerateViewMatrix()
+{
+	XMFLOAT3 up;
+
+
+	//Setup the vector that points upwards.
+	up.x = 0.0f;
+	up.y = 1.0f;
+	up.z = 0.0f;
+
+	//Create the view matrix from the three vectors.
+	m_viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_lookAt), XMLoadFloat3(&up));
+
+	return;
+}
+
+
+void LightClass::GenerateProjectionMatrix(float screenDepth, float screenNear)
+{
+	float fieldOfView, screenAspect;
+
+
+	//Setup field of view and screen aspect for a square light source.
+	fieldOfView = (float)XM_PI / 2.0f;
+	screenAspect = 1.0f;
+
+	//Create the projection matrix for the light.
+	m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
+
+	return;
+}
+
+
+void LightClass::GetViewMatrix(XMMATRIX& viewMatrix)
+{
+	viewMatrix = m_viewMatrix;
+	return;
+}
+
+
+void LightClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
+{
+	projectionMatrix = m_projectionMatrix;
+	return;
 }

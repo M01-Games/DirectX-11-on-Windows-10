@@ -12,6 +12,7 @@
 #include "textureshaderclass.h"
 #include "lightshaderclass.h"
 #include "bumpmapshaderclass.h"
+#include "depthshaderclass.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,10 +36,13 @@ public:
 	bool RenderBumpMapShader(ID3D11DeviceContext*, int, const XMMATRIX&, const XMMATRIX&, const XMMATRIX&, ID3D11ShaderResourceView*,
 		ID3D11ShaderResourceView*, XMFLOAT3, XMFLOAT4);
 
+	bool RenderDepthShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX);
+
 private:
 	TextureShaderClass* m_TextureShader;
 	LightShaderClass* m_LightShader;
 	BumpMapShaderClass* m_BumpMapShader;
+	DepthShaderClass* m_DepthShader;
 };
 
 #endif

@@ -63,6 +63,15 @@
     <ClInclude Include="timerclass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="terrainshaderclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="terrainclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="depthshaderclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bumpmapshaderclass.cpp">
@@ -114,6 +123,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="timerclass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="terrainclass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="terrainshaderclass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="depthshaderclass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

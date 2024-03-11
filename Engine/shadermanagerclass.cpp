@@ -9,6 +9,7 @@ ShaderManagerClass::ShaderManagerClass()
 	m_TextureShader = 0;
 	m_LightShader = 0;
 	m_BumpMapShader = 0;
+	m_DepthShader = 0;
 }
 
 
@@ -72,6 +73,21 @@ bool ShaderManagerClass::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
+	//Create the depth shader object.
+	m_DepthShader = new DepthShaderClass;
+	if (!m_DepthShader)
+	{
+		return false;
+	}
+
+	//Initialize the particle shader object.
+	result = m_DepthShader->Initialize(device, hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the depth shader object.", L"Error", MB_OK);
+		return false;
+	}
+
 	return true;
 }
 
@@ -100,6 +116,14 @@ void ShaderManagerClass::Shutdown()
 		m_TextureShader->Shutdown();
 		delete m_TextureShader;
 		m_TextureShader = 0;
+	}
+
+	//Release the depth shader object
+	if (m_DepthShader)
+	{
+		m_DepthShader->Shutdown();
+		delete m_DepthShader;
+		m_DepthShader = 0;
 	}
 
 	return;
@@ -152,6 +176,21 @@ bool ShaderManagerClass::RenderBumpMapShader(ID3D11DeviceContext* deviceContext,
 	// Render the model using the bump map shader.
 	result = m_BumpMapShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, colorTexture, normalTexture, lightDirection, diffuse);
 	if(!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool ShaderManagerClass::RenderDepthShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+{
+	bool result;
+
+
+	//Render the model using the depth shader.
+	result = m_DepthShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix);
+	if (!result)
 	{
 		return false;
 	}

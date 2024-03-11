@@ -16,6 +16,7 @@
     <ClInclude Include="cameraclass.h" />
     <ClInclude Include="d3dclass.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="depthshaderclass.h" />
     <ClInclude Include="graphicsclass.h" />
     <ClInclude Include="inputclass.h" />
     <ClInclude Include="lightclass.h" />
@@ -24,6 +25,8 @@
     <ClInclude Include="positionclass.h" />
     <ClInclude Include="shadermanagerclass.h" />
     <ClInclude Include="systemclass.h" />
+    <ClInclude Include="terrainclass.h" />
+    <ClInclude Include="terrainshaderclass.h" />
     <ClInclude Include="textureclass.h" />
     <ClInclude Include="textureshaderclass.h" />
     <ClInclude Include="timerclass.h" />
@@ -34,6 +37,7 @@
     <ClCompile Include="cameraclass.cpp" />
     <ClCompile Include="d3dclass.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="depthshaderclass.cpp" />
     <ClCompile Include="graphicsclass.cpp" />
     <ClCompile Include="inputclass.cpp" />
     <ClCompile Include="lightclass.cpp" />
@@ -43,6 +47,8 @@
     <ClCompile Include="positionclass.cpp" />
     <ClCompile Include="shadermanagerclass.cpp" />
     <ClCompile Include="systemclass.cpp" />
+    <ClCompile Include="terrainclass.cpp" />
+    <ClCompile Include="terrainshaderclass.cpp" />
     <ClCompile Include="textureclass.cpp" />
     <ClCompile Include="textureshaderclass.cpp" />
     <ClCompile Include="timerclass.cpp" />

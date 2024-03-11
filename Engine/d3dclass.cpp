@@ -307,7 +307,8 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	rasterDesc.DepthBias = 0;
 	rasterDesc.DepthBiasClamp = 0.0f;
 	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	//rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
 	rasterDesc.FrontCounterClockwise = false;
 	rasterDesc.MultisampleEnable = false;
 	rasterDesc.ScissorEnable = false;
@@ -491,5 +492,35 @@ void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
 {
 	strcpy_s(cardName, 128, m_videoCardDescription);
 	memory = m_videoCardMemory;
+	return;
+}
+
+void D3DClass::TurnOnCulling()
+{
+	//Set the culling rasterizer state.
+	m_deviceContext->RSSetState(m_rasterState);
+
+	return;
+}
+
+
+void D3DClass::TurnOffCulling()
+{
+	//Set the no back face culling rasterizer state.
+	m_deviceContext->RSSetState(m_rasterStateNoCulling);
+
+	return;
+}
+
+void D3DClass::TurnZBufferOn()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+	return;
+}
+
+
+void D3DClass::TurnZBufferOff()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
 	return;
 }

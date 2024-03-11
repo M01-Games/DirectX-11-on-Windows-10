@@ -10,6 +10,9 @@ GraphicsClass::GraphicsClass()
 	m_ShaderManager = 0;
 	m_Light = 0;
 	m_Camera = 0;
+	m_DirectionalLight = 0;
+	m_Terrain = 0;
+	m_TerrainShader = 0;
 	m_Model1 = 0;
 	m_Model2 = 0;
 	m_Model3 = 0;
@@ -76,6 +79,21 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 		return false;
 	}
 
+	//Create the terrain shader object.
+	m_TerrainShader = new TerrainShaderClass;
+	if (!m_TerrainShader)
+	{
+		return false;
+	}
+
+	//Initialize the terrain shader object.
+	result = m_TerrainShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the terrain shader object.", L"Error", MB_OK);
+		return false;
+	}
+
 	// Create the timer object.
 	m_Timer = new TimerClass;
 	if (!m_Timer)
@@ -119,9 +137,41 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	// Initialize the light object.
 	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+	m_Light->SetLookAt(0.0f, 0.0f, 1.0f);
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetSpecularPower(64.0f);
+
+	//Create the light object.
+	m_DirectionalLight = new LightClass;
+	if (!m_DirectionalLight)
+	{
+		return false;
+	}
+
+	//Initialize the light object.
+	m_DirectionalLight->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+	m_DirectionalLight->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_DirectionalLight->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_DirectionalLight->SetSpecularPower(64.0f);
+	m_DirectionalLight->SetPosition(0, 0, 0);
+	m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
+	m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
+
+	//Create the terrain object.
+	m_Terrain = new TerrainClass;
+	if (!m_Terrain)
+	{
+		return false;
+	}
+
+	//Initialize the terrain object.
+	result = m_Terrain->Initialize(m_D3D->GetDevice(), "../Engine/data/Heightmap.bmp", "../Engine/data/Heightmap.bmp",
+		7.5f, L"../Engine/data/grass.dds", L"../Engine/data/grass_n.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
+		return false;
+	}
 
 	// Create the model object.
 	m_Model1 = new ModelClass;
@@ -217,6 +267,29 @@ void GraphicsClass::Shutdown()
 		m_Model4->Shutdown();
 		delete m_Model4;
 		m_Model4 = 0;
+	}
+
+	//Release the terrain shader object.
+	if (m_TerrainShader)
+	{
+		m_TerrainShader->Shutdown();
+		delete m_TerrainShader;
+		m_TerrainShader = 0;
+	}
+
+	//Release the terrain object.
+	if (m_Terrain)
+	{
+		m_Terrain->Shutdown();
+		delete m_Terrain;
+		m_Terrain = 0;
+	}
+
+	//Release the light object.
+	if (m_DirectionalLight)
+	{
+		delete m_DirectionalLight;
+		m_DirectionalLight = 0;
 	}
 
 	// Release the light object.
@@ -375,7 +448,8 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 
 bool GraphicsClass::Render()
 {
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, translateMatrix, scalerMatrix;
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, translateMatrix, scalerMatrix,
+		lightViewMatrix, lightProjectionMatrix;
 	bool result;
 
 	static float rotation = 0.0f;
@@ -394,6 +468,41 @@ bool GraphicsClass::Render()
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
+	//Generate the light view matrix based on the light's position
+	m_DirectionalLight->GenerateViewMatrix();
+
+	//Reset the world matrix
+	m_D3D->GetWorldMatrix(worldMatrix);
+
+	//Get the view and orthographic matrices from the light object
+	m_DirectionalLight->GetViewMatrix(lightViewMatrix);
+	m_DirectionalLight->GetProjectionMatrix(lightProjectionMatrix);
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(1.0, 1.0, 1.0);
+	translateMatrix = XMMatrixTranslation(-500.0f, 0.0f, -500.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	//Render the terrain model with the depth shader
+	m_Terrain->Render(m_D3D->GetDeviceContext());
+	result = m_ShaderManager->RenderDepthShader(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix,
+		lightViewMatrix, lightProjectionMatrix);
+	if (!result)
+	{
+		return false;
+	}
+
+	//Render the terrain using the terrain shader
+	m_Terrain->Render(m_D3D->GetDeviceContext());
+	result = m_TerrainShader->Render(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Terrain->GetColorTexture(), m_Terrain->GetNormalTexture(), m_DirectionalLight->GetDiffuseColor(),
+		m_DirectionalLight->GetLookAt(), 10.0f);
+	if (!result)
+	{
+		return false;
+	}
+
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(2.5f, 2.5f, 2.5f);
@@ -403,9 +512,9 @@ bool GraphicsClass::Render()
 
 	// Render the first model using the texture shader.
 	m_Model1->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model1->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
-		m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
 	if(!result)
 	{
 		return false;
@@ -420,8 +529,8 @@ bool GraphicsClass::Render()
 	// Render the second model using the light shader.
 	m_Model2->Render(m_D3D->GetDeviceContext());
 	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model2->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
-		m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+		m_Model2->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
 	if(!result)
 	{
 		return false;
@@ -436,8 +545,8 @@ bool GraphicsClass::Render()
 	// Render the third model using the bump map shader.
 	m_Model3->Render(m_D3D->GetDeviceContext());
 	result = m_ShaderManager->RenderBumpMapShader(m_D3D->GetDeviceContext(), m_Model3->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model3->GetColorTexture(), m_Model3->GetNormalMapTexture(), m_Light->GetDirection(),
-		m_Light->GetDiffuseColor());
+		m_Model3->GetColorTexture(), m_Model3->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(),
+		m_DirectionalLight->GetDiffuseColor());
 	if(!result)
 	{
 		return false;
@@ -445,7 +554,7 @@ bool GraphicsClass::Render()
 
 	// Setup the rotation and translation of the 4th model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(20.0f, 20.0f, 20.0f);
+	worldMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f); //(20.0f, 20.0f, 20.0f);
 	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 

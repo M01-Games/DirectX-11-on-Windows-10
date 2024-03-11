@@ -15,6 +15,8 @@
 #include "positionclass.h"
 #include "cameraclass.h"
 #include "lightclass.h"
+#include "terrainclass.h"
+#include "terrainshaderclass.h"
 #include "modelclass.h"
 #include "bumpmodelclass.h"
 
@@ -22,7 +24,7 @@
 /////////////
 // GLOBALS //
 /////////////
-const bool FULL_SCREEN = true;
+const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = false;
 const float SCREEN_DEPTH = 10000.0f;
 const float SCREEN_NEAR = 0.1f;
@@ -54,6 +56,9 @@ private:
 	PositionClass* m_Position;
 	CameraClass* m_Camera;
 	LightClass* m_Light;
+	LightClass* m_DirectionalLight;
+	TerrainClass* m_Terrain;
+	TerrainShaderClass* m_TerrainShader;
 	ModelClass* m_Model1;
 	ModelClass* m_Model2;
 	ModelClass* m_Model4;
