@@ -1,3 +1,32 @@
 ﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  timerclass.cpp
+  textureshaderclass.cpp
+  textureclass.cpp
+  terrainshaderclass.cpp
+  terrainclass.cpp
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(457,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(713,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(721,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  systemclass.cpp
+  shadermanagerclass.cpp
+  positionclass.cpp
+  modelclass.cpp
+  main.cpp
+  lightshaderclass.cpp
+  lightclass.cpp
+  inputclass.cpp
+  graphicsclass.cpp
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(53,22): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(124,28): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(131,26): warning C4316: 'LightClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(145,37): warning C4316: 'LightClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(451,71): warning C4101: 'scalerMatrix': unreferenced local variable
+  depthshaderclass.cpp
+  DDSTextureLoader.cpp
   d3dclass.cpp
-  Engine.vcxproj -> C:\Users\u2266405\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe
+  cameraclass.cpp
+  bumpmodelclass.cpp
+  bumpmapshaderclass.cpp
+  Generating Code...
+bumpmapshaderclass.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  Engine.vcxproj -> C:\Users\Raees-Laptop\OneDrive - University of Huddersfield\Pictures\Uni\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe

@@ -165,8 +165,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the terrain object.
-	result = m_Terrain->Initialize(m_D3D->GetDevice(), "../Engine/data/Heightmap.bmp", "../Engine/data/Heightmap.bmp",
-		7.5f, L"../Engine/data/grass.dds", L"../Engine/data/grass_n.dds");
+	result = m_Terrain->Initialize(m_D3D->GetDevice(), "../Engine/data/HM.bmp", "../Engine/data/HMC.bmp",
+		20.0f, L"../Engine/data/grass.dds", L"../Engine/data/grass_n.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
@@ -454,7 +454,7 @@ bool GraphicsClass::Render()
 
 	static float rotation = 0.0f;
 
-	// Update the rotation variable each frame.
+	// Updatqqqqqqqe the rotation variable each frame.
 	rotation += (float)XM_PI * 0.0005f * m_Timer->GetTime();
 
 	// Clear the buffers to begin the scene.
@@ -480,8 +480,8 @@ bool GraphicsClass::Render()
 
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(1.0, 1.0, 1.0);
-	translateMatrix = XMMatrixTranslation(-500.0f, 0.0f, -500.0f);
+	worldMatrix = XMMatrixScaling(5.0, 7.5, 5.0);
+	translateMatrix = XMMatrixTranslation(-2550.0f, 0.0f, -2550.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	//Render the terrain model with the depth shader
@@ -497,7 +497,7 @@ bool GraphicsClass::Render()
 	m_Terrain->Render(m_D3D->GetDeviceContext());
 	result = m_TerrainShader->Render(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix,
 		projectionMatrix, m_Terrain->GetColorTexture(), m_Terrain->GetNormalTexture(), m_DirectionalLight->GetDiffuseColor(),
-		m_DirectionalLight->GetLookAt(), 10.0f);
+		m_DirectionalLight->GetLookAt(), 2.5f);
 	if (!result)
 	{
 		return false;
