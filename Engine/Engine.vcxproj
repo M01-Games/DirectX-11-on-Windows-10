@@ -30,6 +30,8 @@
     <ClInclude Include="textureclass.h" />
     <ClInclude Include="textureshaderclass.h" />
     <ClInclude Include="timerclass.h" />
+    <ClInclude Include="waterclass.h" />
+    <ClInclude Include="watershaderclass.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bumpmapshaderclass.cpp" />
@@ -52,6 +54,8 @@
     <ClCompile Include="textureclass.cpp" />
     <ClCompile Include="textureshaderclass.cpp" />
     <ClCompile Include="timerclass.cpp" />
+    <ClCompile Include="waterclass.cpp" />
+    <ClCompile Include="watershaderclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bumpmap.ps" />

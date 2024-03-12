@@ -17,6 +17,8 @@
 #include "lightclass.h"
 #include "terrainclass.h"
 #include "terrainshaderclass.h"
+#include "waterclass.h"
+#include "watershaderclass.h"
 #include "modelclass.h"
 #include "bumpmodelclass.h"
 
@@ -59,6 +61,8 @@ private:
 	LightClass* m_DirectionalLight;
 	TerrainClass* m_Terrain;
 	TerrainShaderClass* m_TerrainShader;
+	WaterClass* m_Water;
+	WaterShaderClass* m_WaterShader;
 	ModelClass* m_Model1;
 	ModelClass* m_Model2;
 	ModelClass* m_Model4;

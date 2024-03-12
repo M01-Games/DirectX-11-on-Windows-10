@@ -13,6 +13,8 @@ GraphicsClass::GraphicsClass()
 	m_DirectionalLight = 0;
 	m_Terrain = 0;
 	m_TerrainShader = 0;
+	m_Water = 0;
+	m_WaterShader = 0;
 	m_Model1 = 0;
 	m_Model2 = 0;
 	m_Model3 = 0;
@@ -173,6 +175,36 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 		return false;
 	}
 
+	//Create the water object.
+	m_Water = new WaterClass;
+	if (!m_Water)
+	{
+		return false;
+	}
+
+	//Initialize the water object.
+	result = m_Water->Initialize(m_D3D->GetDevice(), L"../Engine/data/waternormal.dds", 3.75f, 110.0f);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the water object.", L"Error", MB_OK);
+		return false;
+	}
+
+	//Create the water shader object.
+	m_WaterShader = new WaterShaderClass;
+	if (!m_WaterShader)
+	{
+		return false;
+	}
+
+	//Initialize the water shader object.
+	result = m_WaterShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the water shader object.", L"Error", MB_OK);
+		return false;
+	}
+
 	// Create the model object.
 	m_Model1 = new ModelClass;
 	if(!m_Model1)
@@ -285,6 +317,22 @@ void GraphicsClass::Shutdown()
 		m_Terrain = 0;
 	}
 
+	//Release the water shader object.
+	if (m_WaterShader)
+	{
+		m_WaterShader->Shutdown();
+		delete m_WaterShader;
+		m_WaterShader = 0;
+	}
+
+	//Release the water object.
+	if (m_Water)
+	{
+		m_Water->Shutdown();
+		delete m_Water;
+		m_Water = 0;
+	}
+
 	//Release the light object.
 	if (m_DirectionalLight)
 	{
@@ -361,6 +409,9 @@ bool GraphicsClass::Frame()
 	{
 		return false;
 	}
+
+	//Do the water frame processing
+	m_Water->Frame();
 
 	// Check if the user pressed escape and wants to exit the application.
 	if (m_Input->IsEscapePressed() == true)
@@ -449,7 +500,7 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 bool GraphicsClass::Render()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, translateMatrix, scalerMatrix,
-		lightViewMatrix, lightProjectionMatrix;
+		lightViewMatrix, lightProjectionMatrix, reflectionViewMatrix;
 	bool result;
 
 	static float rotation = 0.0f;
@@ -467,6 +518,16 @@ bool GraphicsClass::Render()
 	m_D3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
+
+
+	//Translate to the location of the water and render it
+	worldMatrix = XMMatrixTranslation(240.0f, m_Water->GetWaterHeight(), 250.0f);
+
+	m_Water->Render(m_D3D->GetDeviceContext());
+	m_WaterShader->Render(m_D3D->GetDeviceContext(), m_Water->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, reflectionViewMatrix,
+		m_RefractionTexture->GetShaderResourceView(), m_ReflectionTexture->GetShaderResourceView(), m_Water->GetTexture(),
+		m_Camera->GetPosition(), m_Water->GetNormalMapTiling(), m_Water->GetWaterTranslation(), m_Water->GetReflectRefractScale(),
+		m_Water->GetRefractionTint(), m_DirectionalLight->GetLookAt(), m_Water->GetSpecularShininess());
 
 	//Generate the light view matrix based on the light's position
 	m_DirectionalLight->GenerateViewMatrix();
