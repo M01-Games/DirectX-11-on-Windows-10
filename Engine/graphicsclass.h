@@ -19,6 +19,8 @@
 #include "terrainshaderclass.h"
 #include "waterclass.h"
 #include "watershaderclass.h"
+#include "reflectionshaderclass.h"
+#include "rendertextureclass.h"
 #include "modelclass.h"
 #include "bumpmodelclass.h"
 
@@ -63,6 +65,8 @@ private:
 	TerrainShaderClass* m_TerrainShader;
 	WaterClass* m_Water;
 	WaterShaderClass* m_WaterShader;
+	ReflectionShaderClass* m_ReflectionShader;
+	RenderTextureClass* m_RefractionTexture, * m_ReflectionTexture, * m_ShadowTexture;
 	ModelClass* m_Model1;
 	ModelClass* m_Model2;
 	ModelClass* m_Model4;

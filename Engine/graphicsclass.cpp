@@ -183,7 +183,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the water object.
-	result = m_Water->Initialize(m_D3D->GetDevice(), L"../Engine/data/waternormal.dds", 3.75f, 110.0f);
+	result = m_Water->Initialize(m_D3D->GetDevice(), L"../Engine/data/waternormal.dds", 0.4f, 110.0f);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the water object.", L"Error", MB_OK);
