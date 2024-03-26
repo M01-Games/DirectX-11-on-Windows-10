@@ -5,4 +5,5 @@ C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cp
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(133,12): warning C4316: 'LightClass': object allocated on the heap may not be aligned 16
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(147,23): warning C4316: 'LightClass': object allocated on the heap may not be aligned 16
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(502,71): warning C4101: 'scalerMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(503,43): warning C4101: 'reflectionViewMatrix': unreferenced local variable
   Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe

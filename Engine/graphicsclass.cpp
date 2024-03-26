@@ -168,7 +168,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 
 	//Initialize the terrain object.
 	result = m_Terrain->Initialize(m_D3D->GetDevice(), "../Engine/data/HM.bmp", "../Engine/data/HMC.bmp",
-		20.0f, L"../Engine/data/grass.dds", L"../Engine/data/grass_n.dds");
+		35.0f, L"../Engine/data/grass.dds", L"../Engine/data/grass_n.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
@@ -523,11 +523,11 @@ bool GraphicsClass::Render()
 	//Translate to the location of the water and render it
 	worldMatrix = XMMatrixTranslation(240.0f, m_Water->GetWaterHeight(), 250.0f);
 
-	m_Water->Render(m_D3D->GetDeviceContext());
-	m_WaterShader->Render(m_D3D->GetDeviceContext(), m_Water->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, reflectionViewMatrix,
-		m_RefractionTexture->GetShaderResourceView(), m_ReflectionTexture->GetShaderResourceView(), m_Water->GetTexture(),
-		m_Camera->GetPosition(), m_Water->GetNormalMapTiling(), m_Water->GetWaterTranslation(), m_Water->GetReflectRefractScale(),
-		m_Water->GetRefractionTint(), m_DirectionalLight->GetLookAt(), m_Water->GetSpecularShininess());
+	//m_Water->Render(m_D3D->GetDeviceContext());
+	//m_WaterShader->Render(m_D3D->GetDeviceContext(), m_Water->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, reflectionViewMatrix,
+	//	m_RefractionTexture->GetShaderResourceView(), m_ReflectionTexture->GetShaderResourceView(), m_Water->GetTexture(),
+	//	m_Camera->GetPosition(), m_Water->GetNormalMapTiling(), m_Water->GetWaterTranslation(), m_Water->GetReflectRefractScale(),
+	//	m_Water->GetRefractionTint(), m_DirectionalLight->GetLookAt(), m_Water->GetSpecularShininess());
 
 	//Generate the light view matrix based on the light's position
 	m_DirectionalLight->GenerateViewMatrix();

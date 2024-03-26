@@ -4,6 +4,7 @@
 #ifndef _TERRAINCLASS_H_
 #define _TERRAINCLASS_H_
 
+
 //////////////
 // INCLUDES //
 //////////////
@@ -11,12 +12,14 @@
 #include <DirectXMath.h>
 #include <stdio.h>
 
+
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
 #include "textureclass.h"
 
 using namespace DirectX;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: terrainclass
@@ -102,7 +105,7 @@ private:
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
 	TextureClass *m_ColorTexture, *m_NormalTexture;
 
-	float Heights[1152][1152]; //1135
+	float Heights[1152][1152]; //1135 terrains orignal size
 };
 
 #endif

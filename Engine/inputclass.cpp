@@ -254,7 +254,6 @@ void InputClass::GetMouseLocation(int& mouseX, int& mouseY)
 	return;
 }
 
-//Xu.03/12/2019
 int InputClass::GetMouseX()
 {
 	return m_mouseX;

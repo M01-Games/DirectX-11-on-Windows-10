@@ -104,12 +104,12 @@ void LightClass::GenerateViewMatrix()
 	XMFLOAT3 up;
 
 
-	//Setup the vector that points upwards.
+	// Setup the vector that points upwards.
 	up.x = 0.0f;
 	up.y = 1.0f;
 	up.z = 0.0f;
 
-	//Create the view matrix from the three vectors.
+	// Create the view matrix from the three vectors.
 	m_viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_lookAt), XMLoadFloat3(&up));
 
 	return;
@@ -121,11 +121,11 @@ void LightClass::GenerateProjectionMatrix(float screenDepth, float screenNear)
 	float fieldOfView, screenAspect;
 
 
-	//Setup field of view and screen aspect for a square light source.
+	// Setup field of view and screen aspect for a square light source.
 	fieldOfView = (float)XM_PI / 2.0f;
 	screenAspect = 1.0f;
 
-	//Create the projection matrix for the light.
+	// Create the projection matrix for the light.
 	m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 
 	return;

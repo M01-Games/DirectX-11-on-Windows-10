@@ -4,6 +4,7 @@
 #ifndef _TERRAINSHADERCLASS_H_
 #define _TERRAINSHADERCLASS_H_
 
+
 //////////////
 // INCLUDES //
 //////////////
@@ -14,6 +15,7 @@
 
 using namespace std;
 using namespace DirectX;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: terrainshaderclass
