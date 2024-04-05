@@ -14,6 +14,11 @@ D3DClass::D3DClass()
 	m_depthStencilState = 0;
 	m_depthStencilView = 0;
 	m_rasterState = 0;
+	m_rasterStateNoCulling = 0;
+	m_depthDisabledStencilState = 0;
+	m_alphaEnableBlendingState = 0;
+	m_alphaDisableBlendingState = 0;
+	m_alphaBlendState2 = 0;
 }
 
 
@@ -47,6 +52,8 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	D3D11_RASTERIZER_DESC rasterDesc;
 	D3D11_VIEWPORT viewport;
 	float fieldOfView, screenAspect;
+	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
+	D3D11_BLEND_DESC blendStateDescription;
 
 
 	// Store the vsync setting.
@@ -495,6 +502,57 @@ void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
 	return;
 }
 
+
+void D3DClass::TurnZBufferOn()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+	return;
+}
+
+
+void D3DClass::TurnZBufferOff()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
+	return;
+}
+
+
+void D3DClass::TurnOnAlphaBlending()
+{
+	float blendFactor[4];
+
+
+	//Setup the blend factor.
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	//Turn on the alpha blending.
+	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
+
+	return;
+}
+
+
+void D3DClass::TurnOffAlphaBlending()
+{
+	float blendFactor[4];
+
+
+	//Setup the blend factor.
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	//Turn off the alpha blending.
+	m_deviceContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
+
+	return;
+}
+
+
 void D3DClass::TurnOnCulling()
 {
 	//Set the culling rasterizer state.
@@ -512,15 +570,38 @@ void D3DClass::TurnOffCulling()
 	return;
 }
 
-void D3DClass::TurnZBufferOn()
+
+void D3DClass::SetBackBufferRenderTarget()
 {
-	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+	//Bind the render target view and depth stencil buffer to the output render pipeline.
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+
 	return;
 }
 
 
-void D3DClass::TurnZBufferOff()
+void D3DClass::ResetViewport()
 {
-	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
+	//Set the viewport.
+	m_deviceContext->RSSetViewports(1, &m_viewport);
+
+	return;
+}
+
+
+void D3DClass::EnableSecondBlendState()
+{
+	float blendFactor[4];
+
+
+	//Setup the blend factor.
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	//Turn on the alpha blending.
+	m_deviceContext->OMSetBlendState(m_alphaBlendState2, blendFactor, 0xffffffff);
+
 	return;
 }

@@ -52,8 +52,15 @@ public:
 
 	void TurnZBufferOn();
 	void TurnZBufferOff();
+	void TurnOnAlphaBlending();
+	void TurnOffAlphaBlending();
 	void TurnOnCulling();
 	void TurnOffCulling();
+
+	void SetBackBufferRenderTarget();
+	void ResetViewport();
+
+	void EnableSecondBlendState();
 
 private:
 	bool m_vsync_enabled;
@@ -72,6 +79,10 @@ private:
 	XMMATRIX m_worldMatrix;
 	XMMATRIX m_orthoMatrix;
 	ID3D11DepthStencilState* m_depthDisabledStencilState;
+	ID3D11BlendState* m_alphaEnableBlendingState;
+	ID3D11BlendState* m_alphaDisableBlendingState;
+	D3D11_VIEWPORT m_viewport;
+	ID3D11BlendState* m_alphaBlendState2;
 };
 
 #endif
