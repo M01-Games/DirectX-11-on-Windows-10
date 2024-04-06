@@ -14,17 +14,14 @@ C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cp
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(878,20): warning C4101: 'posZ': unreferenced local variable
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(878,14): warning C4101: 'posY': unreferenced local variable
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(878,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(877,64): warning C4101: 'translateMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(978,67): warning C4101: 'baseViewMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(993,20): warning C4101: 'posZ': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(993,14): warning C4101: 'posY': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(980,11): warning C4101: 'lightPosition': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(993,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(979,11): warning C4101: 'diffuseColor': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1247,64): warning C4101: 'translateMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1425,7): warning C4101: 'result': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1424,36): warning C4101: 'projectionMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1424,24): warning C4101: 'viewMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1424,11): warning C4101: 'worldMatrix': unreferenced local variable
-bumpmapshaderclass.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(984,67): warning C4101: 'baseViewMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(999,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(999,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(986,11): warning C4101: 'lightPosition': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(999,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(985,11): warning C4101: 'diffuseColor': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1453,7): warning C4101: 'result': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1452,36): warning C4101: 'projectionMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1452,24): warning C4101: 'viewMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1452,11): warning C4101: 'worldMatrix': unreferenced local variable
   Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe

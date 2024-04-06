@@ -318,8 +318,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the terrain object.
-	result = m_Terrain->Initialize(m_D3D->GetDevice(), "../Engine/data/HM.bmp", "../Engine/data/HMC.bmp",
-		35.0f, L"../Engine/data/grass.dds", L"../Engine/data/grass_n.dds");
+	result = m_Terrain->Initialize(m_D3D->GetDevice(), "../Engine/data/HM3.bmp", "../Engine/data/HMC.bmp",
+		12.5f, L"../Engine/data/grass.dds", L"../Engine/data/grass_n.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
@@ -334,7 +334,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the water object.
-	result = m_Water->Initialize(m_D3D->GetDevice(), L"../Engine/data/waternormal.dds", 0.4f, 110.0f);
+	result = m_Water->Initialize(m_D3D->GetDevice(), L"../Engine/data/waternormal.dds", 6.0f, 10000.0f);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the water object.", L"Error", MB_OK);
@@ -394,7 +394,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the sky plane object.
-	result = m_SkyPlane->Initialize(m_D3D->GetDevice(), L"../Engine/data/cloud001.dds", L"../Engine/data/perturb001.dds");
+	result = m_SkyPlane->Initialize(m_D3D->GetDevice(), L"../Engine/data/clouds1.dds", L"../Engine/data/perturb001.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the sky plane object.", L"Error", MB_OK);
@@ -895,6 +895,12 @@ bool GraphicsClass::RenderShadowToTexture()
 	m_DirectionalLight->GetViewMatrix(lightViewMatrix);
 	m_DirectionalLight->GetProjectionMatrix(lightProjectionMatrix);
 
+	//Setup the rotation and translation of the terrain
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(5.0, 7.5, 5.0);
+	translateMatrix = XMMatrixTranslation(-2550.0f, 0.0f, -2550.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
 	//Render the terrain model with the depth shader
 	m_Terrain->Render(m_D3D->GetDeviceContext());
 	result = m_ShaderManager->RenderDepthShader(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
@@ -1133,7 +1139,7 @@ bool GraphicsClass::Render()
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(2.5f, 2.5f, 2.5f);
-	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 100.0f);
+	translateMatrix = XMMatrixTranslation(-100.0f, 7.5f, 100.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.
@@ -1150,7 +1156,7 @@ bool GraphicsClass::Render()
 	// Setup the rotation and translation of the 2nd model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
-	translateMatrix = XMMatrixTranslation(10.0f, 0.0f, 0.0f);
+	translateMatrix = XMMatrixTranslation(-100.0f, 7.5f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the second model using the light shader.
@@ -1166,7 +1172,7 @@ bool GraphicsClass::Render()
 	// Setup the rotation and translation of the 3rd model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
-	translateMatrix = XMMatrixTranslation(-10.0f, 0.0f, 0.0f);
+	translateMatrix = XMMatrixTranslation(-10.0f, 7.5f, 0.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the third model using the bump map shader.
@@ -1205,7 +1211,7 @@ bool GraphicsClass::Render()
 void GraphicsClass::RenderRefractionToTexture()
 {
 	XMFLOAT4 clipPlane;
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, translateMatrix;
 
 
 	//Setup a clipping plane based on the height of the water to clip everything above it to create a refraction
@@ -1224,6 +1230,12 @@ void GraphicsClass::RenderRefractionToTexture()
 	m_D3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(5.0, 7.5, 5.0);
+	translateMatrix = XMMatrixTranslation(-2550.0f, 0.0f, -2550.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	//Render the terrain using the reflection shader and the refraction clip plane to produce the refraction effect
 	m_Terrain->Render(m_D3D->GetDeviceContext());
@@ -1284,6 +1296,9 @@ void GraphicsClass::RenderReflectionToTexture()
 	m_D3D->TurnOffCulling();
 	m_D3D->TurnZBufferOff();
 
+	//Setup the scaling of the sky dome
+	worldMatrix = XMMatrixScaling(500.0, 750.0, 500.0);
+
 	//Render the sky dome using the reflection view matrix
 	m_SkyDome->Render(m_D3D->GetDeviceContext());
 	m_SkyDomeShader->Render(m_D3D->GetDeviceContext(), m_SkyDome->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
@@ -1313,6 +1328,19 @@ void GraphicsClass::RenderReflectionToTexture()
 	m_ReflectionShader->Render(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
 		m_Terrain->GetColorTexture(), m_Terrain->GetNormalTexture(), m_DirectionalLight->GetDiffuseColor(), m_DirectionalLight->GetLookAt(), 2.0f,
 		clipPlane);
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(2.5f, 2.5f, 2.5f);
+	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 100.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	// Render the first model using the texture shader.
+	m_Model1->Render(m_D3D->GetDeviceContext());
+	m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
+		m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+
 
 	/*
 

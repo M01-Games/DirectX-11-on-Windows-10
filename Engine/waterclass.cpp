@@ -79,7 +79,7 @@ void WaterClass::Shutdown()
 void WaterClass::Frame()
 {
 	// Update the position of the water to simulate motion.
-	m_waterTranslation += 0.003f;
+	m_waterTranslation += 0.0003f;
 	if(m_waterTranslation > 1.0f)
 	{
 		m_waterTranslation -= 1.0f;
