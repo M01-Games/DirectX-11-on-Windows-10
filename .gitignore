@@ -2,3 +2,4 @@
 .vs/Engine/v17/ipch/AutoPCH/d9ce54c8f1549013/MAIN.ipch
 .vs/Engine/v17/ipch/AutoPCH/37d5c6f5135ea847/SYSTEMCLASS.ipch
 .vs/Engine/v17/ipch/AutoPCH/98c9e484d7eb800b/GRAPHICSCLASS.ipch
+*.ipch
