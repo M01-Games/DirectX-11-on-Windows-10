@@ -11,6 +11,7 @@ GraphicsClass::GraphicsClass()
 	m_Timer = 0;
 	m_Position = 0;
 	m_Camera = 0;
+	m_Light = 0;
 	m_DirectionalLight = 0;
 	m_Terrain = 0;
 	m_TerrainShader = 0;
@@ -29,6 +30,12 @@ GraphicsClass::GraphicsClass()
 	m_WaterShader = 0;
 	m_ShaderManager = 0;
 
+	m_PointLight1 = 0;
+	m_PointLight2 = 0;
+	m_PointLight3 = 0;
+	m_PointLight4 = 0;
+
+	m_ParticleSystem = 0;
 
 	m_Model1 = 0;
 	m_Model2 = 0;
@@ -57,7 +64,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	int videoMemory;
 
 	//Retrieve the video card information.
-	m_D3D->GetVideoCardInfo(videoCard, videoMemory);
+	//m_D3D->GetVideoCardInfo(videoCard, videoMemory);
 
 	// Create the input object.  The input object will be used to handle reading the keyboard and mouse input from the user.
 	m_Input = new InputClass;
@@ -153,6 +160,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	//Initialize the cpu object.
 	m_Cpu->Initialize();
 
+	/*
+
 	//Create the font shader object.
 	m_FontShader = new FontShaderClass;
 	if (!m_FontShader)
@@ -190,6 +199,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 		MessageBox(hwnd, L"Could not set video card info in the text object.", L"Error", MB_OK);
 		return false;
 	}
+
+	*/
 
 	//Create the render to texture object for water refraction.
 	m_RefractionTexture = new RenderTextureClass;
@@ -715,7 +726,6 @@ bool GraphicsClass::Frame()
 		return false;
 	}
 
-
 	//Do the water frame processing
 	m_Water->Frame();
 
@@ -723,7 +733,7 @@ bool GraphicsClass::Frame()
 	m_SkyPlane->Frame();
 
 	//Do the particle system frame processing.
-	m_ParticleSystem->Frame(m_Timer->GetTime(), m_D3D->GetDeviceContext());
+	//m_ParticleSystem->Frame(m_Timer->GetTime(), m_D3D->GetDeviceContext());
 
 	//Render the refraction of the scene to a texture
 	RenderRefractionToTexture();
@@ -741,6 +751,8 @@ bool GraphicsClass::Frame()
 		return false;
 	}
 
+	/*
+
 	//Update the FPS value in the text object
 	result = m_Text->SetFps(m_Fps->GetFps(), m_D3D->GetDeviceContext());
 	if (!result)
@@ -754,6 +766,8 @@ bool GraphicsClass::Frame()
 	{
 		return false;
 	}
+
+	*/
 
 	// Check if the user pressed escape and wants to exit the application.
 	if (m_Input->IsEscapePressed() == true)
@@ -777,6 +791,7 @@ bool GraphicsClass::Frame()
 
 	return true;
 }
+
 
 bool GraphicsClass::HandleMovementInput(float frameTime)
 {
@@ -835,6 +850,7 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 	m_Camera->SetPosition(posX, posY, posZ);
 	m_Camera->SetRotation(rotX, rotY, rotZ);
 
+	/*
 	
 	//Update the position values in the text object
 	result = m_Text->SetCameraPosition(posX, posY, posZ, m_D3D->GetDeviceContext());
@@ -849,148 +865,12 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 	{
 		return false;
 	}
-	
+
+	*/
 
 	return true;
 }
 
-
-bool GraphicsClass::Render()
-{
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, translateMatrix, scalerMatrix,
-		lightViewMatrix, lightProjectionMatrix, reflectionViewMatrix;
-	bool result;
-
-	static float rotation = 0.0f;
-
-	// Updatqqqqqqqe the rotation variable each frame.
-	rotation += (float)XM_PI * 0.0005f * m_Timer->GetTime();
-
-	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-
-	// Generate the view matrix based on the camera's position.
-	m_Camera->Render();
-
-	// Get the world, view, and projection matrices from the camera and d3d objects.
-	m_D3D->GetWorldMatrix(worldMatrix);
-	m_Camera->GetViewMatrix(viewMatrix);
-	m_D3D->GetProjectionMatrix(projectionMatrix);
-
-
-	//Translate to the location of the water and render it
-	worldMatrix = XMMatrixTranslation(240.0f, m_Water->GetWaterHeight(), 250.0f);
-
-	//m_Water->Render(m_D3D->GetDeviceContext());
-	//m_WaterShader->Render(m_D3D->GetDeviceContext(), m_Water->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, reflectionViewMatrix,
-	//	m_RefractionTexture->GetShaderResourceView(), m_ReflectionTexture->GetShaderResourceView(), m_Water->GetTexture(),
-	//	m_Camera->GetPosition(), m_Water->GetNormalMapTiling(), m_Water->GetWaterTranslation(), m_Water->GetReflectRefractScale(),
-	//	m_Water->GetRefractionTint(), m_DirectionalLight->GetLookAt(), m_Water->GetSpecularShininess());
-
-	//Generate the light view matrix based on the light's position
-	m_DirectionalLight->GenerateViewMatrix();
-
-	//Reset the world matrix
-	m_D3D->GetWorldMatrix(worldMatrix);
-
-	//Get the view and orthographic matrices from the light object
-	m_DirectionalLight->GetViewMatrix(lightViewMatrix);
-	m_DirectionalLight->GetProjectionMatrix(lightProjectionMatrix);
-
-	// Setup the rotation and translation of the 1st model.
-	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(5.0, 7.5, 5.0);
-	translateMatrix = XMMatrixTranslation(-2550.0f, 0.0f, -2550.0f);
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-	//Render the terrain model with the depth shader
-	m_Terrain->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderDepthShader(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix,
-		lightViewMatrix, lightProjectionMatrix);
-	if (!result)
-	{
-		return false;
-	}
-
-	//Render the terrain using the terrain shader
-	m_Terrain->Render(m_D3D->GetDeviceContext());
-	result = m_TerrainShader->Render(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix,
-		projectionMatrix, m_Terrain->GetColorTexture(), m_Terrain->GetNormalTexture(), m_DirectionalLight->GetDiffuseColor(),
-		m_DirectionalLight->GetLookAt(), 2.5f);
-	if (!result)
-	{
-		return false;
-	}
-
-	// Setup the rotation and translation of the 1st model.
-	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(2.5f, 2.5f, 2.5f);
-	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 100.0f);
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-
-	// Render the first model using the texture shader.
-	m_Model1->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
-		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
-	if(!result)
-	{
-		return false;
-	}
-
-	// Setup the rotation and translation of the 2nd model.
-	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
-	translateMatrix = XMMatrixTranslation(10.0f, 0.0f, 0.0f);
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-	// Render the second model using the light shader.
-	m_Model2->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model2->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
-		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
-	if(!result)
-	{
-		return false;
-	}
-
-	// Setup the rotation and translation of the 3rd model.
-	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
-	translateMatrix = XMMatrixTranslation(-10.0f, 0.0f, 0.0f);
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-	// Render the third model using the bump map shader.
-	m_Model3->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderBumpMapShader(m_D3D->GetDeviceContext(), m_Model3->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model3->GetColorTexture(), m_Model3->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(),
-		m_DirectionalLight->GetDiffuseColor());
-	if(!result)
-	{
-		return false;
-	}
-
-	// Setup the rotation and translation of the 4th model.
-	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f); //(20.0f, 20.0f, 20.0f);
-	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-	// Render the first model using the texture shader.
-	m_Model4->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderTextureShader(m_D3D->GetDeviceContext(), m_Model4->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model4->GetTexture());
-	if (!result)
-	{
-		return false;
-	}
-
-	// Present the rendered scene to the screen.
-	m_D3D->EndScene();
-
-	return true;
-}
 
 bool GraphicsClass::RenderShadowToTexture()
 {
@@ -1000,10 +880,10 @@ bool GraphicsClass::RenderShadowToTexture()
 
 
 	//Set the render target to be the render to texture
-	m_ShadowTexture->SetRenderTarget(m_D3D->GetDeviceContext());
+	//m_ShadowTexture->SetRenderTarget(m_D3D->GetDeviceContext());
 
 	//Clear the render to texture
-	m_ShadowTexture->ClearRenderTarget(m_D3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
+	//m_ShadowTexture->ClearRenderTarget(m_D3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Generate the light view matrix based on the light's position
 	m_DirectionalLight->GenerateViewMatrix();
@@ -1084,13 +964,243 @@ bool GraphicsClass::RenderShadowToTexture()
 	*/
 
 	//Reset the render target back to the original back buffer and not the render to texture anymore
-	m_D3D->SetBackBufferRenderTarget();
+	//m_D3D->SetBackBufferRenderTarget();
 
 	//Reset the viewport back to the original
 	m_D3D->ResetViewport();
 
 	return true;
 }
+
+
+bool GraphicsClass::Render()
+{
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix, baseViewMatrix, reflectionViewMatrix, translateMatrix, lightViewMatrix, lightProjectionMatrix;
+	XMFLOAT4 diffuseColor[4];
+	XMFLOAT4 lightPosition[4];
+	bool result;
+	XMFLOAT3 cameraPosition;
+
+	// Variables for the fire 
+	XMFLOAT3 scrollSpeeds, scales;
+	XMFLOAT2 distortion1, distortion2, distortion3;
+	float distortionScale, distortionBias;
+	static float frameTime = 0.0f;
+
+	// Glass variables
+	float glassRefractionScale;
+	float iceRefractionScale;
+	float posX, posY, posZ;
+
+	//Set the refraction scale for the glass and ice shader
+	glassRefractionScale = 0.01f;
+	iceRefractionScale = 0.1f;
+
+	//Increment the frame time counter
+	frameTime += 0.01f;
+	if (frameTime > 1000.0f)
+	{
+		frameTime = 0.0f;
+	}
+
+	//Set the three scrolling speeds for the three different noise textures
+	scrollSpeeds = XMFLOAT3(1.3f, 2.1f, 2.3f);
+
+	//Set the three scales which will be used to create the three different noise octave textures
+	scales = XMFLOAT3(1.0f, 2.0f, 3.0f);
+
+	//Set the three different x and y distortion factors for the three different noise textures
+	distortion1 = XMFLOAT2(0.1f, 0.2f);
+	distortion2 = XMFLOAT2(0.1f, 0.3f);
+	distortion3 = XMFLOAT2(0.1f, 0.1f);
+
+	//The the scale and bias of the texture coordinate sampling perturbation
+	distortionScale = 0.8f;
+	distortionBias = 0.5f;
+
+	//Update the rotation variable each frame
+	static float rotation;
+	rotation += (float)XM_PI * 0.0005f * m_Timer->GetTime();
+
+	/*
+
+	//Create the diffuse color array from the four light colors
+	diffuseColor[0] = m_PointLight1->GetDiffuseColor();
+	diffuseColor[1] = m_PointLight2->GetDiffuseColor();
+	diffuseColor[2] = m_PointLight3->GetDiffuseColor();
+	diffuseColor[3] = m_PointLight4->GetDiffuseColor();
+
+	//Create the light position array from the four light positions
+	lightPosition[0] = m_PointLight1->GetPosition();
+	lightPosition[1] = m_PointLight2->GetPosition();
+	lightPosition[2] = m_PointLight3->GetPosition();
+	lightPosition[3] = m_PointLight4->GetPosition();
+
+	*/
+
+	// Clear the buffers to begin the scene.
+	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+
+	//Generate the view matrix based on the camera's position
+	m_Camera->Render();
+
+	//Generate the reflection matrix based on the camera's position and the height of the water
+	m_Camera->RenderReflection(m_Water->GetWaterHeight());
+
+	//Get the world, view, projection, ortho, and base view matrices from the camera and Direct3D objects
+	m_D3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_D3D->GetProjectionMatrix(projectionMatrix);
+	m_D3D->GetOrthoMatrix(orthoMatrix);
+	m_Camera->GetReflectionViewMatrix(reflectionViewMatrix);
+
+	//Get the position of the camera
+	cameraPosition = m_Camera->GetPosition();
+
+	//Translate the sky dome to be centered around the camera position
+	worldMatrix = XMMatrixTranslation(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+	//Turn off back face culling and the Z buffer
+	m_D3D->TurnOffCulling();
+	m_D3D->TurnZBufferOff();
+
+	//Setup the scaling of the sky dome
+	worldMatrix = XMMatrixScaling(500.0, 750.0, 500.0);
+
+	//Render the sky dome using the sky dome shader
+	m_SkyDome->Render(m_D3D->GetDeviceContext());
+	m_SkyDomeShader->Render(m_D3D->GetDeviceContext(), m_SkyDome->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_SkyDome->GetApexColor(), m_SkyDome->GetCenterColor());
+
+	//Turn back face culling back on
+	m_D3D->TurnOnCulling();
+
+	//Enable additive blending so the clouds blend with the sky dome color
+	m_D3D->EnableSecondBlendState();
+
+	//Render the sky plane using the sky plane shader
+	m_SkyPlane->Render(m_D3D->GetDeviceContext());
+	m_SkyPlaneShader->Render(m_D3D->GetDeviceContext(), m_SkyPlane->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_SkyPlane->GetCloudTexture(), m_SkyPlane->GetPerturbTexture(), m_SkyPlane->GetTranslation(), m_SkyPlane->GetScale(),
+		m_SkyPlane->GetBrightness());
+
+	//Turn off blending
+	m_D3D->TurnOffAlphaBlending();
+
+	//Turn the Z buffer back on
+	m_D3D->TurnZBufferOn();
+
+	//Translate to the location of the water and render it
+	worldMatrix = XMMatrixTranslation(0.0f, m_Water->GetWaterHeight(), 0.0f);
+
+	m_Water->Render(m_D3D->GetDeviceContext());
+	m_WaterShader->Render(m_D3D->GetDeviceContext(), m_Water->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, reflectionViewMatrix,
+		m_RefractionTexture->GetShaderResourceView(), m_ReflectionTexture->GetShaderResourceView(), m_Water->GetTexture(),
+		m_Camera->GetPosition(), m_Water->GetNormalMapTiling(), m_Water->GetWaterTranslation(), m_Water->GetReflectRefractScale(),
+		m_Water->GetRefractionTint(), m_DirectionalLight->GetLookAt(), m_Water->GetSpecularShininess());
+
+
+	//Generate the light view matrix based on the light's position
+	m_DirectionalLight->GenerateViewMatrix();
+
+	//Get the world, view, and projection matrices from the camera and d3d objects
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_D3D->GetWorldMatrix(worldMatrix);
+	m_D3D->GetProjectionMatrix(projectionMatrix);
+
+	//Get the light's view and projection matrices from the light object
+	m_DirectionalLight->GetViewMatrix(lightViewMatrix);
+	m_DirectionalLight->GetProjectionMatrix(lightProjectionMatrix);
+
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(5.0, 7.5, 5.0);
+	translateMatrix = XMMatrixTranslation(-2550.0f, 0.0f, -2550.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	//Render the terrain using the terrain shader
+	m_Terrain->Render(m_D3D->GetDeviceContext());
+	result = m_TerrainShader->Render(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Terrain->GetColorTexture(), m_Terrain->GetNormalTexture(), m_DirectionalLight->GetDiffuseColor(),
+		m_DirectionalLight->GetLookAt(), 2.5f);
+	if (!result)
+	{
+		return false;
+	}
+
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(2.5f, 2.5f, 2.5f);
+	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 100.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	// Render the first model using the texture shader.
+	m_Model1->Render(m_D3D->GetDeviceContext());
+	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+	if(!result)
+	{
+		return false;
+	}
+
+
+	// Setup the rotation and translation of the 2nd model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
+	translateMatrix = XMMatrixTranslation(10.0f, 0.0f, 0.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	// Render the second model using the light shader.
+	m_Model2->Render(m_D3D->GetDeviceContext());
+	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model2->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+	if(!result)
+	{
+		return false;
+	}
+
+	// Setup the rotation and translation of the 3rd model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(0.25f, 0.25f, 0.25f);
+	translateMatrix = XMMatrixTranslation(-10.0f, 0.0f, 0.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	// Render the third model using the bump map shader.
+	m_Model3->Render(m_D3D->GetDeviceContext());
+	result = m_ShaderManager->RenderBumpMapShader(m_D3D->GetDeviceContext(), m_Model3->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model3->GetColorTexture(), m_Model3->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(),
+		m_DirectionalLight->GetDiffuseColor());
+	if(!result)
+	{
+		return false;
+	}
+
+	// Setup the rotation and translation of the 4th model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f); //(20.0f, 20.0f, 20.0f);
+	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	// Render the first model using the texture shader.
+	m_Model4->Render(m_D3D->GetDeviceContext());
+	result = m_ShaderManager->RenderTextureShader(m_D3D->GetDeviceContext(), m_Model4->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model4->GetTexture());
+	if (!result)
+	{
+		return false;
+	}
+	
+
+	// Present the rendered scene to the screen.
+	m_D3D->EndScene();
+
+	return true;
+}
+
 
 void GraphicsClass::RenderRefractionToTexture()
 {
@@ -1129,6 +1239,7 @@ void GraphicsClass::RenderRefractionToTexture()
 
 	return;
 }
+
 
 void GraphicsClass::RenderReflectionToTexture()
 {
@@ -1306,6 +1417,7 @@ void GraphicsClass::RenderReflectionToTexture()
 
 	return;
 }
+
 
 bool GraphicsClass::RenderGlassRefractionToTexture()
 {

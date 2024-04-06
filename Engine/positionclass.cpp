@@ -378,10 +378,10 @@ void PositionClass::LookUpward(bool keydown)
 	// Update the rotation.
 	m_rotationX -= m_lookUpSpeed;
 
-	// Keep the rotation in the 0 to 360 range.
-	if (m_rotationX < 0.0f)
+	//Keep the rotation maximum 90 degrees.
+	if (m_rotationX > 90.0f)
 	{
-		m_rotationX += 360.0f;
+		m_rotationX = 90.0f;
 	}
 
 	return;
@@ -413,10 +413,10 @@ void PositionClass::LookDownward(bool keydown)
 	// Update the rotation.
 	m_rotationX += m_lookDownSpeed;
 
-	// Keep the rotation in the 0 to 360 range.
-	if (m_rotationX > 360.0f)
+	//Keep the rotation maximum 90 degrees.
+	if (m_rotationX < -90.0f)
 	{
-		m_rotationX -= 360.0f;
+		m_rotationX = -90.0f;
 	}
 
 	return;
@@ -425,8 +425,8 @@ void PositionClass::LookDownward(bool keydown)
 void PositionClass::MouseRotate(int mouseX, int mouseY)
 {
 
-	if ((m_rotationX + mouseY) > 360) m_rotationX = 0;
-	else if ((m_rotationX + mouseY) < -360) m_rotationX = 0;
+	if ((m_rotationX + mouseY) > 75) m_rotationX = 75;
+	else if ((m_rotationX + mouseY) < -75) m_rotationX = -75;
 	else m_rotationX += mouseY;
 
 	m_rotationY += mouseX;
