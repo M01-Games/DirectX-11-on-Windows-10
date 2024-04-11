@@ -334,7 +334,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the water object.
-	result = m_Water->Initialize(m_D3D->GetDevice(), L"../Engine/data/waternormal.dds", 6.0f, 10000.0f);
+	result = m_Water->Initialize(m_D3D->GetDevice(), L"../Engine/data/waternormal.dds", 6.0f, 1000.0f);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the water object.", L"Error", MB_OK);
@@ -394,7 +394,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the sky plane object.
-	result = m_SkyPlane->Initialize(m_D3D->GetDevice(), L"../Engine/data/clouds1.dds", L"../Engine/data/perturb001.dds");
+	result = m_SkyPlane->Initialize(m_D3D->GetDevice(), L"../Engine/data/clouds.dds", L"../Engine/data/perturb001.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the sky plane object.", L"Error", MB_OK);
@@ -1144,7 +1144,7 @@ bool GraphicsClass::Render()
 
 	// Render the first model using the texture shader.
 	m_Model1->Render(m_D3D->GetDeviceContext());
-	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+	result = m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
 		m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
 		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
 	if(!result)
@@ -1302,7 +1302,7 @@ void GraphicsClass::RenderReflectionToTexture()
 	//Render the sky dome using the reflection view matrix
 	m_SkyDome->Render(m_D3D->GetDeviceContext());
 	m_SkyDomeShader->Render(m_D3D->GetDeviceContext(), m_SkyDome->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
-		m_SkyDome->GetApexColor(), m_SkyDome->GetCenterColor());
+							m_SkyDome->GetApexColor(), m_SkyDome->GetCenterColor());
 
 	//Enable back face culling
 	m_D3D->TurnOnCulling();
@@ -1313,8 +1313,8 @@ void GraphicsClass::RenderReflectionToTexture()
 	//Render the sky plane using the sky plane shader
 	m_SkyPlane->Render(m_D3D->GetDeviceContext());
 	m_SkyPlaneShader->Render(m_D3D->GetDeviceContext(), m_SkyPlane->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
-		m_SkyPlane->GetCloudTexture(), m_SkyPlane->GetPerturbTexture(), m_SkyPlane->GetTranslation(), m_SkyPlane->GetScale(),
-		m_SkyPlane->GetBrightness());
+							m_SkyPlane->GetCloudTexture(), m_SkyPlane->GetPerturbTexture(), m_SkyPlane->GetTranslation(), m_SkyPlane->GetScale(),
+							m_SkyPlane->GetBrightness());
 
 	//Turn off blending and enable the Z buffer again
 	m_D3D->TurnOffAlphaBlending();
@@ -1326,20 +1326,21 @@ void GraphicsClass::RenderReflectionToTexture()
 	//Render the terrain using the reflection view matrix and reflection clip plane
 	m_Terrain->Render(m_D3D->GetDeviceContext());
 	m_ReflectionShader->Render(m_D3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
-		m_Terrain->GetColorTexture(), m_Terrain->GetNormalTexture(), m_DirectionalLight->GetDiffuseColor(), m_DirectionalLight->GetLookAt(), 2.0f,
-		clipPlane);
+							   m_Terrain->GetColorTexture(), m_Terrain->GetNormalTexture(), m_DirectionalLight->GetDiffuseColor(), m_DirectionalLight->GetLookAt(), 2.0f,
+							   clipPlane);
 
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(2.5f, 2.5f, 2.5f);
-	translateMatrix = XMMatrixTranslation(0.0f, 0.0f, 100.0f);
+	worldMatrix = XMMatrixScaling(2.5f, 2.7f, 2.5f);
+	translateMatrix = XMMatrixTranslation(-100.0f, -5.0f, 100.0f);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.
 	m_Model1->Render(m_D3D->GetDeviceContext());
-	m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
+	m_ShaderManager->RenderLightShader(m_D3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
 		m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
 		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+
 
 
 	/*

@@ -39,7 +39,7 @@ bool SkyPlaneClass::Initialize(ID3D11Device* device, WCHAR* cloudTextureFilename
 	textureRepeat = 2;
 
 	// Set the sky plane shader related parameters.
-	m_scale = 0.5f;
+	m_scale = 0.2f;
 	m_brightness = 0.75f;
 
 	// Initialize the translation to zero.
