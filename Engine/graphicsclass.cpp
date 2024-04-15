@@ -60,8 +60,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	bool result;
 
 	XMMATRIX baseViewMatrix;
-	char videoCard[128];
-	int videoMemory;
+	char videoCard[128] = "NVIDIA GeForce RTX 3060";
+	int videoMemory = 8192;
 
 	//Retrieve the video card information.
 	//m_D3D->GetVideoCardInfo(videoCard, videoMemory);
@@ -160,8 +160,6 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	//Initialize the cpu object.
 	m_Cpu->Initialize();
 
-	/*
-
 	//Create the font shader object.
 	m_FontShader = new FontShaderClass;
 	if (!m_FontShader)
@@ -199,8 +197,6 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 		MessageBox(hwnd, L"Could not set video card info in the text object.", L"Error", MB_OK);
 		return false;
 	}
-
-	*/
 
 	//Create the render to texture object for water refraction.
 	m_RefractionTexture = new RenderTextureClass;
@@ -751,8 +747,6 @@ bool GraphicsClass::Frame()
 		return false;
 	}
 
-	/*
-
 	//Update the FPS value in the text object
 	result = m_Text->SetFps(m_Fps->GetFps(), m_D3D->GetDeviceContext());
 	if (!result)
@@ -766,8 +760,6 @@ bool GraphicsClass::Frame()
 	{
 		return false;
 	}
-
-	*/
 
 	// Check if the user pressed escape and wants to exit the application.
 	if (m_Input->IsEscapePressed() == true)
@@ -849,8 +841,6 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 	// Set the position of the camera.
 	m_Camera->SetPosition(posX, posY, posZ);
 	m_Camera->SetRotation(rotX, rotY, rotZ);
-
-	/*
 	
 	//Update the position values in the text object
 	result = m_Text->SetCameraPosition(posX, posY, posZ, m_D3D->GetDeviceContext());
@@ -865,8 +855,6 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 	{
 		return false;
 	}
-
-	*/
 
 	return true;
 }
@@ -1199,7 +1187,27 @@ bool GraphicsClass::Render()
 	{
 		return false;
 	}
+
+	//Turn off the Z buffer to begin all 2D rendering
+	m_D3D->TurnZBufferOff();
+
+	//Turn on the alpha blending before rendering the text
+	m_D3D->TurnOnAlphaBlending();
+
+	m_D3D->GetWorldMatrix(worldMatrix);
 	
+	//Render the text user interface elements
+	result = m_Text->Render(m_D3D->GetDeviceContext(), m_FontShader, worldMatrix, orthoMatrix);
+	if (!result)
+	{
+		return false;
+	}
+
+	//Turn off alpha blending after rendering the text
+	m_D3D->TurnOffAlphaBlending();
+
+	//Turn the Z buffer back on now that all 2D rendering has completed
+	m_D3D->TurnZBufferOn();
 
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
