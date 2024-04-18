@@ -1,6 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: terrainclass.cpp
-////////////////////////////////////////////////////////////////////////////////
+//Filename: terrainclass.cpp
+
 #include "terrainclass.h"
 
 
@@ -31,55 +30,55 @@ bool TerrainClass::Initialize(ID3D11Device* device, char* heightMapFilename, cha
 	bool result;
 
 
-	// Load in the height map for the terrain.
+	//Load in the height map for the terrain.
 	result = LoadHeightMap(heightMapFilename);
 	if(!result)
 	{
 		return false;
 	}
 
-	// Load in the color map for the terrain.
+	//Load in the color map for the terrain.
 	result = LoadColorMap(colorMapFilename);
 	if(!result)
 	{
 		return false;
 	}
 
-	// Reduce the height of the height map.
+	//Reduce the height of the height map.
 	ReduceHeightMap(flattenAmount);
 
-	// Calculate the normals for the terrain data.
+	//Calculate the normals for the terrain data.
 	result = CalculateNormals();
 	if(!result)
 	{
 		return false;
 	}
 
-	// Construct a 3D model from the height map and normal data.
+	//Construct a 3D model from the height map and normal data.
 	result = BuildModel();
 	if(!result)
 	{
 		return false;
 	}
 
-	// Calculate the normal, tangent, and binormal vectors for the terrain model.
+	//Calculate the normal, tangent, and binormal vectors for the terrain model.
 	CalculateModelVectors();
 
-	// Initialize the vertex and index buffer that hold the geometry for the terrain.
+	//Initialize the vertex and index buffer that hold the geometry for the terrain.
 	result = InitializeBuffers(device);
 	if(!result)
 	{
 		return false;
 	}
 
-	// Load the textures.
+	//Load the textures.
 	result = LoadTextures(device, colorTextureFilename, normalTextureFilename);
 	if(!result)
 	{
 		return false;
 	}
 
-	// Release the height map and the model since the data is now loaded into the vertex and index buffers.
+	//Release the height map and the model since the data is now loaded into the vertex and index buffers.
 	ReleaseHeightMap();
 	ReleaseModel();
 
@@ -89,16 +88,16 @@ bool TerrainClass::Initialize(ID3D11Device* device, char* heightMapFilename, cha
 
 void TerrainClass::Shutdown()
 {
-	// Release the textures.
+	//Release the textures.
 	ReleaseTextures();
 
-	// Release the buffers.
+	//Release the buffers.
 	ReleaseBuffers();
 
-	// Release the model.
+	//Release the model.
 	ReleaseModel();
 
-	// Release the height map.
+	//Release the height map.
 	ReleaseHeightMap();
 
 	return;
@@ -107,7 +106,7 @@ void TerrainClass::Shutdown()
 
 void TerrainClass::Render(ID3D11DeviceContext* deviceContext)
 {
-	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	//Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
 
 	return;
@@ -144,69 +143,69 @@ bool TerrainClass::LoadHeightMap(char* filename)
 	unsigned char height;
 
 
-	// Open the height map file in binary.
+	//Open the height map file in binary.
 	error = fopen_s(&filePtr, filename, "rb");
 	if(error != 0)
 	{
 		return false;
 	}
 
-	// Read in the file header.
+	//Read in the file header.
 	count = fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1, filePtr);
 	if(count != 1)
 	{
 		return false;
 	}
 
-	// Read in the bitmap info header.
+	//Read in the bitmap info header.
 	count = fread(&bitmapInfoHeader, sizeof(BITMAPINFOHEADER), 1, filePtr);
 	if(count != 1)
 	{
 		return false;
 	}
 
-	// Save the dimensions of the terrain.
+	//Save the dimensions of the terrain.
 	m_terrainWidth = bitmapInfoHeader.biWidth;
 	m_terrainHeight = bitmapInfoHeader.biHeight;
 
-	// Calculate the size of the bitmap image data.
+	//Calculate the size of the bitmap image data.
 	imageSize = m_terrainWidth * m_terrainHeight * 3;
 
-	// Allocate memory for the bitmap image data.
+	//Allocate memory for the bitmap image data.
 	bitmapImage = new unsigned char[imageSize];
 	if(!bitmapImage)
 	{
 		return false;
 	}
 
-	// Move to the beginning of the bitmap data.
+	//Move to the beginning of the bitmap data.
 	fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
 
-	// Read in the bitmap image data.
+	//Read in the bitmap image data.
 	count = fread(bitmapImage, 1, imageSize, filePtr);
 	if(count != imageSize)
 	{
 		return false;
 	}
 
-	// Close the file.
+	//Close the file.
 	error = fclose(filePtr);
 	if(error != 0)
 	{
 		return false;
 	}
 
-	// Create the structure to hold the height map data.
+	//Create the structure to hold the height map data.
 	m_heightMap = new HeightMapType[m_terrainWidth * m_terrainHeight];
 	if(!m_heightMap)
 	{
 		return false;
 	}
 
-	// Initialize the position in the image data buffer.
+	//Initialize the position in the image data buffer.
 	k=0;
 
-	// Read the image data into the height map.
+	//Read the image data into the height map.
 	for(j=0; j<m_terrainHeight; j++)
 	{
 		for(i=0; i<m_terrainWidth; i++)
@@ -223,7 +222,7 @@ bool TerrainClass::LoadHeightMap(char* filename)
 		}
 	}
 
-	// Release the bitmap image data.
+	//Release the bitmap image data.
 	delete [] bitmapImage;
 	bitmapImage = 0;
 
@@ -241,64 +240,64 @@ bool TerrainClass::LoadColorMap(char* filename)
 	unsigned char* bitmapImage;
 
 
-	// Open the color map file in binary.
+	//Open the color map file in binary.
 	error = fopen_s(&filePtr, filename, "rb");
 	if(error != 0)
 	{
 		return false;
 	}
 
-	// Read in the file header.
+	//Read in the file header.
 	count = fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1, filePtr);
 	if(count != 1)
 	{
 		return false;
 	}
 
-	// Read in the bitmap info header.
+	//Read in the bitmap info header.
 	count = fread(&bitmapInfoHeader, sizeof(BITMAPINFOHEADER), 1, filePtr);
 	if(count != 1)
 	{
 		return false;
 	}
 
-	// Make sure the color map dimensions are the same as the terrain dimensions for easy 1 to 1 mapping.
+	//Make sure the color map dimensions are the same as the terrain dimensions for easy 1 to 1 mapping.
 	if((bitmapInfoHeader.biWidth != m_terrainWidth) || (bitmapInfoHeader.biHeight != m_terrainHeight))
 	{
 		return false;
 	}
 
-	// Calculate the size of the bitmap image data.
+	//Calculate the size of the bitmap image data.
 	imageSize = m_terrainWidth * m_terrainHeight * 3;
 
-	// Allocate memory for the bitmap image data.
+	//Allocate memory for the bitmap image data.
 	bitmapImage = new unsigned char[imageSize];
 	if(!bitmapImage)
 	{
 		return false;
 	}
 
-	// Move to the beginning of the bitmap data.
+	//Move to the beginning of the bitmap data.
 	fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
 
-	// Read in the bitmap image data.
+	//Read in the bitmap image data.
 	count = fread(bitmapImage, 1, imageSize, filePtr);
 	if(count != imageSize)
 	{
 		return false;
 	}
 
-	// Close the file.
+	//Close the file.
 	error = fclose(filePtr);
 	if(error != 0)
 	{
 		return false;
 	}
 
-	// Initialize the position in the image data buffer.
+	//Initialize the position in the image data buffer.
 	k=0;
 
-	// Read the image data into the color map portion of the height map structure.
+	//Read the image data into the color map portion of the height map structure.
 	for(j=0; j<m_terrainHeight; j++)
 	{
 		for(i=0; i<m_terrainWidth; i++)
@@ -313,7 +312,7 @@ bool TerrainClass::LoadColorMap(char* filename)
 		}
 	}
 
-	// Release the bitmap image data.
+	//Release the bitmap image data.
 	delete [] bitmapImage;
 	bitmapImage = 0;
 
@@ -345,14 +344,14 @@ bool TerrainClass::CalculateNormals()
 	VectorType* normals;
 
 
-	// Create a temporary array to hold the un-normalized normal vectors.
+	//Create a temporary array to hold the un-normalized normal vectors.
 	normals = new VectorType[(m_terrainHeight-1) * (m_terrainWidth-1)];
 	if(!normals)
 	{
 		return false;
 	}
 
-	// Go through all the faces in the mesh and calculate their normals.
+	//Go through all the faces in the mesh and calculate their normals.
 	for(j=0; j<(m_terrainHeight-1); j++)
 	{
 		for(i=0; i<(m_terrainWidth-1); i++)
@@ -361,7 +360,7 @@ bool TerrainClass::CalculateNormals()
 			index2 = (j * m_terrainWidth) + (i+1);
 			index3 = ((j+1) * m_terrainWidth) + i;
 
-			// Get three vertices from the face.
+			//Get three vertices from the face.
 			vertex1[0] = m_heightMap[index1].x;
 			vertex1[1] = m_heightMap[index1].y;
 			vertex1[2] = m_heightMap[index1].z;
@@ -374,7 +373,7 @@ bool TerrainClass::CalculateNormals()
 			vertex3[1] = m_heightMap[index3].y;
 			vertex3[2] = m_heightMap[index3].z;
 
-			// Calculate the two vectors for this face.
+			//Calculate the two vectors for this face.
 			vector1[0] = vertex1[0] - vertex3[0];
 			vector1[1] = vertex1[1] - vertex3[1];
 			vector1[2] = vertex1[2] - vertex3[2];
@@ -384,27 +383,27 @@ bool TerrainClass::CalculateNormals()
 
 			index = (j * (m_terrainWidth-1)) + i;
 
-			// Calculate the cross product of those two vectors to get the un-normalized value for this face normal.
+			//Calculate the cross product of those two vectors to get the un-normalized value for this face normal.
 			normals[index].x = (vector1[1] * vector2[2]) - (vector1[2] * vector2[1]);
 			normals[index].y = (vector1[2] * vector2[0]) - (vector1[0] * vector2[2]);
 			normals[index].z = (vector1[0] * vector2[1]) - (vector1[1] * vector2[0]);
 		}
 	}
 
-	// Now go through all the vertices and take an average of each face normal that the vertex touches to get the averaged normal for that vertex.
+	//Now go through all the vertices and take an average of each face normal that the vertex touches to get the averaged normal for that vertex.
 	for(j=0; j<m_terrainHeight; j++)
 	{
 		for(i=0; i<m_terrainWidth; i++)
 		{
-			// Initialize the sum.
+			//Initialize the sum.
 			sum[0] = 0.0f;
 			sum[1] = 0.0f;
 			sum[2] = 0.0f;
 
-			// Initialize the count.
+			//Initialize the count.
 			count = 0;
 
-			// Bottom left face.
+			//Bottom left face.
 			if(((i-1) >= 0) && ((j-1) >= 0))
 			{
 				index = ((j-1) * (m_terrainWidth-1)) + (i-1);
@@ -415,7 +414,7 @@ bool TerrainClass::CalculateNormals()
 				count++;
 			}
 
-			// Bottom right face.
+			//Bottom right face.
 			if((i < (m_terrainWidth-1)) && ((j-1) >= 0))
 			{
 				index = ((j-1) * (m_terrainWidth-1)) + i;
@@ -426,7 +425,7 @@ bool TerrainClass::CalculateNormals()
 				count++;
 			}
 
-			// Upper left face.
+			//Upper left face.
 			if(((i-1) >= 0) && (j < (m_terrainHeight-1)))
 			{
 				index = (j * (m_terrainWidth-1)) + (i-1);
@@ -437,7 +436,7 @@ bool TerrainClass::CalculateNormals()
 				count++;
 			}
 
-			// Upper right face.
+			//Upper right face.
 			if((i < (m_terrainWidth-1)) && (j < (m_terrainHeight-1)))
 			{
 				index = (j * (m_terrainWidth-1)) + i;
@@ -448,25 +447,25 @@ bool TerrainClass::CalculateNormals()
 				count++;
 			}
 			
-			// Take the average of the faces touching this vertex.
+			//Take the average of the faces touching this vertex.
 			sum[0] = (sum[0] / (float)count);
 			sum[1] = (sum[1] / (float)count);
 			sum[2] = (sum[2] / (float)count);
 
-			// Calculate the length of this normal.
+			//Calculate the length of this normal.
 			length = sqrt((sum[0] * sum[0]) + (sum[1] * sum[1]) + (sum[2] * sum[2]));
 			
-			// Get an index to the vertex location in the height map array.
+			//Get an index to the vertex location in the height map array.
 			index = (j * m_terrainWidth) + i;
 
-			// Normalize the final shared normal for this vertex and store it in the height map array.
+			//Normalize the final shared normal for this vertex and store it in the height map array.
 			m_heightMap[index].nx = (sum[0] / length);
 			m_heightMap[index].ny = (sum[1] / length);
 			m_heightMap[index].nz = (sum[2] / length);
 		}
 	}
 
-	// Release the temporary normals.
+	//Release the temporary normals.
 	delete [] normals;
 	normals = 0;
 
@@ -479,17 +478,17 @@ bool TerrainClass::BuildModel()
 	int i, j, index, index1, index2, index3, index4;
 
 
-	// Set the number of vertices in the model.
+	//Set the number of vertices in the model.
 	m_vertexCount = (m_terrainWidth - 1) * (m_terrainHeight - 1) * 6;
 
-	// Create the terrain model array.
+	//Create the terrain model array.
 	m_model = new ModelType[m_vertexCount];
 	if(!m_model)
 	{
 		return false;
 	}
 
-	// Load the terrain model with the height map terrain data.
+	//Load the terrain model with the height map terrain data.
 	index = 0;
 
 	for(j=0; j<(m_terrainHeight-1); j++)
@@ -497,12 +496,12 @@ bool TerrainClass::BuildModel()
 		for(i=0; i<(m_terrainWidth-1); i++)
 		{
 
-			index1 = (m_terrainWidth * j) + i;          // Bottom left.
-			index2 = (m_terrainWidth * j) + (i+1);      // Bottom right.
-			index3 = (m_terrainWidth * (j+1)) + i;      // Upper left.
-			index4 = (m_terrainWidth * (j+1)) + (i+1);  // Upper right.
+			index1 = (m_terrainWidth * j) + i;          //Bottom left.
+			index2 = (m_terrainWidth * j) + (i+1);      //Bottom right.
+			index3 = (m_terrainWidth * (j+1)) + i;      //Upper left.
+			index4 = (m_terrainWidth * (j+1)) + (i+1);  //Upper right.
 
-			// Upper left.
+			//Upper left.
 			m_model[index].x  = m_heightMap[index3].x;
 			m_model[index].y  = m_heightMap[index3].y;
 			m_model[index].z  = m_heightMap[index3].z;
@@ -519,7 +518,7 @@ bool TerrainClass::BuildModel()
 			m_model[index].b = m_heightMap[index3].b;
 			index++;
 
-			// Upper right.
+			//Upper right.
 			m_model[index].x  = m_heightMap[index4].x;
 			m_model[index].y  = m_heightMap[index4].y;
 			m_model[index].z  = m_heightMap[index4].z;
@@ -533,7 +532,7 @@ bool TerrainClass::BuildModel()
 			m_model[index].b = m_heightMap[index4].b;
 			index++;
 
-			// Bottom left.
+			//Bottom left.
 			m_model[index].x  = m_heightMap[index1].x;
 			m_model[index].y  = m_heightMap[index1].y;
 			m_model[index].z  = m_heightMap[index1].z;
@@ -547,7 +546,7 @@ bool TerrainClass::BuildModel()
 			m_model[index].b = m_heightMap[index1].b;
 			index++;
 
-			// Bottom left.
+			//Bottom left.
 			m_model[index].x  = m_heightMap[index1].x;
 			m_model[index].y  = m_heightMap[index1].y;
 			m_model[index].z  = m_heightMap[index1].z;
@@ -561,7 +560,7 @@ bool TerrainClass::BuildModel()
 			m_model[index].b = m_heightMap[index1].b;
 			index++;
 
-			// Upper right.
+			//Upper right.
 			m_model[index].x  = m_heightMap[index4].x;
 			m_model[index].y  = m_heightMap[index4].y;
 			m_model[index].z  = m_heightMap[index4].z;
@@ -575,7 +574,7 @@ bool TerrainClass::BuildModel()
 			m_model[index].b = m_heightMap[index4].b;
 			index++;
 
-			// Bottom right.
+			//Bottom right.
 			m_model[index].x  = m_heightMap[index2].x;
 			m_model[index].y  = m_heightMap[index2].y;
 			m_model[index].z  = m_heightMap[index2].z;
@@ -602,16 +601,16 @@ void TerrainClass::CalculateModelVectors()
 	VectorType tangent, binormal;
 
 
-	// Calculate the number of faces in the terrain model.
+	//Calculate the number of faces in the terrain model.
 	faceCount = m_vertexCount / 3;
 
-	// Initialize the index to the model data.
+	//Initialize the index to the model data.
 	index = 0;
 
-	// Go through all the faces and calculate the the tangent, binormal, and normal vectors.
+	//Go through all the faces and calculate the the tangent, binormal, and normal vectors.
 	for(i=0; i<faceCount; i++)
 	{
-		// Get the three vertices for this face from the terrain model.
+		//Get the three vertices for this face from the terrain model.
 		vertex1.x  = m_model[index].x;
 		vertex1.y  = m_model[index].y;
 		vertex1.z  = m_model[index].z;
@@ -642,10 +641,10 @@ void TerrainClass::CalculateModelVectors()
 		vertex3.nz = m_model[index].nz;
 		index++;
 
-		// Calculate the tangent and binormal of that face.
+		//Calculate the tangent and binormal of that face.
 		CalculateTangentBinormal(vertex1, vertex2, vertex3, tangent, binormal);
 
-		// Store the tangent and binormal for this face back in the model structure.
+		//Store the tangent and binormal for this face back in the model structure.
 		m_model[index-1].tx = tangent.x;
 		m_model[index-1].ty = tangent.y;
 		m_model[index-1].tz = tangent.z;
@@ -681,7 +680,7 @@ void TerrainClass::CalculateTangentBinormal(TempVertexType vertex1, TempVertexTy
 	float length;
 
 
-	// Calculate the two vectors for this face.
+	//Calculate the two vectors for this face.
 	vector1[0] = vertex2.x - vertex1.x;
 	vector1[1] = vertex2.y - vertex1.y;
 	vector1[2] = vertex2.z - vertex1.z;
@@ -690,17 +689,17 @@ void TerrainClass::CalculateTangentBinormal(TempVertexType vertex1, TempVertexTy
 	vector2[1] = vertex3.y - vertex1.y;
 	vector2[2] = vertex3.z - vertex1.z;
 
-	// Calculate the tu and tv texture space vectors.
+	//Calculate the tu and tv texture space vectors.
 	tuVector[0] = vertex2.tu - vertex1.tu;
 	tvVector[0] = vertex2.tv - vertex1.tv;
 
 	tuVector[1] = vertex3.tu - vertex1.tu;
 	tvVector[1] = vertex3.tv - vertex1.tv;
 
-	// Calculate the denominator of the tangent/binormal equation.
+	//Calculate the denominator of the tangent/binormal equation.
 	den = 1.0f / (tuVector[0] * tvVector[1] - tuVector[1] * tvVector[0]);
 
-	// Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
+	//Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
 	tangent.x = (tvVector[1] * vector1[0] - tvVector[0] * vector2[0]) * den;
 	tangent.y = (tvVector[1] * vector1[1] - tvVector[0] * vector2[1]) * den;
 	tangent.z = (tvVector[1] * vector1[2] - tvVector[0] * vector2[2]) * den;
@@ -709,18 +708,18 @@ void TerrainClass::CalculateTangentBinormal(TempVertexType vertex1, TempVertexTy
 	binormal.y = (tuVector[0] * vector2[1] - tuVector[1] * vector1[1]) * den;
 	binormal.z = (tuVector[0] * vector2[2] - tuVector[1] * vector1[2]) * den;
 
-	// Calculate the length of this normal.
+	//Calculate the length of this normal.
 	length = sqrt((tangent.x * tangent.x) + (tangent.y * tangent.y) + (tangent.z * tangent.z));
 			
-	// Normalize the normal and then store it
+	//Normalize the normal and then store it
 	tangent.x = tangent.x / length;
 	tangent.y = tangent.y / length;
 	tangent.z = tangent.z / length;
 
-	// Calculate the length of this normal.
+	//Calculate the length of this normal.
 	length = sqrt((binormal.x * binormal.x) + (binormal.y * binormal.y) + (binormal.z * binormal.z));
 			
-	// Normalize the normal and then store it
+	//Normalize the normal and then store it
 	binormal.x = binormal.x / length;
 	binormal.y = binormal.y / length;
 	binormal.z = binormal.z / length;
@@ -739,24 +738,24 @@ bool TerrainClass::InitializeBuffers(ID3D11Device* device)
 	HRESULT result;
 
 
-	// Set the index count to the same as the vertex count.
+	//Set the index count to the same as the vertex count.
 	m_indexCount = m_vertexCount;
 
-	// Create the vertex array.
+	//Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
 	if(!vertices)
 	{
 		return false;
 	}
 
-	// Create the index array.
+	//Create the index array.
 	indices = new unsigned long[m_indexCount];
 	if(!indices)
 	{
 		return false;
 	}
 
-	// Load the vertex and index array with data from the terrain model.
+	//Load the vertex and index array with data from the terrain model.
 	for(i=0; i<m_vertexCount; i++)
 	{
 		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
@@ -769,7 +768,7 @@ bool TerrainClass::InitializeBuffers(ID3D11Device* device)
 		indices[i] = i;
 	}
 
-	// Set up the description of the static vertex buffer.
+	//Set up the description of the static vertex buffer.
     vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -777,19 +776,19 @@ bool TerrainClass::InitializeBuffers(ID3D11Device* device)
     vertexBufferDesc.MiscFlags = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
-	// Give the subresource structure a pointer to the vertex data.
+	//Give the subresource structure a pointer to the vertex data.
     vertexData.pSysMem = vertices;
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	// Now create the vertex buffer.
+	//Now create the vertex buffer.
     result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
-	// Set up the description of the static index buffer.
+	//Set up the description of the static index buffer.
     indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
     indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -797,19 +796,19 @@ bool TerrainClass::InitializeBuffers(ID3D11Device* device)
     indexBufferDesc.MiscFlags = 0;
 	indexBufferDesc.StructureByteStride = 0;
 
-	// Give the subresource structure a pointer to the index data.
+	//Give the subresource structure a pointer to the index data.
     indexData.pSysMem = indices;
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	// Create the index buffer.
+	//Create the index buffer.
 	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
-	// Release the arrays now that the buffers have been created and loaded.
+	//Release the arrays now that the buffers have been created and loaded.
 	delete [] vertices;
 	vertices = 0;
 
@@ -825,28 +824,28 @@ bool TerrainClass::LoadTextures(ID3D11Device* device, WCHAR* colorTexturefilenam
 	bool result;
 
 
-	// Create the color texture object.
+	//Create the color texture object.
 	m_ColorTexture = new TextureClass;
 	if(!m_ColorTexture)
 	{
 		return false;
 	}
 
-	// Initialize the color texture object.
+	//Initialize the color texture object.
 	result = m_ColorTexture->Initialize(device, colorTexturefilename);
 	if(!result)
 	{
 		return false;
 	}
 
-	// Create the normal map texture object.
+	//Create the normal map texture object.
 	m_NormalTexture = new TextureClass;
 	if(!m_NormalTexture)
 	{
 		return false;
 	}
 
-	// Initialize the normal map texture object.
+	//Initialize the normal map texture object.
 	result = m_NormalTexture->Initialize(device, normalTextureFilename);
 	if(!result)
 	{
@@ -883,14 +882,14 @@ void TerrainClass::ReleaseModel()
 
 void TerrainClass::ReleaseBuffers()
 {
-	// Release the index buffer.
+	//Release the index buffer.
 	if(m_indexBuffer)
 	{
 		m_indexBuffer->Release();
 		m_indexBuffer = 0;
 	}
 
-	// Release the vertex buffer.
+	//Release the vertex buffer.
 	if(m_vertexBuffer)
 	{
 		m_vertexBuffer->Release();
@@ -927,17 +926,17 @@ void TerrainClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	unsigned int offset;
 
 
-	// Set vertex buffer stride and offset.
+	//Set vertex buffer stride and offset.
 	stride = sizeof(VertexType); 
 	offset = 0;
     
-	// Set the vertex buffer to active in the input assembler so it can be rendered.
+	//Set the vertex buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
-    // Set the index buffer to active in the input assembler so it can be rendered.
+    //Set the index buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-    // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
+    //Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	return;

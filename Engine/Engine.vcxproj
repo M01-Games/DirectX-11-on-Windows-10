@@ -11,53 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bumpmapshaderclass.h" />
-    <ClInclude Include="bumpmodelclass.h" />
-    <ClInclude Include="cameraclass.h" />
-    <ClInclude Include="cpuclass.h" />
-    <ClInclude Include="d3dclass.h" />
-    <ClInclude Include="DDSTextureLoader.h" />
-    <ClInclude Include="depthshaderclass.h" />
-    <ClInclude Include="firemodelclass.h" />
-    <ClInclude Include="fireshaderclass.h" />
-    <ClInclude Include="fontclass.h" />
-    <ClInclude Include="fontshaderclass.h" />
-    <ClInclude Include="fpsclass.h" />
-    <ClInclude Include="glassshaderclass.h" />
-    <ClInclude Include="graphicsclass.h" />
-    <ClInclude Include="inputclass.h" />
-    <ClInclude Include="lightclass.h" />
-    <ClInclude Include="lightmapshaderclass.h" />
-    <ClInclude Include="lightshaderclass.h" />
-    <ClInclude Include="modelclass.h" />
-    <ClInclude Include="multitexturemodelclass.h" />
-    <ClInclude Include="multitextureshaderclass.h" />
-    <ClInclude Include="particleshaderclass.h" />
-    <ClInclude Include="particlesystemclass.h" />
-    <ClInclude Include="pointlightclass.h" />
-    <ClInclude Include="pointlightshaderclass.h" />
-    <ClInclude Include="positionclass.h" />
-    <ClInclude Include="reflectionshaderclass.h" />
-    <ClInclude Include="rendertextureclass.h" />
-    <ClInclude Include="shadermanagerclass.h" />
-    <ClInclude Include="shadowshaderclass.h" />
-    <ClInclude Include="skydomeclass.h" />
-    <ClInclude Include="skydomeshaderclass.h" />
-    <ClInclude Include="skyplaneclass.h" />
-    <ClInclude Include="skyplaneshaderclass.h" />
-    <ClInclude Include="specmapshaderclass.h" />
-    <ClInclude Include="systemclass.h" />
-    <ClInclude Include="terrainclass.h" />
-    <ClInclude Include="terrainshaderclass.h" />
-    <ClInclude Include="textclass.h" />
-    <ClInclude Include="texturearrayclass.h" />
-    <ClInclude Include="textureclass.h" />
-    <ClInclude Include="textureshaderclass.h" />
-    <ClInclude Include="timerclass.h" />
-    <ClInclude Include="waterclass.h" />
-    <ClInclude Include="watershaderclass.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="bumpmapshaderclass.cpp" />
     <ClCompile Include="bumpmodelclass.cpp" />
     <ClCompile Include="cameraclass.cpp" />
@@ -108,6 +61,7 @@
   <ItemGroup>
     <None Include="bumpmap.ps" />
     <None Include="bumpmap.vs" />
+    <None Include="ClassDiagram.cd" />
     <None Include="depth.ps" />
     <None Include="depth.vs" />
     <None Include="fire.ps" />
@@ -142,6 +96,53 @@
     <None Include="texture.vs" />
     <None Include="water.ps" />
     <None Include="water.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bumpmapshaderclass.h" />
+    <ClInclude Include="bumpmodelclass.h" />
+    <ClInclude Include="cameraclass.h" />
+    <ClInclude Include="cpuclass.h" />
+    <ClInclude Include="d3dclass.h" />
+    <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="depthshaderclass.h" />
+    <ClInclude Include="firemodelclass.h" />
+    <ClInclude Include="fireshaderclass.h" />
+    <ClInclude Include="fontclass.h" />
+    <ClInclude Include="fontshaderclass.h" />
+    <ClInclude Include="fpsclass.h" />
+    <ClInclude Include="glassshaderclass.h" />
+    <ClInclude Include="graphicsclass.h" />
+    <ClInclude Include="inputclass.h" />
+    <ClInclude Include="lightclass.h" />
+    <ClInclude Include="lightmapshaderclass.h" />
+    <ClInclude Include="lightshaderclass.h" />
+    <ClInclude Include="modelclass.h" />
+    <ClInclude Include="multitexturemodelclass.h" />
+    <ClInclude Include="multitextureshaderclass.h" />
+    <ClInclude Include="particleshaderclass.h" />
+    <ClInclude Include="particlesystemclass.h" />
+    <ClInclude Include="pointlightclass.h" />
+    <ClInclude Include="pointlightshaderclass.h" />
+    <ClInclude Include="positionclass.h" />
+    <ClInclude Include="reflectionshaderclass.h" />
+    <ClInclude Include="rendertextureclass.h" />
+    <ClInclude Include="shadermanagerclass.h" />
+    <ClInclude Include="shadowshaderclass.h" />
+    <ClInclude Include="skydomeclass.h" />
+    <ClInclude Include="skydomeshaderclass.h" />
+    <ClInclude Include="skyplaneclass.h" />
+    <ClInclude Include="skyplaneshaderclass.h" />
+    <ClInclude Include="specmapshaderclass.h" />
+    <ClInclude Include="systemclass.h" />
+    <ClInclude Include="terrainclass.h" />
+    <ClInclude Include="terrainshaderclass.h" />
+    <ClInclude Include="textclass.h" />
+    <ClInclude Include="texturearrayclass.h" />
+    <ClInclude Include="textureclass.h" />
+    <ClInclude Include="textureshaderclass.h" />
+    <ClInclude Include="timerclass.h" />
+    <ClInclude Include="waterclass.h" />
+    <ClInclude Include="watershaderclass.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B582C848-8474-42F1-91EE-C5B948FE3486}</ProjectGuid>
@@ -196,6 +197,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -203,6 +205,9 @@
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

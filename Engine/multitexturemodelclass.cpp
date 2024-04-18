@@ -1,6 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: multitexturemodelclass.cpp
-////////////////////////////////////////////////////////////////////////////////
+//Filename: multitexturemodelclass.cpp
+
 #include "multitexturemodelclass.h"
 
 
@@ -27,21 +26,21 @@ bool MultiTextureModelClass::Initialize(ID3D11Device* device, char* modelFilenam
 	bool result;
 
 
-	// Load in the model data,
+	//Load in the model data,
 	result = LoadModel(modelFilename);
 	if (!result)
 	{
 		return false;
 	}
 
-	// Initialize the vertex and index buffers.
+	//Initialize the vertex and index buffers.
 	result = InitializeBuffers(device);
 	if (!result)
 	{
 		return false;
 	}
 
-	// Load the textures for this model.
+	//Load the textures for this model.
 	result = LoadTextures(device, textureFilename1, textureFilename2);
 	if (!result)
 	{
@@ -53,13 +52,13 @@ bool MultiTextureModelClass::Initialize(ID3D11Device* device, char* modelFilenam
 
 void MultiTextureModelClass::Shutdown()
 {
-	// Release the model texture.
+	//Release the model texture.
 	ReleaseTextures();
 
-	// Shutdown the vertex and index buffers.
+	//Shutdown the vertex and index buffers.
 	ShutdownBuffers();
 
-	// Release the model data.
+	//Release the model data.
 	ReleaseModel();
 
 	return;
@@ -68,7 +67,7 @@ void MultiTextureModelClass::Shutdown()
 
 void MultiTextureModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
-	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	//Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
 
 	return;
@@ -91,21 +90,21 @@ bool MultiTextureModelClass::InitializeBuffers(ID3D11Device* device)
 	int i;
 
 
-	// Create the vertex array.
+	//Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
 	if (!vertices)
 	{
 		return false;
 	}
 
-	// Create the index array.
+	//Create the index array.
 	indices = new unsigned long[m_indexCount];
 	if (!indices)
 	{
 		return false;
 	}
 
-	// Load the vertex array and index array with data.
+	//Load the vertex array and index array with data.
 	for (i = 0; i < m_vertexCount; i++)
 	{
 		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
@@ -115,7 +114,7 @@ bool MultiTextureModelClass::InitializeBuffers(ID3D11Device* device)
 		indices[i] = i;
 	}
 
-	// Set up the description of the static vertex buffer.
+	//Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -123,19 +122,19 @@ bool MultiTextureModelClass::InitializeBuffers(ID3D11Device* device)
 	vertexBufferDesc.MiscFlags = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
-	// Give the subresource structure a pointer to the vertex data.
+	//Give the subresource structure a pointer to the vertex data.
 	vertexData.pSysMem = vertices;
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	// Now create the vertex buffer.
+	//Now create the vertex buffer.
 	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Set up the description of the static index buffer.
+	//Set up the description of the static index buffer.
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -143,19 +142,19 @@ bool MultiTextureModelClass::InitializeBuffers(ID3D11Device* device)
 	indexBufferDesc.MiscFlags = 0;
 	indexBufferDesc.StructureByteStride = 0;
 
-	// Give the subresource structure a pointer to the index data.
+	//Give the subresource structure a pointer to the index data.
 	indexData.pSysMem = indices;
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	// Create the index buffer.
+	//Create the index buffer.
 	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Release the arrays now that the vertex and index buffers have been created and loaded.
+	//Release the arrays now that the vertex and index buffers have been created and loaded.
 	delete[] vertices;
 	vertices = 0;
 
@@ -168,14 +167,14 @@ bool MultiTextureModelClass::InitializeBuffers(ID3D11Device* device)
 
 void MultiTextureModelClass::ShutdownBuffers()
 {
-	// Release the index buffer.
+	//Release the index buffer.
 	if (m_indexBuffer)
 	{
 		m_indexBuffer->Release();
 		m_indexBuffer = 0;
 	}
 
-	// Release the vertex buffer.
+	//Release the vertex buffer.
 	if (m_vertexBuffer)
 	{
 		m_vertexBuffer->Release();
@@ -192,17 +191,17 @@ void MultiTextureModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	unsigned int offset;
 
 
-	// Set vertex buffer stride and offset.
+	//Set vertex buffer stride and offset.
 	stride = sizeof(VertexType);
 	offset = 0;
 
-	// Set the vertex buffer to active in the input assembler so it can be rendered.
+	//Set the vertex buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
-	// Set the index buffer to active in the input assembler so it can be rendered.
+	//Set the index buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
+	//Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	return;
@@ -213,14 +212,14 @@ bool MultiTextureModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1
 	bool result;
 
 
-	// Create the texture array object.
+	//Create the texture array object.
 	m_TextureArray = new TextureArrayClass;
 	if (!m_TextureArray)
 	{
 		return false;
 	}
 
-	// Initialize the texture array object.
+	//Initialize the texture array object.
 	result = m_TextureArray->Initialize(device, filename1, filename2);
 	if (!result)
 	{
@@ -234,7 +233,7 @@ bool MultiTextureModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1
 
 void MultiTextureModelClass::ReleaseTextures()
 {
-	// Release the texture array object.
+	//Release the texture array object.
 	if (m_TextureArray)
 	{
 		m_TextureArray->Shutdown();
@@ -257,36 +256,36 @@ bool MultiTextureModelClass::LoadModel(char* filename)
 	int i;
 
 
-	// Open the model file.
+	//Open the model file.
 	fin.open(filename);
 
-	// If it could not open the file then exit.
+	//If it could not open the file then exit.
 	if (fin.fail())
 	{
 		return false;
 	}
 
-	// Read up to the value of vertex count.
+	//Read up to the value of vertex count.
 	fin.get(input);
 	while (input != ':')
 	{
 		fin.get(input);
 	}
 
-	// Read in the vertex count.
+	//Read in the vertex count.
 	fin >> m_vertexCount;
 
-	// Set the number of indices to be the same as the vertex count.
+	//Set the number of indices to be the same as the vertex count.
 	m_indexCount = m_vertexCount;
 
-	// Create the model using the vertex count that was read in.
+	//Create the model using the vertex count that was read in.
 	m_model = new ModelType[m_vertexCount];
 	if (!m_model)
 	{
 		return false;
 	}
 
-	// Read up to the beginning of the data.
+	//Read up to the beginning of the data.
 	fin.get(input);
 	while (input != ':')
 	{
@@ -295,7 +294,7 @@ bool MultiTextureModelClass::LoadModel(char* filename)
 	fin.get(input);
 	fin.get(input);
 
-	// Read in the vertex data.
+	//Read in the vertex data.
 	for (i = 0; i < m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
@@ -303,7 +302,7 @@ bool MultiTextureModelClass::LoadModel(char* filename)
 		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
 	}
 
-	// Close the model file.
+	//Close the model file.
 	fin.close();
 
 	return true;

@@ -1,17 +1,17 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: texture.ps
-////////////////////////////////////////////////////////////////////////////////
+
+//Filename: texture.ps
+
 
 
 /////////////
-// GLOBALS //
+//GLOBALS //
 /////////////
 Texture2D shaderTexture;
 SamplerState SampleType;
 
 
 //////////////
-// TYPEDEFS //
+//TYPEDEFS //
 //////////////
 struct PixelInputType
 {
@@ -20,15 +20,15 @@ struct PixelInputType
 };
 
 
-////////////////////////////////////////////////////////////////////////////////
-// Pixel Shader
-////////////////////////////////////////////////////////////////////////////////
+
+//Pixel Shader
+
 float4 TexturePixelShader(PixelInputType input) : SV_TARGET
 {
 	float4 textureColor;
 
 
-    // Sample the pixel color from the texture using the sampler at this texture coordinate location.
+    //Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColor = shaderTexture.Sample(SampleType, input.tex);
 
     return textureColor;

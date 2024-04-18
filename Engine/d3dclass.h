@@ -1,33 +1,20 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: d3dclass.h
-////////////////////////////////////////////////////////////////////////////////
 #ifndef _D3DCLASS_H_
 #define _D3DCLASS_H_
-
-
-/////////////
-// LINKING //
-/////////////
+////////////
+//INCLUDES//
+////////////
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "dxguid.lib")
-#pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "d3dcompiler.lib") //maybe needed
+#pragma comment(lib, "dxguid.lib") //maybe needed
+#pragma comment(lib, "winmm.lib") //maybe needed
 
-
-//////////////
-// INCLUDES //
-//////////////
 #include <dxgi.h>
 #include <d3d11_1.h>
 #include <DirectXMath.h>
 
 using namespace DirectX;
 
-
-////////////////////////////////////////////////////////////////////////////////
-// Class name: D3DClass
-////////////////////////////////////////////////////////////////////////////////
 class D3DClass
 {
 public:
@@ -37,7 +24,7 @@ public:
 
 	bool Initialize(int, int, bool, HWND, bool, float, float);
 	void Shutdown();
-	
+
 	void BeginScene(float, float, float, float);
 	void EndScene();
 

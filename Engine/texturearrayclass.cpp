@@ -1,6 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: texturearrayclass.cpp
-////////////////////////////////////////////////////////////////////////////////
+//Filename: texturearrayclass.cpp
+
 #include "texturearrayclass.h"
 
 TextureArrayClass::TextureArrayClass()
@@ -25,14 +24,14 @@ bool TextureArrayClass::Initialize(ID3D11Device* device, WCHAR* filename1, WCHAR
 
 
 
-	// Load the first texture in.
+	//Load the first texture in.
 	result = CreateDDSTextureFromFile(device, filename1, NULL, &m_textures[0]);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Load the second texture in.
+	//Load the second texture in.
 	result = CreateDDSTextureFromFile(device, filename2, NULL, &m_textures[1]);
 	if (FAILED(result))
 	{
@@ -46,7 +45,7 @@ bool TextureArrayClass::Initialize(ID3D11Device* device, WCHAR* filename1, WCHAR
 
 void TextureArrayClass::Shutdown()
 {
-	// Release the texture resources.
+	//Release the texture resources.
 	if (m_textures[0])
 	{
 		m_textures[0]->Release();

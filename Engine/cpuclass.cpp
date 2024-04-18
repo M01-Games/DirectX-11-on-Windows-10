@@ -1,6 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: cpuclass.cpp
-////////////////////////////////////////////////////////////////////////////////
+//Filename: cpuclass.cpp
 #include "cpuclass.h"
 
 
@@ -24,24 +22,24 @@ void CpuClass::Initialize()
 	PDH_STATUS status;
 
 
-	// Initialize the flag indicating whether this object can read the system cpu usage or not.
+	//Initialize the flag indicating whether this object can read the system cpu usage or not.
 	m_canReadCpu = true;
 
-	// Create a query object to poll cpu usage.
+	//Create a query object to poll cpu usage.
 	status = PdhOpenQuery(NULL, 0, &m_queryHandle);
 	if(status != ERROR_SUCCESS)
 	{
 		m_canReadCpu = false;
 	}
 
-	// Set query object to poll all cpus in the system.
+	//Set query object to poll all cpus in the system.
 	status = PdhAddCounter(m_queryHandle, TEXT("\\Processor(_Total)\\% processor time"), 0, &m_counterHandle);
 	if(status != ERROR_SUCCESS)
 	{
 		m_canReadCpu = false;
 	}
 
-	// Initialize the start time and cpu usage.
+	//Initialize the start time and cpu usage.
 	m_lastSampleTime = GetTickCount(); 
 	m_cpuUsage = 0;
 
@@ -66,7 +64,7 @@ void CpuClass::Frame()
 
 	if(m_canReadCpu)
 	{
-		// If it has been 1 second then update the current cpu usage and reset the 1 second timer again.
+		//If it has been 1 second then update the current cpu usage and reset the 1 second timer again.
 		if((m_lastSampleTime + 1000) < GetTickCount())
 		{
 			m_lastSampleTime = GetTickCount(); 
@@ -88,7 +86,7 @@ int CpuClass::GetCpuPercentage()
 	int usage;
 
 
-	// If the class can read the cpu from the operating system then return the current usage.  If not then return zero.
+	//If the class can read the cpu from the operating system then return the current usage.  If not then return zero.
 	if(m_canReadCpu)
 	{
 		usage = (int)m_cpuUsage;

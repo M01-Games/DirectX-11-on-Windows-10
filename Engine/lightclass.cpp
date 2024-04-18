@@ -1,6 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: lightclass.cpp
-////////////////////////////////////////////////////////////////////////////////
+//Filename: lightclass.cpp
+
 #include "lightclass.h"
 
 
@@ -31,7 +30,6 @@ void LightClass::SetDiffuseColor(float red, float green, float blue, float alpha
 	m_diffuseColor = XMFLOAT4(red, green, blue, alpha);
 	return;
 }
-
 
 void LightClass::SetSpecularColor(float red, float green, float blue, float alpha)
 {
@@ -74,8 +72,6 @@ XMFLOAT4 LightClass::GetDiffuseColor()
 	return m_diffuseColor;
 }
 
-
-
 XMFLOAT4 LightClass::GetSpecularColor()
 {
 	return m_specularColor;
@@ -86,7 +82,6 @@ float LightClass::GetSpecularPower()
 {
 	return m_specularPower;
 }
-
 
 XMFLOAT3 LightClass::GetPosition()
 {
@@ -104,14 +99,14 @@ void LightClass::GenerateViewMatrix()
 	XMFLOAT3 up;
 
 
-	// Setup the vector that points upwards.
+	//Setup the vector that points upwards.
 	up.x = 0.0f;
 	up.y = 1.0f;
 	up.z = 0.0f;
 
-	// Create the view matrix from the three vectors.
+	//Create the view matrix from the three vectors.
 	m_viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_lookAt), XMLoadFloat3(&up));
-
+	
 	return;
 }
 
@@ -121,11 +116,11 @@ void LightClass::GenerateProjectionMatrix(float screenDepth, float screenNear)
 	float fieldOfView, screenAspect;
 
 
-	// Setup field of view and screen aspect for a square light source.
+	//Setup field of view and screen aspect for a square light source.
 	fieldOfView = (float)XM_PI / 2.0f;
 	screenAspect = 1.0f;
 
-	// Create the projection matrix for the light.
+	//Create the projection matrix for the light.
 	m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 
 	return;

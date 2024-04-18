@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 // Filename: inputclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
 #include "inputclass.h"
@@ -197,10 +197,6 @@ bool InputClass::ReadMouse()
 		{
 			m_mouse->Acquire();
 		}
-		else
-		{
-			return false;
-		}
 	}
 
 	return true;
@@ -325,7 +321,7 @@ bool InputClass::IsRightPressed()
 bool InputClass::IsWPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
-	if (m_keyboardState[DIK_W] &0x80)
+	if (m_keyboardState[DIK_W] & 0x80)
 	{
 		return true;
 	}
