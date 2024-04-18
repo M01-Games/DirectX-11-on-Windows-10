@@ -1,76 +1,25 @@
 ﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  watershaderclass.cpp
-  waterclass.cpp
-  timerclass.cpp
-  textureshaderclass.cpp
-  textureclass.cpp
-  texturearrayclass.cpp
-  textclass.cpp
-  terrainshaderclass.cpp
-  terrainclass.cpp
-  systemclass.cpp
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(456,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(712,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(720,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  specmapshaderclass.cpp
-  skyplaneshaderclass.cpp
-  skyplaneclass.cpp
-  skydomeshaderclass.cpp
-  skydomeclass.cpp
-  shadowshaderclass.cpp
-  shadermanagerclass.cpp
-  rendertextureclass.cpp
-  reflectionshaderclass.cpp
-  positionclass.cpp
-  Generating Code...
-  Compiling...
-  pointlightshaderclass.cpp
-  pointlightclass.cpp
-  particlesystemclass.cpp
-  particleshaderclass.cpp
-  multitextureshaderclass.cpp
-  multitexturemodelclass.cpp
-  modelclass.cpp
-  main.cpp
-  lightshaderclass.cpp
-  lightmapshaderclass.cpp
-  lightclass.cpp
-  inputclass.cpp
   graphicsclass.cpp
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(65,15): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(124,13): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(136,23): warning C4316: 'LightClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(233,11): warning C4316: 'TextClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(256,24): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(271,24): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(286,20): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(450,25): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(866,20): warning C4101: 'posZ': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(866,14): warning C4101: 'posY': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(866,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(912,67): warning C4101: 'baseViewMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(925,20): warning C4101: 'posZ': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(925,14): warning C4101: 'posY': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(925,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1273,7): warning C4101: 'result': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1272,36): warning C4101: 'projectionMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1272,24): warning C4101: 'viewMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1272,11): warning C4101: 'worldMatrix': unreferenced local variable
-  glassshaderclass.cpp
-  fpsclass.cpp
-  fontshaderclass.cpp
-  fontclass.cpp
-  fireshaderclass.cpp
-  firemodelclass.cpp
-  depthshaderclass.cpp
-  Generating Code...
-  Compiling...
-  DDSTextureLoader.cpp
-  d3dclass.cpp
-  cpuclass.cpp
-  cameraclass.cpp
-  bumpmodelclass.cpp
-  bumpmapshaderclass.cpp
-  Generating Code...
-bumpmapshaderclass.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(69,15): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(128,13): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(140,23): warning C4316: 'LightClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(237,11): warning C4316: 'TextClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(260,24): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(275,24): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(290,20): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(454,25): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(941,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(941,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(941,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1193,74): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1193,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1193,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(987,67): warning C4101: 'baseViewMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1000,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1000,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1000,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1411,7): warning C4101: 'result': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1410,36): warning C4101: 'projectionMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1410,24): warning C4101: 'viewMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1410,11): warning C4101: 'worldMatrix': unreferenced local variable
   Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe

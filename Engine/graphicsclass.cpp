@@ -38,6 +38,10 @@ GraphicsClass::GraphicsClass()
 	m_Model1 = 0;
 	m_Bridge = 0;
 
+
+	m_Campfire = 0;
+	m_FireModel = 0;
+	m_ParticleSystem = 0;
 }
 
 
@@ -491,6 +495,51 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 		return false;
 	}
 
+	//Create the campfire bump model object for models with normal maps and related vectors.
+	m_Campfire = new BumpModelClass;
+	if (!m_Campfire)
+	{
+		return false;
+	}
+
+	//Initialize the bump model object.
+	result = m_Campfire->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Campfire.txt", L"../Engine/data/Campfire_Base.dds", L"../Engine/data/Campfire_Normal.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the campfire model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	//Create the fire model object.
+	m_FireModel = new FireModelClass;
+	if (!m_FireModel)
+	{
+		return false;
+	}
+
+	//Initialize the fire model object.
+	result = m_FireModel->Initialize(m_Direct3D->GetDevice(), "../Engine/data/new-ninjaHead.txt", L"../Engine/data/fire01.dds", L"../Engine/data/noise01.dds", L"../Engine/data/alpha01.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the fire model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	//Create the particle system object.
+	m_ParticleSystem = new ParticleSystemClass;
+	if (!m_ParticleSystem)
+	{
+		return false;
+	}
+
+	//Initialize the particle system object.
+	result = m_ParticleSystem->Initialize(m_Direct3D->GetDevice(), L"../Engine/data/ice.dds");
+	if (!result)
+	{
+		return false;
+	}
+
+
 	return true;
 }
 
@@ -512,6 +561,32 @@ void GraphicsClass::Shutdown()
 		delete m_Bridge;
 		m_Bridge = 0;
 	}
+
+	//Release the campfire object.
+	if (m_Campfire)
+	{
+		m_Campfire->Shutdown();
+		delete m_Campfire;
+		m_Campfire = 0;
+	}
+
+	//Release the fire object.
+	if (m_FireModel)
+	{
+		m_FireModel->Shutdown();
+		delete m_FireModel;
+		m_FireModel = 0;
+	}
+
+	//Release the particle system object.
+	if (m_ParticleSystem)
+	{
+		m_ParticleSystem->Shutdown();
+		delete m_ParticleSystem;
+		m_ParticleSystem = 0;
+	}
+
+
 
 
 	//Release the text object.
@@ -729,7 +804,7 @@ bool GraphicsClass::Frame()
 	m_SkyPlane->Frame();
 
 	//Do the particle system frame processing.
-	//m_ParticleSystem->Frame(m_Timer->GetTime(), m_Direct3D->GetDeviceContext());
+	m_ParticleSystem->Frame(m_Timer->GetTime(), m_Direct3D->GetDeviceContext());
 
 	//Render the refraction of the scene to a texture
 	RenderRefractionToTexture();
@@ -1087,6 +1162,69 @@ bool GraphicsClass::Render()
 	{
 		return false;
 	}
+
+	//Setup the rotation and translation of the model
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(2, 2, 2));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 8, 200));
+
+	//Render the model using the relavent shader
+	m_Campfire->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_Campfire->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Campfire->GetColorTexture(), m_Campfire->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(),
+		m_DirectionalLight->GetDiffuseColor());
+	if (!result)
+	{
+		return false;
+	}
+
+	//Turn on alpha blending for the fire transparency
+	m_Direct3D->TurnOnAlphaBlending();
+
+	//Turn back face culling back on
+	m_Direct3D->TurnOffCulling();
+
+	//Get the world, view, and projection matrices from the camera and d3d objects
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+
+	//Setup the rotation and translation of the model
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.03, 0.03, 0.03));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 8, 200));
+
+	//Render the square model using the fire shader
+	m_FireModel->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderFireShader(m_Direct3D->GetDeviceContext(), m_FireModel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_FireModel->GetTexture1(), m_FireModel->GetTexture2(), m_FireModel->GetTexture3(), frameTime, scrollSpeeds,
+		scales, distortion1, distortion2, distortion3, distortionScale, distortionBias);
+	if (!result)
+	{
+		return false;
+	}
+
+	//Setup the rotation and translation of the model
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(1, 4, 1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationZ(180));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 14, 200));
+
+	//Put the particle system vertex and index buffers on the graphics pipeline to prepare them for drawing
+	m_ParticleSystem->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderParticleShader(m_Direct3D->GetDeviceContext(), m_ParticleSystem->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_ParticleSystem->GetTexture());
+	if (!result)
+	{
+		return false;
+	}
+
+	//Turn off alpha blending
+	m_Direct3D->TurnOffAlphaBlending();
+
+	//Turn back face culling back on
+	m_Direct3D->TurnOnCulling();
+
+
 
 
 

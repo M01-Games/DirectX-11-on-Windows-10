@@ -33,7 +33,7 @@
 
 
 //GLOBALS
-const bool FULL_SCREEN = true;
+const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 10000.0f;
 const float SCREEN_NEAR = 0.1f;
@@ -109,6 +109,11 @@ private:
 	//Models
 	ModelClass* m_Model1;
 	BumpModelClass* m_Bridge;
+
+
+	BumpModelClass* m_Campfire;
+	FireModelClass* m_FireModel;
+	ParticleSystemClass* m_ParticleSystem;
 
 };
 
