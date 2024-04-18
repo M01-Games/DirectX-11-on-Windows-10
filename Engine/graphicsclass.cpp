@@ -473,7 +473,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	// Initialize the model object.
-	result = m_Model1->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Room.txt", L"../Engine/data/Wall1-UVW.dds");
+	result = m_Model1->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Zombie.txt", L"../Engine/data/Zombie-Textured.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the first model object.", L"Error", MB_OK);
@@ -1133,8 +1133,8 @@ bool GraphicsClass::Render()
 	
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(0.25, 0.25, 0.25);
-	translateMatrix = XMMatrixTranslation(0.0, 10.0, 0.0);
+	worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
+	translateMatrix = XMMatrixTranslation(150, 8, 150);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.
@@ -1148,7 +1148,7 @@ bool GraphicsClass::Render()
 	}
 
 	//Setup the rotation and translation of the bridge model
-	m_Direct3D->GetWorldMatrix(worldMatrix);
+	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(90));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(75, 5, 100));
@@ -1164,8 +1164,8 @@ bool GraphicsClass::Render()
 	}
 
 	//Setup the rotation and translation of the model
-	m_Direct3D->GetWorldMatrix(worldMatrix);
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(2, 2, 2));
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(8, 8, 8));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 8, 200));
 
 	//Render the model using the relavent shader
@@ -1189,8 +1189,8 @@ bool GraphicsClass::Render()
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 
 	//Setup the rotation and translation of the model
-	m_Direct3D->GetWorldMatrix(worldMatrix);
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.03, 0.03, 0.03));
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.12, 0.12, 0.12));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 8, 200));
 
 	//Render the square model using the fire shader
@@ -1204,10 +1204,10 @@ bool GraphicsClass::Render()
 	}
 
 	//Setup the rotation and translation of the model
-	m_Direct3D->GetWorldMatrix(worldMatrix);
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(1, 4, 1));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationZ(180));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 14, 200));
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(8, 10, 4));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationZ(210));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 30, 200));
 
 	//Put the particle system vertex and index buffers on the graphics pipeline to prepare them for drawing
 	m_ParticleSystem->Render(m_Direct3D->GetDeviceContext());

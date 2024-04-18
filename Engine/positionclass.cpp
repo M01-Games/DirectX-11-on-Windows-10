@@ -90,16 +90,16 @@ void PositionClass::MoveForward(bool keydown)
 	// Update the forward speed movement based on the frame time and whether the user is holding the key down or not.
 	if (keydown)
 	{
-		m_forwardSpeed += m_frameTime * 0.001f;
+		m_forwardSpeed += m_frameTime * 0.002f;
 
-		if (m_forwardSpeed > (m_frameTime * 0.03f))
+		if (m_forwardSpeed > (m_frameTime * 0.06f))
 		{
-			m_forwardSpeed = m_frameTime * 0.03f;
+			m_forwardSpeed = m_frameTime * 0.06f;
 		}
 	}
 	else
 	{
-		m_forwardSpeed -= m_frameTime * 0.0007f;
+		m_forwardSpeed -= m_frameTime * 0.0014f;
 
 		if (m_forwardSpeed < 0.0f)
 		{
@@ -126,16 +126,16 @@ void PositionClass::MoveBackward(bool keydown)
 	// Update the backward speed movement based on the frame time and whether the user is holding the key down or not.
 	if (keydown)
 	{
-		m_backwardSpeed += m_frameTime * 0.001f;
+		m_backwardSpeed += m_frameTime * 0.002f;
 
-		if (m_backwardSpeed > (m_frameTime * 0.03f))
+		if (m_backwardSpeed > (m_frameTime * 0.06f))
 		{
-			m_backwardSpeed = m_frameTime * 0.03f;
+			m_backwardSpeed = m_frameTime * 0.06f;
 		}
 	}
 	else
 	{
-		m_backwardSpeed -= m_frameTime * 0.0007f;
+		m_backwardSpeed -= m_frameTime * 0.0014f;
 
 		if (m_backwardSpeed < 0.0f)
 		{
@@ -161,16 +161,16 @@ void PositionClass::MoveLeft(bool keydown)
 	// Update the forward speed movement based on the frame time and whether the user is holding the key down or not.
 	if (keydown)
 	{
-		m_leftwardSpeed += m_frameTime * 0.001f;
+		m_leftwardSpeed += m_frameTime * 0.002f;
 
-		if (m_leftwardSpeed > (m_frameTime * 0.03f))
+		if (m_leftwardSpeed > (m_frameTime * 0.06f))
 		{
-			m_leftwardSpeed = m_frameTime * 0.03f;
+			m_leftwardSpeed = m_frameTime * 0.06f;
 		}
 	}
 	else
 	{
-		m_leftwardSpeed -= m_frameTime * 0.0007f;
+		m_leftwardSpeed -= m_frameTime * 0.0014f;
 
 		if (m_leftwardSpeed < 0.0f)
 		{
@@ -197,16 +197,16 @@ void PositionClass::MoveRight(bool keydown)
 	// Update the backward speed movement based on the frame time and whether the user is holding the key down or not.
 	if (keydown)
 	{
-		m_rightwardSpeed += m_frameTime * 0.001f;
+		m_rightwardSpeed += m_frameTime * 0.002f;
 
-		if (m_rightwardSpeed > (m_frameTime * 0.03f))
+		if (m_rightwardSpeed > (m_frameTime * 0.06f))
 		{
-			m_rightwardSpeed = m_frameTime * 0.03f;
+			m_rightwardSpeed = m_frameTime * 0.06f;
 		}
 	}
 	else
 	{
-		m_rightwardSpeed -= m_frameTime * 0.0007f;
+		m_rightwardSpeed -= m_frameTime * 0.0014f;
 
 		if (m_rightwardSpeed < 0.0f)
 		{
@@ -230,16 +230,16 @@ void PositionClass::MoveUpward(bool keydown)
 	// Update the upward speed movement based on the frame time and whether the user is holding the key down or not.
 	if (keydown)
 	{
-		m_upwardSpeed += m_frameTime * 0.003f;
+		m_upwardSpeed += m_frameTime * 0.006f;
 
-		if (m_upwardSpeed > (m_frameTime * 0.03f))
+		if (m_upwardSpeed > (m_frameTime * 0.06f))
 		{
-			m_upwardSpeed = m_frameTime * 0.03f;
+			m_upwardSpeed = m_frameTime * 0.06f;
 		}
 	}
 	else
 	{
-		m_upwardSpeed -= m_frameTime * 0.002f;
+		m_upwardSpeed -= m_frameTime * 0.004f;
 
 		if (m_upwardSpeed < 0.0f)
 		{
@@ -259,16 +259,16 @@ void PositionClass::MoveDownward(bool keydown)
 	// Update the downward speed movement based on the frame time and whether the user is holding the key down or not.
 	if (keydown)
 	{
-		m_downwardSpeed += m_frameTime * 0.003f;
+		m_downwardSpeed += m_frameTime * 0.006f;
 
-		if (m_downwardSpeed > (m_frameTime * 0.03f))
+		if (m_downwardSpeed > (m_frameTime * 0.06f))
 		{
-			m_downwardSpeed = m_frameTime * 0.03f;
+			m_downwardSpeed = m_frameTime * 0.06f;
 		}
 	}
 	else
 	{
-		m_downwardSpeed -= m_frameTime * 0.002f;
+		m_downwardSpeed -= m_frameTime * 0.004f;
 
 		if (m_downwardSpeed < 0.0f)
 		{
