@@ -341,6 +341,7 @@ bool InputClass::IsSPressed()
 	return false;
 }
 
+
 bool InputClass::IsAPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
@@ -388,6 +389,7 @@ bool InputClass::IsPgDownPressed()
 	return false;
 }
 
+
 bool InputClass::IsEPressed()
 {
 	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
@@ -398,6 +400,7 @@ bool InputClass::IsEPressed()
 
 	return false;
 }
+
 
 bool InputClass::IsQPressed()
 {
@@ -429,6 +432,38 @@ bool InputClass::IsDownPressed()
 	if (m_keyboardState[DIK_DOWN] & 0x80)
 	{
 		return true;
+	}
+
+	return false;
+}
+
+
+bool InputClass::IsNPressed()
+{
+	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
+	if (m_keyboardState[DIK_N] & 0x80)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+bool InputClass::IsF1Toggled()
+{
+	// Do a bitwise and on the keyboard state to check if the key is currently being pressed.
+	if (m_keyboardState[DIK_F1] & 0x80)
+	{
+		if (m_F1_released)
+		{
+			m_F1_released = false;
+			return true;
+		}
+	}
+	else
+	{
+		m_F1_released = true;
 	}
 
 	return false;

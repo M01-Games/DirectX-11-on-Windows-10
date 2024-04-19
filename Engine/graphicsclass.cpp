@@ -152,6 +152,9 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
 	m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
 
+	//Night mode
+	//m_DirectionalLight->SetDiffuseColor(0.15f, 0.15f, 0.15f, 1.0f);
+
 	//Create the shader manager object.
 	m_ShaderManager = new ShaderManagerClass;
 	if (!m_ShaderManager)
@@ -415,7 +418,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 
 	//Initialize the first light object.
 	m_PointLight1->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
-	m_PointLight1->SetPosition(255, 20, 250);
+	m_PointLight1->SetPosition(205, 8, 205);
 
 	//Create the second light object.
 	m_PointLight2 = new PointLightClass;
@@ -425,7 +428,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the second light object.
-	m_PointLight2->SetDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
+	m_PointLight2->SetDiffuseColor(0.0f, 0.0f, 0.0f, 1.0f);
 	m_PointLight2->SetPosition(255, 20, 350);
 
 	//Create the third light object.
@@ -436,7 +439,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the third light object.
-	m_PointLight3->SetDiffuseColor(0.0f, 0.0f, 1.0f, 1.0f);
+	m_PointLight3->SetDiffuseColor(0.0f, 0.0f, 0.0f, 1.0f);
 	m_PointLight3->SetPosition(255, 20, 450);
 
 	//Create the fourth light object.
@@ -447,7 +450,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the fourth light object.
-	m_PointLight4->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
+	m_PointLight4->SetDiffuseColor(0.0f, 0.0f, 0.0f, 1.0f);
 	m_PointLight4->SetPosition(255, 20, 550);
 
 	//Create the render to texture object.
@@ -849,6 +852,44 @@ bool GraphicsClass::Frame()
 		return false;
 	}
 
+
+
+	m_DirectionalLight->Frame();
+	//Generate the light view matrix based on the light's position
+	m_DirectionalLight->GenerateViewMatrix();
+	if (!ToggleTime)
+	{
+		m_DirectionalLight->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+		m_DirectionalLight->SetDiffuseColor(0.15f, 0.15f, 0.15f, 1.0f);
+		m_DirectionalLight->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+		m_DirectionalLight->SetSpecularPower(64.0f);
+		m_DirectionalLight->SetPosition(0, 0, 0);
+		m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
+		m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
+	}
+	else
+	{
+		m_DirectionalLight->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+		m_DirectionalLight->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+		m_DirectionalLight->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+		m_DirectionalLight->SetSpecularPower(64.0f);
+		m_DirectionalLight->SetPosition(0, 0, 0);
+		m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
+		m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
+	}
+
+	// Turn on wire frame
+	if (m_wireFrame)
+	{
+		m_Direct3D->EnableWireframe();
+	}
+	else
+	{
+		m_Direct3D->DisableWireframe();
+	}
+
+
+
 	//Render the graphics
 	result = Render();
 	if (!result)
@@ -904,6 +945,51 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 
 	keyDown = m_Input->IsDownPressed();
 	m_Position->LookDownward(keyDown);
+
+
+
+	if (m_Input->IsNPressed())
+	{
+		if (!ToggleTime)
+		{
+			m_DirectionalLight->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+			m_DirectionalLight->SetDiffuseColor(0.15f, 0.15f, 0.15f, 1.0f);
+			m_DirectionalLight->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+			m_DirectionalLight->SetSpecularPower(64.0f);
+			m_DirectionalLight->SetPosition(0, 0, 0);
+			m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
+			m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
+			ToggleTime;
+		}
+		else
+		{
+			m_DirectionalLight->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+			m_DirectionalLight->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+			m_DirectionalLight->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+			m_DirectionalLight->SetSpecularPower(64.0f);
+			m_DirectionalLight->SetPosition(0, 0, 0);
+			m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
+			m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
+			!ToggleTime;
+		}
+	}
+
+	// Determine if the terrain should be rendered in wireframe or not.
+	if (m_Input->IsF1Toggled())
+	{
+		m_wireFrame = !m_wireFrame;
+		// Turn on wire frame
+		if (m_wireFrame)
+		{
+			m_Direct3D->EnableWireframe();
+		}
+		else
+		{
+			m_Direct3D->DisableWireframe();
+		}
+	}
+
+
 
 	// HandleMouse Rotations
 	m_Position->MouseRotate(m_Input->GetMouseXDelta(), m_Input->GetMouseYDelta());
@@ -1058,6 +1144,19 @@ bool GraphicsClass::Render()
 	m_Camera->GetReflectionViewMatrix(reflectionViewMatrix);
 
 
+
+	// Turn on wire frame
+	if (m_wireFrame)
+	{
+		m_Direct3D->EnableWireframe();
+	}
+	else
+	{
+		m_Direct3D->DisableWireframe();
+	}
+
+
+
 	//Get the position of the camera
 	cameraPosition = m_Camera->GetPosition();
 
@@ -1142,6 +1241,21 @@ bool GraphicsClass::Render()
 	result = m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
 		m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
 		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+	if (!result)
+	{
+		return false;
+	}
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
+	translateMatrix = XMMatrixTranslation(225, 8, 225);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	// Render the first model using the texture shader.
+	m_Model1->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderPointLightShader(m_Direct3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model1->GetTexture(), diffuseColor, lightPosition);
 	if (!result)
 	{
 		return false;

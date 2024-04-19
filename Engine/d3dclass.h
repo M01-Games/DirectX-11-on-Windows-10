@@ -49,6 +49,9 @@ public:
 
 	void EnableSecondBlendState();
 
+	void EnableWireframe();
+	void DisableWireframe();
+
 private:
 	bool m_vsync_enabled;
 	int m_videoCardMemory;
@@ -62,6 +65,7 @@ private:
 	ID3D11DepthStencilView* m_depthStencilView;
 	ID3D11RasterizerState* m_rasterState;
 	ID3D11RasterizerState* m_rasterStateNoCulling;
+	ID3D11RasterizerState* m_rasterStateWireframe;
 	XMMATRIX m_projectionMatrix;
 	XMMATRIX m_worldMatrix;
 	XMMATRIX m_orthoMatrix;

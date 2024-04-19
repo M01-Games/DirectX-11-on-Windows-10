@@ -31,6 +31,7 @@ void LightClass::SetDiffuseColor(float red, float green, float blue, float alpha
 	return;
 }
 
+
 void LightClass::SetSpecularColor(float red, float green, float blue, float alpha)
 {
 	m_specularColor = XMFLOAT4(red, green, blue, alpha);
@@ -137,5 +138,24 @@ void LightClass::GetViewMatrix(XMMATRIX& viewMatrix)
 void LightClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
 {
 	projectionMatrix = m_projectionMatrix;
+	return;
+}
+
+void LightClass::Frame()
+{
+	//Update the position of the water to simulate motion.
+	m_increasediffuseColor = 0.25f;
+	SetDiffuseColor(m_increasediffuseColor, m_increasediffuseColor, m_increasediffuseColor, 0.0f);
+	if (m_increasediffuseColor < 0.0f)
+	{
+		m_increasediffuseColor += 0.1f;
+	}
+	else if (m_increasediffuseColor > 1.0f)
+	{
+		m_increasediffuseColor -= 0.1f;
+	}
+
+	GenerateViewMatrix();
+
 	return;
 }

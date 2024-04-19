@@ -60,6 +60,9 @@ public:
 	bool IsUpPressed();
 	bool IsDownPressed();
 
+	bool IsNPressed();
+	bool IsF1Toggled();
+
 private:
 	bool ReadKeyboard();
 	bool ReadMouse();
@@ -75,6 +78,8 @@ private:
 
 	int m_screenWidth, m_screenHeight;
 	int m_mouseX, m_mouseY, oldMouseX, oldMouseY;
+
+	bool m_F1_released;
 };
 
 #endif

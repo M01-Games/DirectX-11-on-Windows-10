@@ -14,6 +14,7 @@ D3DClass::D3DClass()
 	m_depthStencilView = 0;
 	m_rasterState = 0;
 	m_rasterStateNoCulling = 0;
+	m_rasterStateWireframe = 0;
 	m_depthDisabledStencilState = 0;
 	m_alphaEnableBlendingState = 0;
 	m_alphaDisableBlendingState = 0;
@@ -347,6 +348,25 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 		return false;
 	}
 
+	// Setup a raster description which enables wire frame rendering.
+	rasterDesc.AntialiasedLineEnable = false;
+	rasterDesc.CullMode = D3D11_CULL_BACK;
+	rasterDesc.DepthBias = 0;
+	rasterDesc.DepthBiasClamp = 0.0f;
+	rasterDesc.DepthClipEnable = true;
+	rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
+	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.MultisampleEnable = false;
+	rasterDesc.ScissorEnable = false;
+	rasterDesc.SlopeScaledDepthBias = 0.0f;
+
+	// Create the wire frame rasterizer state.
+	result = m_device->CreateRasterizerState(&rasterDesc, &m_rasterStateWireframe);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
 	//Setup the viewport for rendering.
 	m_viewport.Width = (float)screenWidth;
 	m_viewport.Height = (float)screenHeight;
@@ -491,6 +511,12 @@ void D3DClass::Shutdown()
 	{
 		m_rasterState->Release();
 		m_rasterState = 0;
+	}
+
+	if (m_rasterStateWireframe)
+	{
+		m_rasterStateWireframe->Release();
+		m_rasterStateWireframe = 0;
 	}
 
 	if (m_depthStencilView)
@@ -718,6 +744,23 @@ void D3DClass::EnableSecondBlendState()
 
 	//Turn on the alpha blending.
 	m_deviceContext->OMSetBlendState(m_alphaBlendState2, blendFactor, 0xffffffff);
+
+	return;
+}
+
+void D3DClass::EnableWireframe()
+{
+	// Set the wire frame rasterizer state.
+	m_deviceContext->RSSetState(m_rasterStateWireframe);
+
+	return;
+}
+
+
+void D3DClass::DisableWireframe()
+{
+	// Set the solid fill rasterizer state.
+	m_deviceContext->RSSetState(m_rasterState);
 
 	return;
 }

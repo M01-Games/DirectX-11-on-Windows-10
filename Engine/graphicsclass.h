@@ -78,6 +78,10 @@ private:
 	//Creates a texture for shadows
 	bool RenderShadowToTexture();
 
+	bool ToggleTime;
+
+	bool m_wireFrame;
+
 private:
 	//Pointers To Important Class Instances
 	InputClass* m_Input;
