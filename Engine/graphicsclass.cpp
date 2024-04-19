@@ -1246,6 +1246,8 @@ bool GraphicsClass::Render()
 		return false;
 	}
 
+	//PointLight Tester \/
+	
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
@@ -1260,6 +1262,8 @@ bool GraphicsClass::Render()
 	{
 		return false;
 	}
+
+
 
 	//Setup the rotation and translation of the bridge model
 	worldMatrix = XMMatrixIdentity();
