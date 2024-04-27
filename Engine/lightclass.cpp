@@ -143,6 +143,7 @@ void LightClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
 
 void LightClass::Frame()
 {
+/*
 	//Update the position of the water to simulate motion.
 	m_increasediffuseColor = 0.25f;
 	SetDiffuseColor(m_increasediffuseColor, m_increasediffuseColor, m_increasediffuseColor, 0.0f);
@@ -157,5 +158,6 @@ void LightClass::Frame()
 
 	GenerateViewMatrix();
 
+*/
 	return;
 }

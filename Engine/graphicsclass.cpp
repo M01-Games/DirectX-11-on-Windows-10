@@ -37,6 +37,8 @@ GraphicsClass::GraphicsClass()
 
 	m_Model1 = 0;
 	m_Bridge = 0;
+	m_Boat = 0;
+	m_House = 0;
 
 
 	m_Campfire = 0;
@@ -145,15 +147,21 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 
 	//Initialize the light object.
 	m_DirectionalLight->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+	//m_DirectionalLight->SetAmbientColor(1.0f, 1.0f, 1.0f, 1.0f);
+	
+//Night mode
+	//m_DirectionalLight->SetDiffuseColor(0.15f, 0.15f, 0.15f, 1.0f);
 	m_DirectionalLight->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	//m_DirectionalLight->SetSpecularColor(0.15f, 0.15f, 0.15f, 1.0f);
 	m_DirectionalLight->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+	
 	m_DirectionalLight->SetSpecularPower(64.0f);
 	m_DirectionalLight->SetPosition(0, 0, 0);
-	m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
-	m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
 
-	//Night mode
-	//m_DirectionalLight->SetDiffuseColor(0.15f, 0.15f, 0.15f, 1.0f);
+	m_DirectionalLight->SetLookAt(0.0f, -0.75f, 0.0f);
+	//m_DirectionalLight->SetLookAt(-0.5f, -0.75f, 0.25f);
+	m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
 
 	//Create the shader manager object.
 	m_ShaderManager = new ShaderManagerClass;
@@ -498,6 +506,38 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 		return false;
 	}
 
+	//Create the boat model object.
+	m_Boat = new BumpModelClass;
+	if (!m_Boat)
+	{
+		return false;
+	}
+
+	//Initialize the model object.
+	result = m_Boat->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Ship.txt", L"../Engine/data/Boat_Base.dds", L"../Engine/data/Boat_Normal.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the longship model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	//Create the house model object.
+	m_House = new BumpModelClass;
+	if (!m_Boat)
+	{
+		return false;
+	}
+	
+	//Initialize the model object.
+	result = m_House->Initialize(m_Direct3D->GetDevice(), "../Engine/data/House.txt", L"../Engine/data/House-Textured.dds", L"../Engine/data/HouseNormalMap.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the longship model object.", L"Error", MB_OK);
+		return false;
+	}
+
+
+
 	//Create the campfire bump model object for models with normal maps and related vectors.
 	m_Campfire = new BumpModelClass;
 	if (!m_Campfire)
@@ -564,6 +604,23 @@ void GraphicsClass::Shutdown()
 		delete m_Bridge;
 		m_Bridge = 0;
 	}
+
+	//Release the boat object.
+	if (m_Boat)
+	{
+		m_Boat->Shutdown();
+		delete m_Boat;
+		m_Boat = 0;
+	}
+
+	//Release the boat object.
+	if (m_House)
+	{
+		m_House->Shutdown();
+		delete m_House;
+		m_House = 0;
+	}
+
 
 	//Release the campfire object.
 	if (m_Campfire)
@@ -852,8 +909,8 @@ bool GraphicsClass::Frame()
 		return false;
 	}
 
-
-
+/*
+	
 	m_DirectionalLight->Frame();
 	//Generate the light view matrix based on the light's position
 	m_DirectionalLight->GenerateViewMatrix();
@@ -888,7 +945,7 @@ bool GraphicsClass::Frame()
 		m_Direct3D->DisableWireframe();
 	}
 
-
+*/
 
 	//Render the graphics
 	result = Render();
@@ -946,7 +1003,7 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 	keyDown = m_Input->IsDownPressed();
 	m_Position->LookDownward(keyDown);
 
-
+	/*
 
 	if (m_Input->IsNPressed())
 	{
@@ -989,7 +1046,7 @@ bool GraphicsClass::HandleMovementInput(float frameTime)
 		}
 	}
 
-
+*/
 
 	// HandleMouse Rotations
 	m_Position->MouseRotate(m_Input->GetMouseXDelta(), m_Input->GetMouseYDelta());
@@ -1143,7 +1200,7 @@ bool GraphicsClass::Render()
 	m_Direct3D->GetOrthoMatrix(orthoMatrix);
 	m_Camera->GetReflectionViewMatrix(reflectionViewMatrix);
 
-
+/*
 
 	// Turn on wire frame
 	if (m_wireFrame)
@@ -1155,7 +1212,7 @@ bool GraphicsClass::Render()
 		m_Direct3D->DisableWireframe();
 	}
 
-
+*/
 
 	//Get the position of the camera
 	cameraPosition = m_Camera->GetPosition();
@@ -1168,7 +1225,7 @@ bool GraphicsClass::Render()
 	m_Direct3D->TurnZBufferOff();
 
 	//Setup the scaling of the sky dome
-	worldMatrix = XMMatrixScaling(500.0, 750.0, 500.0);
+	worldMatrix = XMMatrixScaling(500.0, 1000.0, 500.0);
 
 	//Render the sky dome using the sky dome shader
 	m_SkyDome->Render(m_Direct3D->GetDeviceContext());
@@ -1194,7 +1251,10 @@ bool GraphicsClass::Render()
 	m_Direct3D->TurnZBufferOn();
 
 	//Translate to the location of the water and render it
-	worldMatrix = XMMatrixTranslation(0.0f, m_Water->GetWaterHeight(), 0.0f);
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixScaling(2.5, 1, 2.5);
+	translateMatrix = XMMatrixTranslation(0.0f, m_Water->GetWaterHeight(), 0.0f);
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	m_Water->Render(m_Direct3D->GetDeviceContext());
 	m_WaterShader->Render(m_Direct3D->GetDeviceContext(), m_Water->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, reflectionViewMatrix,
@@ -1229,11 +1289,38 @@ bool GraphicsClass::Render()
 		return false;
 	}
 
-	
+/*
+
+	float r_positon = 0.0f;
+	float r_increment = 100.0f;
+	float r_worldend = 1500.0f;
+
+	while (r_positon != r_worldend)
+	{
+		// Setup the rotation and translation of the 1st model.
+		worldMatrix = XMMatrixIdentity();
+		worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
+		translateMatrix = XMMatrixTranslation(r_positon, 8.0f, 0.0f);
+		worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+		// Render the first model using the texture shader.
+		m_Model1->Render(m_Direct3D->GetDeviceContext());
+		result = m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+			m_Model1->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+			m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+		if (!result)
+		{
+			return false;
+		}
+		r_positon =+ r_increment;
+	}
+
+*/
+
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
-	translateMatrix = XMMatrixTranslation(150, 8, 150);
+	translateMatrix = XMMatrixTranslation(-100, 8, 0);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.
@@ -1245,6 +1332,8 @@ bool GraphicsClass::Render()
 	{
 		return false;
 	}
+
+
 
 	//PointLight Tester \/
 	
@@ -1280,6 +1369,45 @@ bool GraphicsClass::Render()
 	{
 		return false;
 	}
+
+	//Setup the rotation and translation of the bridge model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3.5, 3.5, 3.5));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(360));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(50, 5, 275));
+
+	//Render the model using the bridge map shader
+	m_House->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_House->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_House->GetColorTexture(), m_House->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(),
+		m_DirectionalLight->GetDiffuseColor());
+	if (!result)
+	{
+		return false;
+	}
+
+
+	//Setup the rotation and translation of the model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 5, 740));
+
+
+	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0.5, 5, 0.5));
+	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	//worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	//Render the boat model using the bump shader
+	m_Boat->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_Boat->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Boat->GetColorTexture(), m_Boat->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetDiffuseColor());
+	if (!result)
+	{
+		return false;
+	}
+
+
 
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();
@@ -1509,6 +1637,21 @@ void GraphicsClass::RenderReflectionToTexture()
 	m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Bridge->GetIndexCount(), worldMatrix, reflectionViewMatrix,
 		projectionMatrix, m_Bridge->GetColorTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
 		cameraPosition, m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+
+	//Setup the rotation and translation of the model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 5, 740));
+
+
+	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 10, 400));
+	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+
+	//Render the boat model using the bump shader
+	m_Boat->Render(m_Direct3D->GetDeviceContext());
+	m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_Boat->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
+		m_Boat->GetColorTexture(), m_Boat->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetDiffuseColor());
 
 
 

@@ -34,7 +34,7 @@
 
 //GLOBALS
 const bool FULL_SCREEN = false;
-const bool VSYNC_ENABLED = true;
+const bool VSYNC_ENABLED = false;
 const float SCREEN_DEPTH = 10000.0f;
 const float SCREEN_NEAR = 0.1f;
 const int SHADOWMAP_WIDTH = 4096;
@@ -113,6 +113,9 @@ private:
 	//Models
 	ModelClass* m_Model1;
 	BumpModelClass* m_Bridge;
+	BumpModelClass* m_Boat;
+	BumpModelClass* m_House;
+
 
 
 	BumpModelClass* m_Campfire;
