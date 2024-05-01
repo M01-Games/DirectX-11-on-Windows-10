@@ -1414,13 +1414,11 @@ bool GraphicsClass::Render()
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(XM_PIDIV2));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(65, 5, 0));
+
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 5, 740));
-
-
-	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0.5, 5, 0.5));
-	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
-	//worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	//Render the boat model using the bump shader
 	m_Boat->Render(m_Direct3D->GetDeviceContext());
@@ -1435,14 +1433,11 @@ bool GraphicsClass::Render()
 
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0, 75, 0));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(15, 15, 15));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0, 75, 0));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(350, 150, 0));
+
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0, 75, 0));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.
 	m_Lantens->Render(m_Direct3D->GetDeviceContext());
@@ -1686,19 +1681,30 @@ void GraphicsClass::RenderReflectionToTexture()
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(XM_PIDIV2));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(65, 0, 0));
+
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 5, 740));
-
-
-	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 10, 400));
-	//worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 0, 740));
 
 	//Render the boat model using the bump shader
 	m_Boat->Render(m_Direct3D->GetDeviceContext());
 	m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_Boat->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
 		m_Boat->GetColorTexture(), m_Boat->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetDiffuseColor());
 
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(15, 15, 15));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(350, 150, 0));
 
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+
+	// Render the first model using the texture shader.
+	m_Lantens->Render(m_Direct3D->GetDeviceContext());
+	m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Lantens->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
+		m_Lantens->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
 
 
 	//Reset the render target back to the original back buffer and not the render to texture anymore
