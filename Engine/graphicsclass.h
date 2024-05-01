@@ -117,7 +117,7 @@ private:
 	BumpModelClass* m_House;
 
 
-
+	ModelClass* m_Lantens;
 	BumpModelClass* m_Campfire;
 	FireModelClass* m_FireModel;
 	ParticleSystemClass* m_ParticleSystem;

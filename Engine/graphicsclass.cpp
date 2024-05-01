@@ -40,7 +40,7 @@ GraphicsClass::GraphicsClass()
 	m_Boat = 0;
 	m_House = 0;
 
-
+	m_Lantens = 0;
 	m_Campfire = 0;
 	m_FireModel = 0;
 	m_ParticleSystem = 0;
@@ -537,6 +537,21 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 
+	
+	// Create the model object.
+	m_Lantens = new ModelClass;
+	if (!m_Lantens)
+	{
+		return false;
+	}
+
+	// Initialize the model object.
+	result = m_Lantens->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Lantens.txt", L"../Engine/data/Solid_Red.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the first model object.", L"Error", MB_OK);
+		return false;
+	}
 
 	//Create the campfire bump model object for models with normal maps and related vectors.
 	m_Campfire = new BumpModelClass;
@@ -621,6 +636,15 @@ void GraphicsClass::Shutdown()
 		m_House = 0;
 	}
 
+
+
+	//Release the campfire object.
+	if (m_Lantens)
+	{
+		m_Campfire->Shutdown();
+		delete m_Lantens;
+		m_Lantens = 0;
+	}
 
 	//Release the campfire object.
 	if (m_Campfire)
@@ -1408,6 +1432,27 @@ bool GraphicsClass::Render()
 	}
 
 
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0, 75, 0));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0, 75, 0));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(0, 75, 0));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
+	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
+
+	// Render the first model using the texture shader.
+	m_Lantens->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Lantens->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Lantens->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+	if (!result)
+	{
+		return false;
+	}
 
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();

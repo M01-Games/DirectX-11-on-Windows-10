@@ -1,2 +1,28 @@
-﻿bumpmapshaderclass.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe
+﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  graphicsclass.cpp
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(71,27): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(130,28): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(142,37): warning C4316: 'LightClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(248,24): warning C4316: 'TextClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(271,46): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(286,46): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(301,42): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(465,47): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1108,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1108,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1108,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1417,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1440,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1442,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1444,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1484,78): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1154,67): warning C4101: 'baseViewMatrix': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1167,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1167,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1167,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1689,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1717,7): warning C4101: 'result': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1716,36): warning C4101: 'projectionMatrix': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1716,24): warning C4101: 'viewMatrix': unreferenced local variable
+C:\Users\u2266405\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1716,11): warning C4101: 'worldMatrix': unreferenced local variable
+  Engine.vcxproj -> C:\Users\u2266405\DirectX-11-on-Windows-10\Debug\Engine.exe
