@@ -1,4 +1,41 @@
 ﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  watershaderclass.cpp
+  waterclass.cpp
+  timerclass.cpp
+  textureshaderclass.cpp
+  textureclass.cpp
+  texturearrayclass.cpp
+  textclass.cpp
+  terrainshaderclass.cpp
+  terrainclass.cpp
+  systemclass.cpp
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(457,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(713,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\terrainclass.cpp(721,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  specmapshaderclass.cpp
+  skyplaneshaderclass.cpp
+  skyplaneclass.cpp
+  skydomeshaderclass.cpp
+  skydomeclass.cpp
+  shadowshaderclass.cpp
+  shadermanagerclass.cpp
+  rendertextureclass.cpp
+  reflectionshaderclass.cpp
+  positionclass.cpp
+  Generating Code...
+  Compiling...
+  pointlightshaderclass.cpp
+  pointlightclass.cpp
+  particlesystemclass.cpp
+  particleshaderclass.cpp
+  multitextureshaderclass.cpp
+  multitexturemodelclass.cpp
+  modelclass.cpp
+  main.cpp
+  lightshaderclass.cpp
+  lightmapshaderclass.cpp
+  lightclass.cpp
+  inputclass.cpp
   graphicsclass.cpp
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(75,15): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(134,13): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
@@ -34,4 +71,21 @@ C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cp
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2101,75): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2101,69): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2101,62): warning C4305: 'argument': truncation from 'double' to 'float'
+  glassshaderclass.cpp
+  fpsclass.cpp
+  fontshaderclass.cpp
+  fontclass.cpp
+  fireshaderclass.cpp
+  firemodelclass.cpp
+  depthshaderclass.cpp
+  Generating Code...
+  Compiling...
+  DDSTextureLoader.cpp
+  d3dclass.cpp
+  cpuclass.cpp
+  cameraclass.cpp
+  bumpmodelclass.cpp
+  bumpmapshaderclass.cpp
+  Generating Code...
+bumpmapshaderclass.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe
