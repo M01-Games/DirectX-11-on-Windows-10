@@ -43,6 +43,7 @@ GraphicsClass::GraphicsClass()
 
 	m_Lantern = 0;
 	m_WindowModel = 0;
+	m_LightMapModel = 0;
 	m_Lantens = 0;
 	m_Campfire = 0;
 	m_FireModel = 0;
@@ -450,8 +451,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the third light object.
-	m_PointLight3->SetDiffuseColor(0.0f, 0.0f, 0.0f, 1.0f);
-	m_PointLight3->SetPosition(255, 20, 450);
+	m_PointLight3->SetDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
+	m_PointLight3->SetPosition(175, 30, 335);
 
 	//Create the fourth light object.
 	m_PointLight4 = new PointLightClass;
@@ -584,6 +585,21 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 		MessageBox(hwnd, L"Could not initialize the window model object.", L"Error", MB_OK);
 		return false;
 	}
+
+	//Create the light map model object.
+	m_LightMapModel = new MultiTextureModelClass;
+	if (!m_LightMapModel)
+	{
+		return false;
+	}
+
+	//Initialize the light map model object.
+	result = m_LightMapModel->Initialize(m_Direct3D->GetDevice(), "../Engine/data/cube.txt", L"../Engine/data/candle.dds", L"../Engine/data/lightmap.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the multi-texture model object.", L"Error", MB_OK);
+		return false;
+	}
 	
 	// Create the model object.
 	m_Lantens = new ModelClass;
@@ -707,6 +723,14 @@ void GraphicsClass::Shutdown()
 		m_WindowModel->Shutdown();
 		delete m_WindowModel;
 		m_WindowModel = 0;
+	}
+
+	//Release the light map object.
+	if (m_LightMapModel)
+	{
+		m_LightMapModel->Shutdown();
+		delete m_LightMapModel;
+		m_LightMapModel = 0;
 	}
 
 	//Release the campfire object.
@@ -1432,25 +1456,6 @@ bool GraphicsClass::Render()
 
 
 
-	//PointLight Tester \/
-	
-	// Setup the rotation and translation of the 1st model.
-	worldMatrix = XMMatrixIdentity();
-	worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
-	translateMatrix = XMMatrixTranslation(175.01, 8, 175.01);
-	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
-
-	// Render the first model using the texture shader.
-	m_Model1->Render(m_Direct3D->GetDeviceContext());
-	result = m_ShaderManager->RenderPointLightShader(m_Direct3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model1->GetTexture(), diffuseColor, lightPosition);
-	if (!result)
-	{
-		return false;
-	}
-
-
-
 	//Setup the rotation and translation of the bridge model
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
@@ -1564,6 +1569,38 @@ bool GraphicsClass::Render()
 		return false;
 	}
 	
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(175, 8, 335));
+
+	// Render the first model using the texture shader.
+	m_Lantern->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Lantern->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Lantern->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+	if (!result)
+	{
+		return false;
+	}
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(2.75, 2.75, 2.75));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(139.95));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(175, 31.5, 335.5));
+
+	//Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing
+	//Render using the lightmap shader
+	m_LightMapModel->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderLightMapShader(m_Direct3D->GetDeviceContext(), m_LightMapModel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_LightMapModel->GetTextureArray());
+	if (!result)
+	{
+		return false;
+	}
+
+
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(15, 15, 15));
@@ -1585,7 +1622,7 @@ bool GraphicsClass::Render()
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(8, 8, 8));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 8, 200));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(300, 8, 575));
 
 	//Render the model using the relavent shader
 	m_Campfire->Render(m_Direct3D->GetDeviceContext());
@@ -1610,7 +1647,7 @@ bool GraphicsClass::Render()
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.12, 0.12, 0.12));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 8, 200));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(300, 8, 575));
 
 	//Render the square model using the fire shader
 	m_FireModel->Render(m_Direct3D->GetDeviceContext());
@@ -1626,7 +1663,7 @@ bool GraphicsClass::Render()
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(8, 10, 4));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationZ(210));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(200, 30, 200));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(300, 30, 575));
 
 	//Put the particle system vertex and index buffers on the graphics pipeline to prepare them for drawing
 	m_ParticleSystem->Render(m_Direct3D->GetDeviceContext());

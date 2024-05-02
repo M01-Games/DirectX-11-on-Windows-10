@@ -119,6 +119,7 @@ private:
 
 	ModelClass* m_Lantern;
 	BumpModelClass* m_WindowModel;
+	MultiTextureModelClass* m_LightMapModel;
 	ModelClass* m_Lantens;
 	BumpModelClass* m_Campfire;
 	FireModelClass* m_FireModel;
