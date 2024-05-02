@@ -430,7 +430,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 
 	//Initialize the first light object.
 	m_PointLight1->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
-	m_PointLight1->SetPosition(205, 8, 205);
+	m_PointLight1->SetPosition(300, 8, 575);
 
 	//Create the second light object.
 	m_PointLight2 = new PointLightClass;
@@ -441,7 +441,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 
 	//Initialize the second light object.
 	m_PointLight2->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
-	m_PointLight2->SetPosition(165, 30, 325);
+	m_PointLight2->SetPosition(180, 30, 250);
 
 	//Create the third light object.
 	m_PointLight3 = new PointLightClass;
@@ -451,8 +451,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the third light object.
-	m_PointLight3->SetDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
-	m_PointLight3->SetPosition(175, 30, 335);
+	m_PointLight3->SetDiffuseColor(1.0f, 1.0f, 0.0f, 0.5f);
+	m_PointLight3->SetPosition(140, 30, 370);
 
 	//Create the fourth light object.
 	m_PointLight4 = new PointLightClass;
@@ -1234,6 +1234,21 @@ bool GraphicsClass::RenderShadowToTexture()
 		return false;
 	}
 
+
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(175, 8, 335));
+
+	// Render the first model using the texture shader.
+	m_Lantern->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderDepthShader(m_Direct3D->GetDeviceContext(), m_Lantern->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
+	if (!result)
+	{
+		return false;
+	}
+
+
 	//Reset the render target back to the original back buffer and not the render to texture anymore
 	m_Direct3D->SetBackBufferRenderTarget();
 
@@ -1503,6 +1518,50 @@ bool GraphicsClass::Render()
 		return false;
 	}
 
+	//Setup the rotation and translation of the house model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3.5, 3.5, 3.5));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(100, 5, 450));
+
+	//Render the model using the bridge map shader
+	m_House->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderPointLightShader(m_Direct3D->GetDeviceContext(), m_House->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_House->GetColorTexture(), diffuseColor, lightPosition);
+	if (!result)
+	{
+		return false;
+	}
+
+	//Setup the rotation and translation of the house model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3.5, 3.5, 3.5));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(360));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(300, 5, 350));
+
+	//Render the model using the bridge map shader
+	m_House->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderPointLightShader(m_Direct3D->GetDeviceContext(), m_House->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_House->GetColorTexture(), diffuseColor, lightPosition);
+	if (!result)
+	{
+		return false;
+	}
+
+	//Setup the rotation and translation of the house model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3.5, 3.5, 3.5));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(55));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(250, 5, 175));
+
+	//Render the model using the bridge map shader
+	m_House->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderPointLightShader(m_Direct3D->GetDeviceContext(), m_House->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_House->GetColorTexture(), diffuseColor, lightPosition);
+	if (!result)
+	{
+		return false;
+	}
+
 
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();
@@ -1511,7 +1570,7 @@ bool GraphicsClass::Render()
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(65, 5, 0));
 
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 5, 740));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 1, 740));
 
 	//Render the boat model using the bump shader
 	m_Boat->Render(m_Direct3D->GetDeviceContext());
@@ -1541,7 +1600,7 @@ bool GraphicsClass::Render()
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(165, 8, 325));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(180, 8, 250));
 
 	// Render the first model using the texture shader.
 	m_Lantern->Render(m_Direct3D->GetDeviceContext());
@@ -1557,7 +1616,7 @@ bool GraphicsClass::Render()
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(2.75, 2.75, 2.75));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(139.95));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(165, 31.5, 325.5));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(180, 31.5, 250.5));
 
 	//Put the window model vertex and index buffers on the graphics pipeline to prepare them for drawing	
 	//Render the window model using the glass shader
@@ -1573,13 +1632,13 @@ bool GraphicsClass::Render()
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(175, 8, 335));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(140, 8, 370));
 
 	// Render the first model using the texture shader.
 	m_Lantern->Render(m_Direct3D->GetDeviceContext());
-	result = m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Lantern->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Lantern->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
-		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+	result = m_ShaderManager->RenderShadowShader(m_Direct3D->GetDeviceContext(), m_Lantern->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
+		lightProjectionMatrix, m_Lantern->GetTexture(), m_ShadowTexture->GetShaderResourceView(), m_DirectionalLight->GetPosition(), m_DirectionalLight->GetAmbientColor(),
+		m_DirectionalLight->GetDiffuseColor());
 	if (!result)
 	{
 		return false;
@@ -1589,7 +1648,7 @@ bool GraphicsClass::Render()
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(2.75, 2.75, 2.75));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(139.95));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(175, 31.5, 335.5));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(140, 31.5, 370.5));
 
 	//Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing
 	//Render using the lightmap shader
@@ -1766,6 +1825,34 @@ void GraphicsClass::RenderReflectionToTexture()
 	XMMATRIX reflectionViewMatrix, worldMatrix, projectionMatrix, translateMatrix;
 	XMFLOAT3 cameraPosition;
 
+	//Variables for the fire 
+	XMFLOAT3 scrollSpeeds, scales;
+	XMFLOAT2 distortion1, distortion2, distortion3;
+	float distortionScale, distortionBias;
+	static float frameTime = 0.0f;
+
+	//Increment the frame time counter
+	frameTime += 0.01f;
+	if (frameTime > 1000.0f)
+	{
+		frameTime = 0.0f;
+	}
+
+	//Set the three scrolling speeds for the three different noise textures
+	scrollSpeeds = XMFLOAT3(1.3f, 2.1f, 2.3f);
+
+	//Set the three scales which will be used to create the three different noise octave textures
+	scales = XMFLOAT3(1.0f, 2.0f, 3.0f);
+
+	//Set the three different x and y distortion factors for the three different noise textures
+	distortion1 = XMFLOAT2(0.1f, 0.2f);
+	distortion2 = XMFLOAT2(0.1f, 0.3f);
+	distortion3 = XMFLOAT2(0.1f, 0.1f);
+
+	//The the scale and bias of the texture coordinate sampling perturbation
+	distortionScale = 0.8f;
+	distortionBias = 0.5f;
+
 	//Update the rotation variable each frame
 	static float rotation;
 	rotation += (float)XM_PI * 0.0005f * m_Timer->GetTime();
@@ -1855,10 +1942,10 @@ void GraphicsClass::RenderReflectionToTexture()
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(XM_PIDIV2));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(65, 0, 0));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(65, 5, 0));
 
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(rotation * 0.1));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 0, 740));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(270, 1, 740));
 
 	//Render the boat model using the bump shader
 	m_Boat->Render(m_Direct3D->GetDeviceContext());
@@ -1891,6 +1978,56 @@ void GraphicsClass::RenderReflectionToTexture()
 		m_Lantens->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
 		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
 
+
+	//Setup the rotation and translation of the model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(8, 8, 8));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(300, 8, 575));
+
+	//Render the model using the relavent shader
+	m_Campfire->Render(m_Direct3D->GetDeviceContext());
+	m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_Campfire->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
+		m_Campfire->GetColorTexture(), m_Campfire->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(),
+		m_DirectionalLight->GetDiffuseColor());
+
+
+	//Turn on alpha blending for the fire transparency
+	m_Direct3D->TurnOnAlphaBlending();
+
+	//Turn back face culling back on
+	m_Direct3D->TurnOffCulling();
+
+	//Get the world, view, and projection matrices from the camera and d3d objects
+	m_Camera->GetViewMatrix(reflectionViewMatrix);
+	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+
+	//Setup the rotation and translation of the model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.12, 0.12, 0.12));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(300, 8, 575));
+
+	//Render the square model using the fire shader
+	m_FireModel->Render(m_Direct3D->GetDeviceContext());
+	m_ShaderManager->RenderFireShader(m_Direct3D->GetDeviceContext(), m_FireModel->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
+		m_FireModel->GetTexture1(), m_FireModel->GetTexture2(), m_FireModel->GetTexture3(), frameTime, scrollSpeeds,
+		scales, distortion1, distortion2, distortion3, distortionScale, distortionBias);
+
+	//Setup the rotation and translation of the model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(8, 10, 4));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationZ(210));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(300, 30, 575));
+
+	//Put the particle system vertex and index buffers on the graphics pipeline to prepare them for drawing
+	m_ParticleSystem->Render(m_Direct3D->GetDeviceContext());
+	m_ShaderManager->RenderParticleShader(m_Direct3D->GetDeviceContext(), m_ParticleSystem->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
+		m_ParticleSystem->GetTexture());
+
+	//Turn off alpha blending
+	m_Direct3D->TurnOffAlphaBlending();
+
+	//Turn back face culling back on
+	m_Direct3D->TurnOnCulling();
 
 	//Reset the render target back to the original back buffer and not the render to texture anymore
 	m_Direct3D->SetBackBufferRenderTarget();
@@ -1962,7 +2099,7 @@ bool GraphicsClass::RenderGlassRefractionToTexture()
 	//Setup the rotation and translation of the model
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.025, 0.05, 0.025));
-	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(165, 30, 325));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(180, 30, 250));
 
 	//Render the square model using the fire shader
 	m_FireModel->Render(m_Direct3D->GetDeviceContext());

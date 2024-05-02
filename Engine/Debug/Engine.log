@@ -11,24 +11,27 @@ C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cp
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1203,20): warning C4101: 'posZ': unreferenced local variable
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1203,14): warning C4101: 'posY': unreferenced local variable
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1203,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1495,76): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1495,66): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1513,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1559,64): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1591,64): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1607,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1610,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1649,74): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1649,68): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1649,62): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1249,67): warning C4101: 'baseViewMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1261,20): warning C4101: 'posZ': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1261,14): warning C4101: 'posY': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1261,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1860,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1883,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1886,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1964,75): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1964,69): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1964,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1510,76): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1510,66): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1572,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1618,64): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1650,64): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1666,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1669,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1708,74): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1708,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1708,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1264,67): warning C4101: 'baseViewMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1276,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1276,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1276,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1947,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1970,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1973,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2006,74): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2006,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2006,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2101,75): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2101,69): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(2101,62): warning C4305: 'argument': truncation from 'double' to 'float'
   Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe
