@@ -1,5 +1,6 @@
-//Filename: bumpmodelclass.cpp
-
+////////////////////////////////////////////////////////////////////////////////
+// Filename: bumpmodelclass.cpp
+////////////////////////////////////////////////////////////////////////////////
 #include "bumpmodelclass.h"
 
 
@@ -28,24 +29,24 @@ bool BumpModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR
 	bool result;
 
 
-	//Load in the model data,
+	// Load in the model data,
 	result = LoadModel(modelFilename);
 	if(!result)
 	{
 		return false;
 	}
 
-	//Calculate the tangent and binormal vectors for the model.
+	// Calculate the tangent and binormal vectors for the model.
 	CalculateModelVectors();
 
-	//Initialize the vertex and index buffers.
+	// Initialize the vertex and index buffers.
 	result = InitializeBuffers(device);
 	if(!result)
 	{
 		return false;
 	}
 
-	//Load the textures for this model.
+	// Load the textures for this model.
 	result = LoadTextures(device, textureFilename1, textureFilename2);
 	if(!result)
 	{
@@ -58,13 +59,13 @@ bool BumpModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR
 
 void BumpModelClass::Shutdown()
 {
-	//Release the model textures.
+	// Release the model textures.
 	ReleaseTextures();
 
-	//Shutdown the vertex and index buffers.
+	// Shutdown the vertex and index buffers.
 	ShutdownBuffers();
 
-	//Release the model data.
+	// Release the model data.
 	ReleaseModel();
 
 	return;
@@ -73,7 +74,7 @@ void BumpModelClass::Shutdown()
 
 void BumpModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
-	//Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
 
 	return;
@@ -108,21 +109,21 @@ bool BumpModelClass::InitializeBuffers(ID3D11Device* device)
 	int i;
 
 
-	//Create the vertex array.
+	// Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
 	if(!vertices)
 	{
 		return false;
 	}
 
-	//Create the index array.
+	// Create the index array.
 	indices = new unsigned long[m_indexCount];
 	if(!indices)
 	{
 		return false;
 	}
 
-	//Load the vertex array and index array with data.
+	// Load the vertex array and index array with data.
 	for(i=0; i<m_vertexCount; i++)
 	{
 		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
@@ -134,7 +135,7 @@ bool BumpModelClass::InitializeBuffers(ID3D11Device* device)
 		indices[i] = i;
 	}
 
-	//Set up the description of the static vertex buffer.
+	// Set up the description of the static vertex buffer.
     vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -142,19 +143,19 @@ bool BumpModelClass::InitializeBuffers(ID3D11Device* device)
     vertexBufferDesc.MiscFlags = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
-	//Give the subresource structure a pointer to the vertex data.
+	// Give the subresource structure a pointer to the vertex data.
     vertexData.pSysMem = vertices;
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	//Now create the vertex buffer.
+	// Now create the vertex buffer.
     result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
-	//Set up the description of the static index buffer.
+	// Set up the description of the static index buffer.
     indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
     indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -162,19 +163,19 @@ bool BumpModelClass::InitializeBuffers(ID3D11Device* device)
     indexBufferDesc.MiscFlags = 0;
 	indexBufferDesc.StructureByteStride = 0;
 
-	//Give the subresource structure a pointer to the index data.
+	// Give the subresource structure a pointer to the index data.
     indexData.pSysMem = indices;
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	//Create the index buffer.
+	// Create the index buffer.
 	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
-	//Release the arrays now that the vertex and index buffers have been created and loaded.
+	// Release the arrays now that the vertex and index buffers have been created and loaded.
 	delete [] vertices;
 	vertices = 0;
 
@@ -187,14 +188,14 @@ bool BumpModelClass::InitializeBuffers(ID3D11Device* device)
 
 void BumpModelClass::ShutdownBuffers()
 {
-	//Release the index buffer.
+	// Release the index buffer.
 	if(m_indexBuffer)
 	{
 		m_indexBuffer->Release();
 		m_indexBuffer = 0;
 	}
 
-	//Release the vertex buffer.
+	// Release the vertex buffer.
 	if(m_vertexBuffer)
 	{
 		m_vertexBuffer->Release();
@@ -211,17 +212,17 @@ void BumpModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	unsigned int offset;
 
 
-	//Set vertex buffer stride and offset.
+	// Set vertex buffer stride and offset.
 	stride = sizeof(VertexType); 
 	offset = 0;
     
-	//Set the vertex buffer to active in the input assembler so it can be rendered.
+	// Set the vertex buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
-    //Set the index buffer to active in the input assembler so it can be rendered.
+    // Set the index buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-    //Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
+    // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	return;
@@ -233,28 +234,28 @@ bool BumpModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1, WCHAR*
 	bool result;
 
 
-	//Create the color texture object.
+	// Create the color texture object.
 	m_ColorTexture = new TextureClass;
 	if(!m_ColorTexture)
 	{
 		return false;
 	}
 
-	//Initialize the color texture object.
+	// Initialize the color texture object.
 	result = m_ColorTexture->Initialize(device, filename1);
 	if(!result)
 	{
 		return false;
 	}
 
-	//Create the normal map texture object.
+	// Create the normal map texture object.
 	m_NormalMapTexture = new TextureClass;
 	if(!m_NormalMapTexture)
 	{
 		return false;
 	}
 
-	//Initialize the normal map texture object.
+	// Initialize the normal map texture object.
 	result = m_NormalMapTexture->Initialize(device, filename2);
 	if(!result)
 	{
@@ -267,7 +268,7 @@ bool BumpModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1, WCHAR*
 
 void BumpModelClass::ReleaseTextures()
 {
-	//Release the texture objects.
+	// Release the texture objects.
 	if(m_ColorTexture)
 	{
 		m_ColorTexture->Shutdown();
@@ -293,34 +294,34 @@ bool BumpModelClass::LoadModel(char* filename)
 	int i;
 
 
-	//Open the model file.  If it could not open the file then exit.
+	// Open the model file.  If it could not open the file then exit.
 	fin.open(filename);
 	if(fin.fail())
 	{
 		return false;
 	}
 
-	//Read up to the value of vertex count.
+	// Read up to the value of vertex count.
 	fin.get(input);
 	while(input != ':')
 	{
 		fin.get(input);
 	}
 
-	//Read in the vertex count.
+	// Read in the vertex count.
 	fin >> m_vertexCount;
 
-	//Set the number of indices to be the same as the vertex count.
+	// Set the number of indices to be the same as the vertex count.
 	m_indexCount = m_vertexCount;
 
-	//Create the model using the vertex count that was read in.
+	// Create the model using the vertex count that was read in.
 	m_model = new ModelType[m_vertexCount];
 	if(!m_model)
 	{
 		return false;
 	}
 
-	//Read up to the beginning of the data.
+	// Read up to the beginning of the data.
 	fin.get(input);
 	while(input != ':')
 	{
@@ -329,7 +330,7 @@ bool BumpModelClass::LoadModel(char* filename)
 	fin.get(input);
 	fin.get(input);
 
-	//Read in the vertex data.
+	// Read in the vertex data.
 	for(i=0; i<m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
@@ -337,7 +338,7 @@ bool BumpModelClass::LoadModel(char* filename)
 		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
 	}
 
-	//Close the model file.
+	// Close the model file.
 	fin.close();
 
 	return true;
@@ -363,16 +364,16 @@ void BumpModelClass::CalculateModelVectors()
 	VectorType tangent, binormal;
 
 
-	//Calculate the number of faces in the model.
+	// Calculate the number of faces in the model.
 	faceCount = m_vertexCount / 3;
 
-	//Initialize the index to the model data.
+	// Initialize the index to the model data.
 	index = 0;
 
-	//Go through all the faces and calculate the the tangent, binormal, and normal vectors.
+	// Go through all the faces and calculate the the tangent, binormal, and normal vectors.
 	for(i=0; i<faceCount; i++)
 	{
-		//Get the three vertices for this face from the model.
+		// Get the three vertices for this face from the model.
 		vertex1.x = m_model[index].x;
 		vertex1.y = m_model[index].y;
 		vertex1.z = m_model[index].z;
@@ -403,10 +404,10 @@ void BumpModelClass::CalculateModelVectors()
 		vertex3.nz = m_model[index].nz;
 		index++;
 
-		//Calculate the tangent and binormal of that face.
+		// Calculate the tangent and binormal of that face.
 		CalculateTangentBinormal(vertex1, vertex2, vertex3, tangent, binormal);
 
-		//Store the normal, tangent, and binormal for this face back in the model structure.
+		// Store the normal, tangent, and binormal for this face back in the model structure.
 		m_model[index-1].tx = tangent.x;
 		m_model[index-1].ty = tangent.y;
 		m_model[index-1].tz = tangent.z;
@@ -442,7 +443,7 @@ void BumpModelClass::CalculateTangentBinormal(TempVertexType vertex1, TempVertex
 	float length;
 
 
-	//Calculate the two vectors for this face.
+	// Calculate the two vectors for this face.
 	vector1[0] = vertex2.x - vertex1.x;
 	vector1[1] = vertex2.y - vertex1.y;
 	vector1[2] = vertex2.z - vertex1.z;
@@ -451,17 +452,17 @@ void BumpModelClass::CalculateTangentBinormal(TempVertexType vertex1, TempVertex
 	vector2[1] = vertex3.y - vertex1.y;
 	vector2[2] = vertex3.z - vertex1.z;
 
-	//Calculate the tu and tv texture space vectors.
+	// Calculate the tu and tv texture space vectors.
 	tuVector[0] = vertex2.tu - vertex1.tu;
 	tvVector[0] = vertex2.tv - vertex1.tv;
 
 	tuVector[1] = vertex3.tu - vertex1.tu;
 	tvVector[1] = vertex3.tv - vertex1.tv;
 
-	//Calculate the denominator of the tangent/binormal equation.
+	// Calculate the denominator of the tangent/binormal equation.
 	den = 1.0f / (tuVector[0] * tvVector[1] - tuVector[1] * tvVector[0]);
 
-	//Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
+	// Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
 	tangent.x = (tvVector[1] * vector1[0] - tvVector[0] * vector2[0]) * den;
 	tangent.y = (tvVector[1] * vector1[1] - tvVector[0] * vector2[1]) * den;
 	tangent.z = (tvVector[1] * vector1[2] - tvVector[0] * vector2[2]) * den;
@@ -470,18 +471,18 @@ void BumpModelClass::CalculateTangentBinormal(TempVertexType vertex1, TempVertex
 	binormal.y = (tuVector[0] * vector2[1] - tuVector[1] * vector1[1]) * den;
 	binormal.z = (tuVector[0] * vector2[2] - tuVector[1] * vector1[2]) * den;
 
-	//Calculate the length of this normal.
+	// Calculate the length of this normal.
 	length = sqrt((tangent.x * tangent.x) + (tangent.y * tangent.y) + (tangent.z * tangent.z));
 			
-	//Normalize the normal and then store it
+	// Normalize the normal and then store it
 	tangent.x = tangent.x / length;
 	tangent.y = tangent.y / length;
 	tangent.z = tangent.z / length;
 
-	//Calculate the length of this normal.
+	// Calculate the length of this normal.
 	length = sqrt((binormal.x * binormal.x) + (binormal.y * binormal.y) + (binormal.z * binormal.z));
 			
-	//Normalize the normal and then store it
+	// Normalize the normal and then store it
 	binormal.x = binormal.x / length;
 	binormal.y = binormal.y / length;
 	binormal.z = binormal.z / length;

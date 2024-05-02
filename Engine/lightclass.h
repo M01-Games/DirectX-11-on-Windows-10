@@ -1,11 +1,22 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: lightclass.h
+////////////////////////////////////////////////////////////////////////////////
 #ifndef _LIGHTCLASS_H_
 #define _LIGHTCLASS_H_
 
-//INCLUDES
+
+//////////////
+// INCLUDES //
+//////////////
 #include <DirectXMath.h> 
 
 using namespace DirectX;
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Class name: LightClass
+////////////////////////////////////////////////////////////////////////////////
 class LightClass
 {
 public:
@@ -33,8 +44,6 @@ public:
 	void GetViewMatrix(XMMATRIX&);
 	void GetProjectionMatrix(XMMATRIX&);
 
-	void Frame();
-
 private:
 	XMFLOAT4 m_ambientColor;
 	XMFLOAT4 m_diffuseColor;
@@ -44,8 +53,6 @@ private:
 	XMFLOAT3 m_lookAt;
 	XMMATRIX m_viewMatrix;
 	XMMATRIX m_projectionMatrix;
-
-	float m_increasediffuseColor;
 };
 
 #endif

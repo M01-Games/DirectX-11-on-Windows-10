@@ -1,5 +1,6 @@
-//Filename: skyplaneclass.cpp
-
+////////////////////////////////////////////////////////////////////////////////
+// Filename: skyplaneclass.cpp
+////////////////////////////////////////////////////////////////////////////////
 #include "skyplaneclass.h"
 
 
@@ -30,35 +31,35 @@ bool SkyPlaneClass::Initialize(ID3D11Device* device, WCHAR* cloudTextureFilename
 	bool result;
 
 
-	//Set the sky plane parameters.
+	// Set the sky plane parameters.
 	skyPlaneResolution = 50;
 	skyPlaneWidth = 10.0f;
 	skyPlaneTop = 0.5f;
 	skyPlaneBottom = 0.0f;
 	textureRepeat = 2;
 
-	//Set the sky plane shader related parameters.
+	// Set the sky plane shader related parameters.
 	m_scale = 0.2f;
 	m_brightness = 0.75f;
 
-	//Initialize the translation to zero.
+	// Initialize the translation to zero.
 	m_translation = 0.0f;
 
-	//Create the sky plane.
+	// Create the sky plane.
 	result = InitializeSkyPlane(skyPlaneResolution, skyPlaneWidth, skyPlaneTop, skyPlaneBottom, textureRepeat);
 	if(!result)
 	{
 		return false;
 	}
 
-	//Create the vertex and index buffer for the sky plane.
+	// Create the vertex and index buffer for the sky plane.
 	result = InitializeBuffers(device, skyPlaneResolution);
 	if(!result)
 	{
 		return false;
 	}
 
-	//Load the sky plane textures.
+	// Load the sky plane textures.
 	result = LoadTextures(device, cloudTextureFilename, perturbTextureFilename);
 	if(!result)
 	{
@@ -71,13 +72,13 @@ bool SkyPlaneClass::Initialize(ID3D11Device* device, WCHAR* cloudTextureFilename
 
 void SkyPlaneClass::Shutdown()
 {
-	//Release the sky plane textures.
+	// Release the sky plane textures.
 	ReleaseTextures();
 
-	//Release the vertex and index buffer that were used for rendering the sky plane.
+	// Release the vertex and index buffer that were used for rendering the sky plane.
 	ShutdownBuffers();
 
-	//Release the sky plane array.
+	// Release the sky plane array.
 	ShutdownSkyPlane();
 
 	return;
@@ -86,7 +87,7 @@ void SkyPlaneClass::Shutdown()
 
 void SkyPlaneClass::Render(ID3D11DeviceContext* deviceContext)
 {
-	//Render the sky plane.
+	// Render the sky plane.
 	RenderBuffers(deviceContext);
 
 	return;
@@ -95,7 +96,7 @@ void SkyPlaneClass::Render(ID3D11DeviceContext* deviceContext)
 
 void SkyPlaneClass::Frame()
 {
-	//Increment the texture translation value each frame.
+	// Increment the texture translation value each frame.
 	m_translation += 0.00005f;
 	if(m_translation > 1.0f)
 	{
@@ -151,43 +152,43 @@ bool SkyPlaneClass::InitializeSkyPlane(int skyPlaneResolution, float skyPlaneWid
 	float positionX, positionY, positionZ, tu, tv;
 
 
-	//Create the array to hold the sky plane coordinates.
+	// Create the array to hold the sky plane coordinates.
 	m_skyPlane = new SkyPlaneType[(skyPlaneResolution + 1) * (skyPlaneResolution + 1)];
 	if(!m_skyPlane)
 	{
 		return false;
 	}
 
-	//Determine the size of each quad on the sky plane.
+	// Determine the size of each quad on the sky plane.
 	quadSize = skyPlaneWidth / (float)skyPlaneResolution;
 
-	//Calculate the radius of the sky plane based on the width.
+	// Calculate the radius of the sky plane based on the width.
 	radius = skyPlaneWidth / 2.0f;
 
-	//Calculate the height constant to increment by.
+	// Calculate the height constant to increment by.
 	constant = (skyPlaneTop - skyPlaneBottom) / (radius * radius);
 
-	//Calculate the texture coordinate increment value.
+	// Calculate the texture coordinate increment value.
 	textureDelta = (float)textureRepeat / (float)skyPlaneResolution;
 
-	//Loop through the sky plane and build the coordinates based on the increment values given.
+	// Loop through the sky plane and build the coordinates based on the increment values given.
 	for(j=0; j<=skyPlaneResolution; j++)
 	{
 		for(i=0; i<=skyPlaneResolution; i++)
 		{
-			//Calculate the vertex coordinates.
+			// Calculate the vertex coordinates.
 			positionX = (-0.5f * skyPlaneWidth) + ((float)i * quadSize);
 			positionZ = (-0.5f * skyPlaneWidth) + ((float)j * quadSize);
 			positionY = skyPlaneTop - (constant * ((positionX * positionX) + (positionZ * positionZ)));
 
-			//Calculate the texture coordinates.
+			// Calculate the texture coordinates.
 			tu = (float)i * textureDelta;
 			tv = (float)j * textureDelta;
 
-			//Calculate the index into the sky plane array to add this coordinate.
+			// Calculate the index into the sky plane array to add this coordinate.
 			index = j * (skyPlaneResolution + 1) + i;
 
-			//Add the coordinates to the sky plane array.
+			// Add the coordinates to the sky plane array.
 			m_skyPlane[index].x = positionX;
 			m_skyPlane[index].y = positionY;
 			m_skyPlane[index].z = positionZ;
@@ -202,7 +203,7 @@ bool SkyPlaneClass::InitializeSkyPlane(int skyPlaneResolution, float skyPlaneWid
 
 void SkyPlaneClass::ShutdownSkyPlane()
 {
-	//Release the sky plane array.
+	// Release the sky plane array.
 	if(m_skyPlane)
 	{
 		delete [] m_skyPlane;
@@ -223,30 +224,30 @@ bool SkyPlaneClass::InitializeBuffers(ID3D11Device* device, int skyPlaneResoluti
 	int i, j, index, index1, index2, index3, index4;
 
 
-	//Calculate the number of vertices in the sky plane mesh.
+	// Calculate the number of vertices in the sky plane mesh.
 	m_vertexCount = (skyPlaneResolution + 1) * (skyPlaneResolution + 1) * 6;
 
-	//Set the index count to the same as the vertex count.
+	// Set the index count to the same as the vertex count.
 	m_indexCount = m_vertexCount;
 		
-	//Create the vertex array.
+	// Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
 	if(!vertices)
 	{
 		return false;
 	}
 
-	//Create the index array.
+	// Create the index array.
 	indices = new unsigned long[m_indexCount];
 	if(!indices)
 	{
 		return false;
 	}
 
-	//Initialize the index into the vertex array.
+	// Initialize the index into the vertex array.
 	index = 0;
 
-	//Load the vertex and index array with the sky plane array data.
+	// Load the vertex and index array with the sky plane array data.
 	for(j=0; j<skyPlaneResolution; j++)
 	{
 		for(i=0; i<skyPlaneResolution; i++)
@@ -256,37 +257,37 @@ bool SkyPlaneClass::InitializeBuffers(ID3D11Device* device, int skyPlaneResoluti
 			index3 = (j+1) * (skyPlaneResolution + 1) + i;
 			index4 = (j+1) * (skyPlaneResolution + 1) + (i+1);
 
-			//Triangle 1 - Upper Left
+			// Triangle 1 - Upper Left
 			vertices[index].position = XMFLOAT3(m_skyPlane[index1].x, m_skyPlane[index1].y, m_skyPlane[index1].z);
 			vertices[index].texture = XMFLOAT2(m_skyPlane[index1].tu, m_skyPlane[index1].tv);
 			indices[index] = index;
 			index++;
 
-			//Triangle 1 - Upper Right
+			// Triangle 1 - Upper Right
 			vertices[index].position = XMFLOAT3(m_skyPlane[index2].x, m_skyPlane[index2].y, m_skyPlane[index2].z);
 			vertices[index].texture = XMFLOAT2(m_skyPlane[index2].tu, m_skyPlane[index2].tv);
 			indices[index] = index;
 			index++;
 
-			//Triangle 1 - Bottom Left
+			// Triangle 1 - Bottom Left
 			vertices[index].position = XMFLOAT3(m_skyPlane[index3].x, m_skyPlane[index3].y, m_skyPlane[index3].z);
 			vertices[index].texture = XMFLOAT2(m_skyPlane[index3].tu, m_skyPlane[index3].tv);
 			indices[index] = index;
 			index++;
 
-			//Triangle 2 - Bottom Left
+			// Triangle 2 - Bottom Left
 			vertices[index].position = XMFLOAT3(m_skyPlane[index3].x, m_skyPlane[index3].y, m_skyPlane[index3].z);
 			vertices[index].texture = XMFLOAT2(m_skyPlane[index3].tu, m_skyPlane[index3].tv);
 			indices[index] = index;
 			index++;
 
-			//Triangle 2 - Upper Right
+			// Triangle 2 - Upper Right
 			vertices[index].position = XMFLOAT3(m_skyPlane[index2].x, m_skyPlane[index2].y, m_skyPlane[index2].z);
 			vertices[index].texture = XMFLOAT2(m_skyPlane[index2].tu, m_skyPlane[index2].tv);
 			indices[index] = index;
 			index++;
 
-			//Triangle 2 - Bottom Right
+			// Triangle 2 - Bottom Right
 			vertices[index].position = XMFLOAT3(m_skyPlane[index4].x, m_skyPlane[index4].y, m_skyPlane[index4].z);
 			vertices[index].texture = XMFLOAT2(m_skyPlane[index4].tu, m_skyPlane[index4].tv);
 			indices[index] = index;
@@ -294,7 +295,7 @@ bool SkyPlaneClass::InitializeBuffers(ID3D11Device* device, int skyPlaneResoluti
 		}
 	}
 
-	//Set up the description of the vertex buffer.
+	// Set up the description of the vertex buffer.
     vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -302,19 +303,19 @@ bool SkyPlaneClass::InitializeBuffers(ID3D11Device* device, int skyPlaneResoluti
     vertexBufferDesc.MiscFlags = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
-	//Give the subresource structure a pointer to the vertex data.
+	// Give the subresource structure a pointer to the vertex data.
     vertexData.pSysMem = vertices;
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	//Now finally create the vertex buffer.
+	// Now finally create the vertex buffer.
     result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
-	//Set up the description of the index buffer.
+	// Set up the description of the index buffer.
     indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
     indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -322,19 +323,19 @@ bool SkyPlaneClass::InitializeBuffers(ID3D11Device* device, int skyPlaneResoluti
     indexBufferDesc.MiscFlags = 0;
 	indexBufferDesc.StructureByteStride = 0;
 
-	//Give the subresource structure a pointer to the index data.
+	// Give the subresource structure a pointer to the index data.
     indexData.pSysMem = indices;
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	//Create the index buffer.
+	// Create the index buffer.
 	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
-	//Release the arrays now that the vertex and index buffers have been created and loaded.
+	// Release the arrays now that the vertex and index buffers have been created and loaded.
 	delete [] vertices;
 	vertices = 0;
 
@@ -347,14 +348,14 @@ bool SkyPlaneClass::InitializeBuffers(ID3D11Device* device, int skyPlaneResoluti
 
 void SkyPlaneClass::ShutdownBuffers()
 {
-	//Release the index buffer.
+	// Release the index buffer.
 	if(m_indexBuffer)
 	{
 		m_indexBuffer->Release();
 		m_indexBuffer = 0;
 	}
 
-	//Release the vertex buffer.
+	// Release the vertex buffer.
 	if(m_vertexBuffer)
 	{
 		m_vertexBuffer->Release();
@@ -371,17 +372,17 @@ void SkyPlaneClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	unsigned int offset;
 
 
-	//Set vertex buffer stride and offset.
+	// Set vertex buffer stride and offset.
     stride = sizeof(VertexType); 
 	offset = 0;
     
-	//Set the vertex buffer to active in the input assembler so it can be rendered.
+	// Set the vertex buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
-    //Set the index buffer to active in the input assembler so it can be rendered.
+    // Set the index buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-    //Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
+    // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	return;
@@ -393,28 +394,28 @@ bool SkyPlaneClass::LoadTextures(ID3D11Device* device, WCHAR* textureFilename1, 
 	bool result;
 
 
-	//Create the cloud texture object.
+	// Create the cloud texture object.
 	m_CloudTexture = new TextureClass;
 	if(!m_CloudTexture)
 	{
 		return false;
 	}
 
-	//Initialize the cloud texture object.
+	// Initialize the cloud texture object.
 	result = m_CloudTexture->Initialize(device, textureFilename1);
 	if(!result)
 	{
 		return false;
 	}
 
-	//Create the perturb texture object.
+	// Create the perturb texture object.
 	m_PerturbTexture = new TextureClass;
 	if(!m_PerturbTexture)
 	{
 		return false;
 	}
 
-	//Initialize the perturb texture object.
+	// Initialize the perturb texture object.
 	result = m_PerturbTexture->Initialize(device, textureFilename2);
 	if(!result)
 	{
@@ -427,7 +428,7 @@ bool SkyPlaneClass::LoadTextures(ID3D11Device* device, WCHAR* textureFilename1, 
 
 void SkyPlaneClass::ReleaseTextures()
 {
-	//Release the texture objects.
+	// Release the texture objects.
 	if(m_PerturbTexture)
 	{
 		m_PerturbTexture->Shutdown();

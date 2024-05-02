@@ -1,5 +1,6 @@
-//Filename: textureclass.cpp
-
+////////////////////////////////////////////////////////////////////////////////
+// Filename: textureclass.cpp
+////////////////////////////////////////////////////////////////////////////////
 #include "textureclass.h"
 
 
@@ -24,8 +25,9 @@ bool TextureClass::Initialize(ID3D11Device* device, WCHAR* filename)
 	HRESULT result;
 
 
-	//Load the texture in.
+	// Load the texture in.
 	result = CreateDDSTextureFromFile(device, filename, NULL, &m_texture, NULL);
+
 	if(FAILED(result))
 	{
 		return false;
@@ -37,7 +39,7 @@ bool TextureClass::Initialize(ID3D11Device* device, WCHAR* filename)
 
 void TextureClass::Shutdown()
 {
-	//Release the texture resource.
+	// Release the texture resource.
 	if(m_texture)
 	{
 		m_texture->Release();

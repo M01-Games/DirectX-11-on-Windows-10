@@ -1,5 +1,6 @@
-//Filename: particleshaderclass.cpp
-
+////////////////////////////////////////////////////////////////////////////////
+// Filename: particleshaderclass.cpp
+////////////////////////////////////////////////////////////////////////////////
 #include "particleshaderclass.h"
 
 
@@ -27,7 +28,7 @@ bool ParticleShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
-	//Initialize the vertex and pixel shaders.
+	// Initialize the vertex and pixel shaders.
 	result = InitializeShader(device, hwnd, L"../Engine/particle.vs", L"../Engine/particle.ps");
 	if (!result)
 	{
@@ -40,7 +41,7 @@ bool ParticleShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 
 void ParticleShaderClass::Shutdown()
 {
-	//Shutdown the vertex and pixel shaders as well as the related objects.
+	// Shutdown the vertex and pixel shaders as well as the related objects.
 	ShutdownShader();
 
 	return;
@@ -53,14 +54,14 @@ bool ParticleShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCo
 	bool result;
 
 
-	//Set the shader parameters that it will use for rendering.
+	// Set the shader parameters that it will use for rendering.
 	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture);
 	if (!result)
 	{
 		return false;
 	}
 
-	//Now render the prepared buffers with the shader.
+	// Now render the prepared buffers with the shader.
 	RenderShader(deviceContext, indexCount);
 
 	return true;
@@ -79,21 +80,21 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 	D3D11_SAMPLER_DESC samplerDesc;
 
 
-	//Initialize the pointers this function will use to null.
+	// Initialize the pointers this function will use to null.
 	errorMessage = 0;
 	vertexShaderBuffer = 0;
 	pixelShaderBuffer = 0;
 
-	//Compile the vertex shader code.
+	// Compile the vertex shader code.
 	result = D3DCompileFromFile(vsFilename, NULL, NULL, "ParticleVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
-		//If the shader failed to compile it should have writen something to the error message.
+		// If the shader failed to compile it should have writen something to the error message.
 		if (errorMessage)
 		{
 			OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
 		}
-		//If there was nothing in the error message then it simply could not find the shader file itself.
+		// If there was nothing in the error message then it simply could not find the shader file itself.
 		else
 		{
 			MessageBox(hwnd, vsFilename, L"Missing Shader File", MB_OK);
@@ -102,16 +103,16 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 		return false;
 	}
 
-	//Compile the pixel shader code.
+	// Compile the pixel shader code.
 	result = D3DCompileFromFile(psFilename, NULL, NULL, "ParticlePixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
-		//If the shader failed to compile it should have writen something to the error message.
+		// If the shader failed to compile it should have writen something to the error message.
 		if (errorMessage)
 		{
 			OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
 		}
-		//If there was  nothing in the error message then it simply could not find the file itself.
+		// If there was  nothing in the error message then it simply could not find the file itself.
 		else
 		{
 			MessageBox(hwnd, psFilename, L"Missing Shader File", MB_OK);
@@ -120,21 +121,21 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 		return false;
 	}
 
-	//Create the vertex shader from the buffer.
+	// Create the vertex shader from the buffer.
 	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	//Create the pixel shader from the buffer.
+	// Create the pixel shader from the buffer.
 	result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	//Create the vertex input layout description.
+	// Create the vertex input layout description.
 	polygonLayout[0].SemanticName = "POSITION";
 	polygonLayout[0].SemanticIndex = 0;
 	polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -159,10 +160,10 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 	polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[2].InstanceDataStepRate = 0;
 
-	//Get a count of the elements in the layout.
+	// Get a count of the elements in the layout.
 	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
-	//Create the vertex input layout.
+	// Create the vertex input layout.
 	result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
 		&m_layout);
 	if (FAILED(result))
@@ -170,14 +171,14 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 		return false;
 	}
 
-	//Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
+	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
 	vertexShaderBuffer->Release();
 	vertexShaderBuffer = 0;
 
 	pixelShaderBuffer->Release();
 	pixelShaderBuffer = 0;
 
-	//Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -185,14 +186,14 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
-	//Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
 	result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	//Create a texture sampler state description.
+	// Create a texture sampler state description.
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -207,7 +208,7 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	//Create the texture sampler state.
+	// Create the texture sampler state.
 	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
 	if (FAILED(result))
 	{
@@ -220,35 +221,35 @@ bool ParticleShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHA
 
 void ParticleShaderClass::ShutdownShader()
 {
-	//Release the sampler state.
+	// Release the sampler state.
 	if (m_sampleState)
 	{
 		m_sampleState->Release();
 		m_sampleState = 0;
 	}
 
-	//Release the matrix constant buffer.
+	// Release the matrix constant buffer.
 	if (m_matrixBuffer)
 	{
 		m_matrixBuffer->Release();
 		m_matrixBuffer = 0;
 	}
 
-	//Release the layout.
+	// Release the layout.
 	if (m_layout)
 	{
 		m_layout->Release();
 		m_layout = 0;
 	}
 
-	//Release the pixel shader.
+	// Release the pixel shader.
 	if (m_pixelShader)
 	{
 		m_pixelShader->Release();
 		m_pixelShader = 0;
 	}
 
-	//Release the vertex shader.
+	// Release the vertex shader.
 	if (m_vertexShader)
 	{
 		m_vertexShader->Release();
@@ -266,29 +267,29 @@ void ParticleShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWN
 	ofstream fout;
 
 
-	//Get a pointer to the error message text buffer.
+	// Get a pointer to the error message text buffer.
 	compileErrors = (char*)(errorMessage->GetBufferPointer());
 
-	//Get the length of the message.
+	// Get the length of the message.
 	bufferSize = errorMessage->GetBufferSize();
 
-	//Open a file to write the error message to.
+	// Open a file to write the error message to.
 	fout.open("shader-error.txt");
 
-	//Write out the error message.
+	// Write out the error message.
 	for (i = 0; i < bufferSize; i++)
 	{
 		fout << compileErrors[i];
 	}
 
-	//Close the file.
+	// Close the file.
 	fout.close();
 
-	//Release the error message.
+	// Release the error message.
 	errorMessage->Release();
 	errorMessage = 0;
 
-	//Pop a message up on the screen to notify the user to check the text file for compile errors.
+	// Pop a message up on the screen to notify the user to check the text file for compile errors.
 	MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderFilename, MB_OK);
 
 	return;
@@ -304,36 +305,36 @@ bool ParticleShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext
 	unsigned int bufferNumber;
 
 
-	//Transpose the matrices to prepare them for the shader.
+	// Transpose the matrices to prepare them for the shader.
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
 	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
-	//Lock the constant buffer so it can be written to.
+	// Lock the constant buffer so it can be written to.
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	//Get a pointer to the data in the constant buffer.
+	// Get a pointer to the data in the constant buffer.
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
 
-	//Copy the matrices into the constant buffer.
+	// Copy the matrices into the constant buffer.
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
 	dataPtr->projection = projectionMatrix;
 
-	//Unlock the constant buffer.
+	// Unlock the constant buffer.
 	deviceContext->Unmap(m_matrixBuffer, 0);
 
-	//Set the position of the constant buffer in the vertex shader.
+	// Set the position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
-	//Now set the constant buffer in the vertex shader with the updated values.
+	// Now set the constant buffer in the vertex shader with the updated values.
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
-	//Set shader texture resource in the pixel shader.
+	// Set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	return true;
@@ -342,17 +343,17 @@ bool ParticleShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext
 
 void ParticleShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
-	//Set the vertex input layout.
+	// Set the vertex input layout.
 	deviceContext->IASetInputLayout(m_layout);
 
-	//Set the vertex and pixel shaders that will be used to render this triangle.
+	// Set the vertex and pixel shaders that will be used to render this triangle.
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
-	//Set the sampler state in the pixel shader.
+	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 
-	//Render the triangle.
+	// Render the triangle.
 	deviceContext->DrawIndexed(indexCount, 0, 0);
 
 	return;
