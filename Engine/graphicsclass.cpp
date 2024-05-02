@@ -41,6 +41,8 @@ GraphicsClass::GraphicsClass()
 	m_House = 0;
 	m_Ship = 0;
 
+	m_Lantern = 0;
+	m_WindowModel = 0;
 	m_Lantens = 0;
 	m_Campfire = 0;
 	m_FireModel = 0;
@@ -151,8 +153,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	//m_DirectionalLight->SetAmbientColor(1.0f, 1.0f, 1.0f, 1.0f);
 	
 //Night mode
-	//m_DirectionalLight->SetDiffuseColor(0.15f, 0.15f, 0.15f, 1.0f);
-	m_DirectionalLight->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_DirectionalLight->SetDiffuseColor(0.25f, 0.25f, 0.25f, 1.0f);
+	//m_DirectionalLight->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//m_DirectionalLight->SetSpecularColor(0.15f, 0.15f, 0.15f, 1.0f);
 	m_DirectionalLight->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -160,8 +162,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	m_DirectionalLight->SetSpecularPower(64.0f);
 	m_DirectionalLight->SetPosition(0, 0, 0);
 
-	m_DirectionalLight->SetLookAt(0.0f, -0.75f, 0.0f);
-	//m_DirectionalLight->SetLookAt(-0.5f, -0.75f, 0.25f);
+	//m_DirectionalLight->SetLookAt(0.0f, -0.75f, 0.0f);
+	m_DirectionalLight->SetLookAt(0.5f, -0.75f, 0.25f);
 	m_DirectionalLight->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
 
 	//Create the shader manager object.
@@ -553,6 +555,35 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 
+	// Create the model object.
+	m_Lantern = new ModelClass;
+	if (!m_Lantern)
+	{
+		return false;
+	}
+
+	// Initialize the model object.
+	result = m_Lantern->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Lantern.txt", L"../Engine/data/grey.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the first model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	//Create the window model object.
+	m_WindowModel = new BumpModelClass;
+	if (!m_WindowModel)
+	{
+		return false;
+	}
+
+	//Initialize the window model object.
+	result = m_WindowModel->Initialize(m_Direct3D->GetDevice(), "../Engine/data/cube.txt", L"../Engine/data/ice.dds", L"../Engine/data/bump.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the window model object.", L"Error", MB_OK);
+		return false;
+	}
 	
 	// Create the model object.
 	m_Lantens = new ModelClass;
@@ -663,9 +694,25 @@ void GraphicsClass::Shutdown()
 	
 
 	//Release the campfire object.
+	if (m_Lantern)
+	{
+		m_Lantern->Shutdown();
+		delete m_Lantern;
+		m_Lantern = 0;
+	}
+
+	//Release the campfire object.
+	if (m_WindowModel)
+	{
+		m_WindowModel->Shutdown();
+		delete m_WindowModel;
+		m_WindowModel = 0;
+	}
+
+	//Release the campfire object.
 	if (m_Lantens)
 	{
-		m_Campfire->Shutdown();
+		m_Lantens->Shutdown();
 		delete m_Lantens;
 		m_Lantens = 0;
 	}
@@ -1372,7 +1419,7 @@ bool GraphicsClass::Render()
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
-	translateMatrix = XMMatrixTranslation(-100, 8, 0);
+	translateMatrix = XMMatrixTranslation(175, 8, 175);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.
@@ -1392,7 +1439,7 @@ bool GraphicsClass::Render()
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixScaling(0.5, 0.5, 0.5);
-	translateMatrix = XMMatrixTranslation(225, 8, 225);
+	translateMatrix = XMMatrixTranslation(175.01, 8, 175.01);
 	worldMatrix = XMMatrixMultiply(worldMatrix, translateMatrix);
 
 	// Render the first model using the texture shader.
@@ -1422,7 +1469,7 @@ bool GraphicsClass::Render()
 		return false;
 	}
 
-	//Setup the rotation and translation of the bridge model
+	//Setup the rotation and translation of the house model
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3.5, 3.5, 3.5));
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(360));
@@ -1433,6 +1480,21 @@ bool GraphicsClass::Render()
 	result = m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_House->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
 		m_House->GetColorTexture(), m_House->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(),
 		m_DirectionalLight->GetDiffuseColor());
+	if (!result)
+	{
+		return false;
+	}
+		//pointlight rendering \/
+	//Setup the rotation and translation of the house model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3.5, 3.5, 3.5));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(360));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(50.05, 5, 275.05));
+
+	//Render the model using the bridge map shader
+	m_House->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderPointLightShader(m_Direct3D->GetDeviceContext(), m_House->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_House->GetColorTexture(), diffuseColor, lightPosition);
 	if (!result)
 	{
 		return false;
@@ -1473,6 +1535,23 @@ bool GraphicsClass::Render()
 	}
 
 
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(10, 10, 10));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(165, 8, 325));
+
+	// Render the first model using the texture shader.
+	m_Lantern->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderLightShader(m_Direct3D->GetDeviceContext(), m_Lantern->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Lantern->GetTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetAmbientColor(), m_DirectionalLight->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_DirectionalLight->GetSpecularColor(), m_DirectionalLight->GetSpecularPower());
+	if (!result)
+	{
+		return false;
+	}
+
+
+	
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
 	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(15, 15, 15));

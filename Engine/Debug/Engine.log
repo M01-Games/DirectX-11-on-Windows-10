@@ -8,24 +8,28 @@ C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cp
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(287,24): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(302,20): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
 C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(466,25): warning C4316: 'RenderTextureClass': object allocated on the heap may not be aligned 16
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1132,20): warning C4101: 'posZ': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1132,14): warning C4101: 'posY': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1132,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1448,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1479,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1482,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1521,74): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1521,68): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1521,62): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1178,67): warning C4101: 'baseViewMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1191,20): warning C4101: 'posZ': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1191,14): warning C4101: 'posY': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1191,8): warning C4101: 'posX': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1732,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1755,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1758,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1780,7): warning C4101: 'result': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1779,36): warning C4101: 'projectionMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1779,24): warning C4101: 'viewMatrix': unreferenced local variable
-C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1779,11): warning C4101: 'worldMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1154,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1154,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1154,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1417,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1417,40): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1467,76): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1467,66): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1485,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1531,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1534,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1573,74): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1573,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1573,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1200,67): warning C4101: 'baseViewMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1213,20): warning C4101: 'posZ': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1213,14): warning C4101: 'posY': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1213,8): warning C4101: 'posX': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1784,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1807,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1810,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1832,7): warning C4101: 'result': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1831,36): warning C4101: 'projectionMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1831,24): warning C4101: 'viewMatrix': unreferenced local variable
+C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Engine\graphicsclass.cpp(1831,11): warning C4101: 'worldMatrix': unreferenced local variable
   Engine.vcxproj -> C:\Users\Raees\Documents\GitHub\DirectX-11-on-Windows-10\Debug\Engine.exe

@@ -117,7 +117,8 @@ private:
 	BumpModelClass* m_House;
 	MultiTextureModelClass* m_Ship;
 
-
+	ModelClass* m_Lantern;
+	BumpModelClass* m_WindowModel;
 	ModelClass* m_Lantens;
 	BumpModelClass* m_Campfire;
 	FireModelClass* m_FireModel;
