@@ -439,8 +439,8 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the second light object.
-	m_PointLight2->SetDiffuseColor(0.0f, 0.0f, 0.0f, 1.0f);
-	m_PointLight2->SetPosition(255, 20, 350);
+	m_PointLight2->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
+	m_PointLight2->SetPosition(165, 30, 325);
 
 	//Create the third light object.
 	m_PointLight3 = new PointLightClass;
@@ -1234,12 +1234,10 @@ bool GraphicsClass::Render()
 	static float frameTime = 0.0f;
 	//Glass variables
 	float glassRefractionScale;
-	float iceRefractionScale;
 	float posX, posY, posZ;
 
 	//Set the refraction scale for the glass and ice shader
 	glassRefractionScale = 0.01f;
-	iceRefractionScale = 0.1f;
 
 	//Increment the frame time counter
 	frameTime += 0.01f;
@@ -1550,7 +1548,21 @@ bool GraphicsClass::Render()
 		return false;
 	}
 
+	// Setup the rotation and translation of the 1st model.
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(2.75, 2.75, 2.75));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(139.95));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(165, 31.5, 325.5));
 
+	//Put the window model vertex and index buffers on the graphics pipeline to prepare them for drawing	
+	//Render the window model using the glass shader
+	m_WindowModel->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderGlassShader(m_Direct3D->GetDeviceContext(), m_WindowModel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_WindowModel->GetColorTexture(), m_WindowModel->GetNormalMapTexture(), m_GlassRenderTexture->GetShaderResourceView(), glassRefractionScale);
+	if (!result)
+	{
+		return false;
+	}
 	
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
@@ -1858,7 +1870,78 @@ bool GraphicsClass::RenderGlassRefractionToTexture()
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	bool result;
 
+	//Variables for the fire 
+	XMFLOAT3 scrollSpeeds, scales;
+	XMFLOAT2 distortion1, distortion2, distortion3;
+	float distortionScale, distortionBias;
+	static float frameTime = 0.0f;
 
+	//Increment the frame time counter
+	frameTime += 0.01f;
+	if (frameTime > 1000.0f)
+	{
+		frameTime = 0.0f;
+	}
+
+	//Set the three scrolling speeds for the three different noise textures
+	scrollSpeeds = XMFLOAT3(1.3f, 2.1f, 2.3f);
+
+	//Set the three scales which will be used to create the three different noise octave textures
+	scales = XMFLOAT3(1.0f, 2.0f, 3.0f);
+
+	//Set the three different x and y distortion factors for the three different noise textures
+	distortion1 = XMFLOAT2(0.1f, 0.2f);
+	distortion2 = XMFLOAT2(0.1f, 0.3f);
+	distortion3 = XMFLOAT2(0.1f, 0.1f);
+
+	//The the scale and bias of the texture coordinate sampling perturbation
+	distortionScale = 0.8f;
+	distortionBias = 0.5f;
+
+	//Set the render target to be the render to texture
+	m_GlassRenderTexture->SetRenderTarget(m_Direct3D->GetDeviceContext());
+
+	//Clear the render to texture
+	m_GlassRenderTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
+
+	//Generate the view matrix based on the camera's position
+	m_Camera->Render();
+
+	//Get the world, view, and projection matrices from the camera and d3d objects
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+
+	//Turn on alpha blending for the fire transparency
+	m_Direct3D->TurnOnAlphaBlending();
+
+	//Turn back face culling back on
+	m_Direct3D->TurnOffCulling();
+
+	//Get the world, view, and projection matrices from the camera and d3d objects
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+
+	//Setup the rotation and translation of the model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(0.025, 0.05, 0.025));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(165, 30, 325));
+
+	//Render the square model using the fire shader
+	m_FireModel->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderFireShader(m_Direct3D->GetDeviceContext(), m_FireModel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_FireModel->GetTexture1(), m_FireModel->GetTexture2(), m_FireModel->GetTexture3(), frameTime, scrollSpeeds,
+		scales, distortion1, distortion2, distortion3, distortionScale, distortionBias);
+	if (!result)
+	{
+		return false;
+	}
+
+	//Turn off alpha blending
+	m_Direct3D->TurnOffAlphaBlending();
+
+	//Turn back face culling back on
+	m_Direct3D->TurnOnCulling();
 
 	//Reset the render target back to the original back buffer and not the render to texture anymore
 	m_Direct3D->SetBackBufferRenderTarget();
