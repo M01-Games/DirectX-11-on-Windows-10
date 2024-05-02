@@ -115,6 +115,7 @@ private:
 	BumpModelClass* m_Bridge;
 	BumpModelClass* m_Boat;
 	BumpModelClass* m_House;
+	MultiTextureModelClass* m_Ship;
 
 
 	ModelClass* m_Lantens;

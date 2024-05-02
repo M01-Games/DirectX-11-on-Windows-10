@@ -39,6 +39,7 @@ GraphicsClass::GraphicsClass()
 	m_Bridge = 0;
 	m_Boat = 0;
 	m_House = 0;
+	m_Ship = 0;
 
 	m_Lantens = 0;
 	m_Campfire = 0;
@@ -514,7 +515,7 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	}
 
 	//Initialize the model object.
-	result = m_Boat->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Ship.txt", L"../Engine/data/Boat_Base.dds", L"../Engine/data/Boat_Normal.dds");
+	result = m_Boat->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Boat.txt", L"../Engine/data/Boat_Base.dds", L"../Engine/data/Boat_Normal.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the longship model object.", L"Error", MB_OK);
@@ -533,6 +534,21 @@ bool GraphicsClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, 
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the longship model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	//Create the multi-texture model object.
+	m_Ship = new MultiTextureModelClass;
+	if (!m_Ship)
+	{
+		return false;
+	}
+
+	//Initialize the model object.
+	result = m_Ship->Initialize(m_Direct3D->GetDevice(), "../Engine/data/Ship.txt", L"../Engine/data/Ship.dds", L"../Engine/data/Sails.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the second model object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -636,7 +652,15 @@ void GraphicsClass::Shutdown()
 		m_House = 0;
 	}
 
+	//Release the multi texture object.
+	if (m_Ship)
+	{
+		m_Ship->Shutdown();
+		delete m_Ship;
+		m_Ship = 0;
+	}
 
+	
 
 	//Release the campfire object.
 	if (m_Lantens)
@@ -1196,6 +1220,10 @@ bool GraphicsClass::Render()
 	static float rotation;
 	rotation += (float)XM_PI * 0.0005f * m_Timer->GetTime();
 
+	//Update the Movement variable each frame
+	static float movement = -1000.0f;
+	movement += (float)XM_PI * 0.0025f * m_Timer->GetTime();
+
 	//Create the diffuse color array from the four light colors
 	diffuseColor[0] = m_PointLight1->GetDiffuseColor();
 	diffuseColor[1] = m_PointLight2->GetDiffuseColor();
@@ -1429,6 +1457,20 @@ bool GraphicsClass::Render()
 		return false;
 	}
 
+	//Setup the rotation and translation of the multi-texture model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3, 3, 3));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(135));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(1500, 15, movement));
+
+	//Render the model using the multi-Texture shader
+	m_Ship->Render(m_Direct3D->GetDeviceContext());
+	result = m_ShaderManager->RenderMultiTextureShader(m_Direct3D->GetDeviceContext(), m_Ship->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Ship->GetTextureArray());
+	if (!result)
+	{
+		return false;
+	}
 
 
 	// Setup the rotation and translation of the 1st model.
@@ -1600,6 +1642,9 @@ void GraphicsClass::RenderReflectionToTexture()
 	static float rotation;
 	rotation += (float)XM_PI * 0.0005f * m_Timer->GetTime();
 
+	//Update the Movement variable each frame
+	static float movement = -1000.0f;
+	movement += (float)XM_PI * 0.0025f * m_Timer->GetTime();
 
 	//Setup a clipping plane based on the height of the water to clip everything below it
 	clipPlane = XMFLOAT4(0.0f, 1.0f, 0.0f, -m_Water->GetWaterHeight());
@@ -1691,6 +1736,18 @@ void GraphicsClass::RenderReflectionToTexture()
 	m_Boat->Render(m_Direct3D->GetDeviceContext());
 	m_ShaderManager->RenderBumpMapShader(m_Direct3D->GetDeviceContext(), m_Boat->GetIndexCount(), worldMatrix, reflectionViewMatrix, projectionMatrix,
 		m_Boat->GetColorTexture(), m_Boat->GetNormalMapTexture(), m_DirectionalLight->GetLookAt(), m_DirectionalLight->GetDiffuseColor());
+
+	//Setup the rotation and translation of the multi-texture model
+	worldMatrix = XMMatrixIdentity();
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixScaling(3, 3, 3));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(135));
+	worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(1500, 15, movement));
+
+	//Render the model using the multi-Texture shader
+	m_Ship->Render(m_Direct3D->GetDeviceContext());
+	m_ShaderManager->RenderMultiTextureShader(m_Direct3D->GetDeviceContext(), m_Ship->GetIndexCount(), worldMatrix, reflectionViewMatrix,
+		projectionMatrix, m_Ship->GetTextureArray());
+
 
 	// Setup the rotation and translation of the 1st model.
 	worldMatrix = XMMatrixIdentity();
